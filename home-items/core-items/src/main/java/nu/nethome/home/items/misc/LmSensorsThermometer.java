@@ -43,7 +43,7 @@ public class LmSensorsThermometer extends HomeItemAdapter implements HomeItem, V
 
 	private final String m_Model = ("<?xml version = \"1.0\"?> \n"
 			+ "<HomeItem Class=\"LmSensorsThermometer\"  Category=\"Thermometers\" >"
-			+ "  <Attribute Name=\"Temperature\" 	Type=\"String\" Get=\"getValue\" Default=\"true\" />"
+			+ "  <Attribute Name=\"Temperature\" 	Type=\"String\" Get=\"getValue\" Default=\"true\"  Unit=\"°C\" />"
 			+ "  <Attribute Name=\"SensorName\"	Type=\"String\" Get=\"getSensorName\" 	Set=\"setSensorName\" />"
 			+ "  <Attribute Name=\"LogFile\" Type=\"String\" Get=\"getLogFile\" 	Set=\"setLogFile\" />"
 			+ "</HomeItem> "); 

@@ -40,8 +40,8 @@ public class UPMRainfall extends HomeItemAdapter implements HomeItem, ValueItem 
 
 	private final String m_Model = ("<?xml version = \"1.0\"?> \n"
 			+ "<HomeItem Class=\"UPMRainfall\" Category=\"Gauges\" >"
-			+ "  <Attribute Name=\"Rainfall\" 	Type=\"String\" Get=\"getValue\" Default=\"true\" />"
-			+ "  <Attribute Name=\"RainfallToday\" 	Type=\"String\" Get=\"getRainToday\" />"
+			+ "  <Attribute Name=\"Rainfall\" 	Type=\"String\" Get=\"getValue\" Default=\"true\"  Unit=\"mm\" />"
+			+ "  <Attribute Name=\"RainfallToday\" 	Type=\"String\" Get=\"getRainToday\"  Unit=\"mm\" />"
 			+ "  <Attribute Name=\"BatteryStatus\" 	Type=\"String\" Get=\"getLowBattery\" />"
 			+ "  <Attribute Name=\"LogFile\" Type=\"String\" Get=\"getLogFile\" 	Set=\"setLogFile\" />"
 			+ "  <Attribute Name=\"LastUpdate\" Type=\"String\" Get=\"getLastUpdate\" />"

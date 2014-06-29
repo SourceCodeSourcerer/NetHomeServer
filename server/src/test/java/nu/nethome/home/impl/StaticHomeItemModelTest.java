@@ -20,6 +20,7 @@
 package nu.nethome.home.impl;
 
 import nu.nethome.home.item.Action;
+import nu.nethome.home.item.AttributeModel;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -84,20 +85,20 @@ public class StaticHomeItemModelTest {
 
     @Test
     public void canParseAttributeGetMethod() throws ModelException, InvocationTargetException, IllegalAccessException {
-        AttributeModel result = model.getAttribute("AttValueFoo");
+        ReflectionAttributeModel result = model.getAttribute("AttValueFoo");
         assertThat(result.getValue(target), is("Foo"));
     }
 
     @Test
     public void canParseAttributeSetMethod() throws ModelException, InvocationTargetException, IllegalAccessException {
-        AttributeModel result = model.getAttribute("AttValueFoo");
+        ReflectionAttributeModel result = model.getAttribute("AttValueFoo");
         result.setValue(target, "X");
         assertThat(result.getValue(target), is("X"));
     }
 
     @Test
     public void canParseAttributeInitMethod() throws ModelException, InvocationTargetException, IllegalAccessException {
-        AttributeModel result = model.getAttribute("AttInit");
+        ReflectionAttributeModel result = model.getAttribute("AttInit");
         result.initValue(target, "Y");
         assertThat(result.getValue(target), is("Y"));
     }

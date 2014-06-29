@@ -19,6 +19,7 @@
 
 package nu.nethome.home.impl;
 
+import nu.nethome.home.item.AttributeModel;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,7 +32,7 @@ import static org.junit.internal.matchers.IsCollectionContaining.hasItems;
 
 public class AttributeModelTest {
 
-    AttributeModel attribute;
+    ReflectionAttributeModel attribute;
     MockSafeHomeItem target;
     AttributeModel attribute1;
     AttributeModel attribute2;
@@ -41,13 +42,13 @@ public class AttributeModelTest {
     @Before
     public void setUp() throws Exception {
         target = new MockSafeHomeItem();
-        attribute1 = new AttributeModel("AttValueFoo", "String", target.getClass(), "getAttValueFoo",
+        attribute1 = new ReflectionAttributeModel("AttValueFoo", "String", null, target.getClass(), "getAttValueFoo",
                 "setAttValueFoo", null);
-        attribute2 = new AttributeModel("AttValueFoo", "String", target.getClass(), "getAttValueFoo",
+        attribute2 = new ReflectionAttributeModel("AttValueFoo", "String", null, target.getClass(), "getAttValueFoo",
                 null, null);
-        attribute3 = new AttributeModel("AttValueFoo", "String", target.getClass(), "getAttValueFoo",
+        attribute3 = new ReflectionAttributeModel("AttValueFoo", "String", null, target.getClass(), "getAttValueFoo",
                 null, "setAttValueFoo");
-        attribute4 = new AttributeModel("AttValueFoo", "String", target.getClass(), null,
+        attribute4 = new ReflectionAttributeModel("AttValueFoo", "String", null, target.getClass(), null,
                 null, "setAttValueFoo");
     }
 
@@ -77,35 +78,35 @@ public class AttributeModelTest {
 
     @Test
     public void canGetAttributeValue() throws InvocationTargetException, IllegalAccessException, ModelException {
-        attribute = new AttributeModel("AttValueFoo", "String", target.getClass(), "getAttValueFoo", "setAttValueFoo",
+        attribute = new ReflectionAttributeModel("AttValueFoo", "String", null, target.getClass(), "getAttValueFoo", "setAttValueFoo",
                 null);
         assertThat(attribute.getValue(target), is("Foo"));
     }
 
     @Test(expected = ModelException.class)
     public void exceptionForCallingUnknownAttributeGetter() throws InvocationTargetException, IllegalAccessException, ModelException {
-        attribute = new AttributeModel("AttValueFoo", "String", target.getClass(), "X", "setAttValueFoo",
+        attribute = new ReflectionAttributeModel("AttValueFoo", "String", null, target.getClass(), "X", "setAttValueFoo",
                 null);
         attribute.getValue(target);
     }
 
     @Test(expected = ModelException.class)
     public void exceptionForCallingUnknownAttributeSetter() throws InvocationTargetException, IllegalAccessException, ModelException {
-        attribute = new AttributeModel("AttValueFoo", "String", target.getClass(), "X", "Y",
+        attribute = new ReflectionAttributeModel("AttValueFoo", "String", null, target.getClass(), "X", "Y",
                 null);
         attribute.setValue(target, "Foo");
     }
 
     @Test(expected = ModelException.class)
     public void exceptionForCallingUnknownAttributeInit() throws InvocationTargetException, IllegalAccessException, ModelException {
-        attribute = new AttributeModel("AttValueFoo", "String", target.getClass(), "X", "Y",
+        attribute = new ReflectionAttributeModel("AttValueFoo", "String", null, target.getClass(), "X", "Y",
                 null);
         attribute.initValue(target, "Foo");
     }
 
     @Test
     public void canSetAttributeValue() throws InvocationTargetException, IllegalAccessException, ModelException {
-        attribute = new AttributeModel("AttValueFoo", "String", target.getClass(), "getAttValueFoo", "setAttValueFoo",
+        attribute = new ReflectionAttributeModel("AttValueFoo", "String", null, target.getClass(), "getAttValueFoo", "setAttValueFoo",
                 null);
         attribute.setValue(target, "Y");
         assertThat(attribute.getValue(target), is("Y"));
@@ -113,19 +114,26 @@ public class AttributeModelTest {
 
     @Test
     public void canInitAttributeValue() throws InvocationTargetException, IllegalAccessException, ModelException {
-        attribute = new AttributeModel("AttValueFoo", "String", target.getClass(), "getAttValueFoo", "setAttValueFoo",
+        attribute = new ReflectionAttributeModel("AttValueFoo", "String", null, target.getClass(), "getAttValueFoo", "setAttValueFoo",
                 null);
         attribute.initValue(target, "Y");
         assertThat(attribute.getValue(target), is("Y"));
-        attribute = new AttributeModel("AttValueFoo", "String", target.getClass(), "getAttValueFoo", null, "setAttValueFoo");
+        attribute = new ReflectionAttributeModel("AttValueFoo", "String", null, target.getClass(), "getAttValueFoo", null, "setAttValueFoo");
         attribute.initValue(target, "Z");
         assertThat(attribute.getValue(target), is("Z"));
     }
 
     @Test
     public void canGetValueList() {
-        attribute = new AttributeModel("AttValueFoo", "String", target.getClass(), "getAttValueFoo", "setAttValueFoo",
+        attribute = new ReflectionAttributeModel("AttValueFoo", "String", null, target.getClass(), "getAttValueFoo", "setAttValueFoo",
                 null, Arrays.asList("A", "B", "C"));
         assertThat(attribute.getValueList(), hasItems("A", "B", "C"));
+    }
+
+    @Test
+    public void canGetUnit() {
+        attribute = new ReflectionAttributeModel("AttValueFoo", "String", "MHz", target.getClass(), "getAttValueFoo", "setAttValueFoo",
+                null, Arrays.asList("A", "B", "C"));
+        assertThat(attribute.getUnit(), is("MHz"));
     }
 }

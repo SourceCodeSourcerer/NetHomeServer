@@ -341,7 +341,7 @@ public class HomeGUI extends HttpServlet implements FinalEventListener, HomeItem
                     continue;
                 }
                 HomeItemModel model = item.getModel();
-                String value = item.getAttributeValue(model.getDefaultAttribute());
+                String value = model.getDefaultAttribute() != null ? item.getAttributeValue(model.getDefaultAttribute().getName()) : "";
                 if (!isFirst) {
                     p.format(",");
                 }
@@ -435,8 +435,8 @@ public class HomeGUI extends HttpServlet implements FinalEventListener, HomeItem
         p.println("<div id=\"pageBody\">");
         p.println("<div id=\"logobar\">");
         if (customLeftBannerFile.length() != 1 && customRightBannerFile.length() != 1) {
-            p.println(" <a href=\"http://wiki.nethome.nu\"><img src=\"" + leftBannerFileName + "\" class=\"primary\" title=\"NetHomeServer\"></a>");
-            p.println(" <a href=\"http://wiki.nethome.nu\"><img src=\"" + rightBannerFileName + "\" title=\"My Own Logo\" class=\"secondary\" width=\"313\" height=\"50\"></a>");
+            p.println(" <a href=\"http://opennethome.org\"><img src=\"" + leftBannerFileName + "\" class=\"primary\" title=\"NetHomeServer\"></a>");
+            p.println(" <a href=\"http://opennethome.org\"><img src=\"" + rightBannerFileName + "\" title=\"My Own Logo\" class=\"secondary\" width=\"313\" height=\"50\"></a>");
         }
         p.println(" <div class=\"floatClear\"></div>");
         p.println("</div>");
@@ -489,7 +489,7 @@ public class HomeGUI extends HttpServlet implements FinalEventListener, HomeItem
         p.println(statusIcon + "&nbsp;<a href=\"" + localURL + "?page=settings&subpage=log\">Log</a>");
         p.println("   </li>");
         p.println("   <li class=\"pref\">");
-        p.println("    <img src=\"web/home/info.png\"/>&nbsp;<a href=\"http://wiki.nethome.nu\">About</a>");
+        p.println("    <img src=\"web/home/info.png\"/>&nbsp;<a href=\"http://opennethome.org\">About</a>");
         p.println("   </li>");
         if (selectedPage.supportsEdit()) {
             p.println("   <li class=\"pref\">");

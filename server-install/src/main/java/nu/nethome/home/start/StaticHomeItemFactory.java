@@ -119,7 +119,8 @@ public class StaticHomeItemFactory implements HomeItemFactory {
             new HomeItemClassInfo("FineOffsetThermometer", nu.nethome.home.items.fineoffset.FineOffsetThermometer.class),
             new HomeItemClassInfo("FineOffsetHygrometer", nu.nethome.home.items.fineoffset.FineOffsetHygrometer.class),
             new HomeItemClassInfo("FineOffsetRainGauge", nu.nethome.home.items.fineoffset.FineOffsetRainGauge.class),
-            new HomeItemClassInfo("FooGadgetEnergy", nu.nethome.home.items.fineoffset.FooGadgetEnergy.class),
+            new HomeItemClassInfo("FooGadgetLegacy", nu.nethome.home.items.fineoffset.FooGadgetLegacy.class),
+            new HomeItemClassInfo("FooGadgetPulse", nu.nethome.home.items.fineoffset.FooGadgetPulse.class),
             new HomeItemClassInfo("NexaLamp", nu.nethome.home.items.nexa.NexaLamp.class),
             new HomeItemClassInfo("NexaRemapButton", nu.nethome.home.items.nexa.NexaRemapButton.class),
             new HomeItemClassInfo("NexaLCLamp", nu.nethome.home.items.nexa.NexaLCLamp.class),
@@ -157,6 +158,10 @@ public class StaticHomeItemFactory implements HomeItemFactory {
             new HomeItemClassInfo("TempWEB", nu.nethome.home.items.web.temp.TempWEB.class),
             new HomeItemClassInfo("ActionButton", nu.nethome.home.items.web.servergui.ActionButton.class),
 
+            // Misc
+            new HomeItemClassInfo("ValueLogger",nu.nethome.home.items.misc.ValueLogger.class),
+
+
 //		new HomeItemClassInfo("X10Port","nu.nethome.home.items.x10.X10Port"),
 //		new HomeItemClassInfo("X10Lamp","nu.nethome.home.items.x10.X10Lamp"),
 //		new HomeItemClassInfo("X10HouseScene","nu.nethome.home.items.x10.X10HouseScene"),
@@ -168,7 +173,6 @@ public class StaticHomeItemFactory implements HomeItemFactory {
 //		new HomeItemClassInfo("HKCDRemote","nu.nethome.home.items.snap.HKCDRemote", false),
 
 //		new HomeItemClassInfo("ValueAlarm","nu.nethome.home.items.ValueAlarm", false),
-//      new HomeItemClassInfo("ValueLogger",nu.nethome.home.items.misc.ValueLogger.class),
 //		new HomeItemClassInfo("SNAPPort","nu.nethome.home.items.snap.SNAPPort", false),
 //		new HomeItemClassInfo("SNAPIrRemote","nu.nethome.home.items.snap.SNAPIrRemote", false),
 //		new HomeItemClassInfo("LampMediaHandler","nu.nethome.home.items.experimental.LampMediaHandler", false),

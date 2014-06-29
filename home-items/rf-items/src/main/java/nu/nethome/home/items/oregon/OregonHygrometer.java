@@ -41,7 +41,7 @@ public class OregonHygrometer extends OregonThermometer implements HomeItem {
 
     private static final String MODEL = ("<?xml version = \"1.0\"?> \n"
             + "<HomeItem Class=\"OregonHygrometer\" Category=\"Gauges\" >"
-            + "  <Attribute Name=\"Humidity\" 	Type=\"String\" Get=\"getValue\" Default=\"true\" />"
+            + "  <Attribute Name=\"Humidity\" 	Type=\"String\" Get=\"getValue\" Default=\"true\"  Unit=\"%\" />"
             + "  <Attribute Name=\"BatteryLevel\" 	Type=\"String\" Get=\"getBatteryLevel\" />"
             + "  <Attribute Name=\"TimeSinceUpdate\" 	Type=\"String\" Get=\"getTimeSinceUpdate\" />"
             + "  <Attribute Name=\"Channel\" 	Type=\"String\" Get=\"getChannel\" 	Set=\"setChannel\" />"

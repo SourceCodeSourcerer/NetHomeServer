@@ -134,15 +134,25 @@ public class EditItemPage extends PortletPage {
         } else {
             HomeItemProxy item = getEditedHomeItemInstance(pageArguments);
 
-            if (!isActivated(item) && !pageArguments.isAction(UPDATE_ATTRIBUTES_ACTION)) {
+            if (!isActivated(item) && pageArguments.isSaveTypeCancel()) {
+                cancelCreation(req, res, server, pageArguments, item);
+            } else if (!isActivated(item) && !pageArguments.isAction(UPDATE_ATTRIBUTES_ACTION)) {
                 printCreateInstancePage(item, pageArguments, res.getWriter());
-
             } else if (pageArguments.hasAction()) {
                 performActionsAndRedirect(req, res.getWriter(), pageArguments, item);
-
             } else {
                 printItemEditPage(res.getWriter(), pageArguments, item);
             }
+        }
+    }
+
+    private void cancelCreation(HttpServletRequest req, HttpServletResponse res, HomeService server, EditItemArguments pageArguments, HomeItemProxy item) throws IOException, ServletException {
+        this.server.removeInstance(pageArguments.getName());
+        if (pageArguments.hasReturnPage()) {
+            printRedirectionScript(res.getWriter(),
+                    url("name", item.getAttributeValue(HomeItemProxy.ID_ATTRIBUTE)).gotoReturnPage(pageArguments).toString());
+        } else {
+            selectClassPage.printPage(req, res, server);
         }
     }
 
@@ -462,7 +472,7 @@ public class EditItemPage extends PortletPage {
         Iterator<Attribute> i = item.getAttributeValues().iterator();
         for (int counter = 0; i.hasNext(); counter++) {
             attribute = i.next();
-            if (attribute.isCanInit() && !attribute.isWriteOnly()) {
+            if (attribute.isCanInit() && !attribute.isWriteOnly() && !attribute.getType().equals("Hidden")) {
                 p.println("<tr>");
                 p.println("  <td class=\"attributename\">" + attribute.getName()
                         + "</td>");
@@ -476,7 +486,9 @@ public class EditItemPage extends PortletPage {
         p.println("<br>");
 
         p.println("<div class=\"footer\">");
-        p.println("<input type=\"submit\" name=\"save_type\" value=\"Save Settings and activate\">");
+        p.print("<input class=\"ibutton\" type=\"submit\" name=\"save_type\" value=\""
+                + CANCEL_BUTTON_TEXT + "\"> ");
+        p.println("<input class=\"ibutton\" type=\"submit\" name=\"save_type\" value=\"Save Settings and activate\">");
         p.println("</div");
         p.println("</form>");
 
@@ -659,7 +671,7 @@ public class EditItemPage extends PortletPage {
 
         {
             attribute = i.next();
-            if (!attribute.isReadOnly() && !attribute.isWriteOnly()) {
+            if (!attribute.isReadOnly() && !attribute.isWriteOnly() && !attribute.getType().equals("Hidden")) {
                 p.println("<tr>");
                 p.println("  <td class=\"attributename\">" + attribute.getName()
                         + "</td>");
@@ -722,9 +734,10 @@ public class EditItemPage extends PortletPage {
         while (i.hasNext()) {
             attribute = i.next();
             if (attribute.isReadOnly() && !attribute.isWriteOnly() && !attribute.getType().equals("Hidden")) {
+                String unit = attribute.getValue().length() > 0 ? (" " + attribute.getUnit()) : "";
                 p.println("<tr>");
                 p.println("  <td class=\"attributename\">" + attribute.getName() + ": "
-                        + "</td> <td class=\"attributenameandvalue\">" + attribute.getValue() + "</td>");
+                        + "</td> <td class=\"attributenameandvalue\">" + attribute.getValue() + unit + "</td>");
                 p.println("</tr>");
             }
         }

@@ -19,10 +19,6 @@
 
 package nu.nethome.home.impl;
 
-import nu.nethome.home.impl.AttributeModel;
-import nu.nethome.home.impl.ModelException;
-import nu.nethome.home.impl.NewInternalAttribute;
-import nu.nethome.home.impl.StaticHomeItemModel;
 import nu.nethome.home.item.*;
 import nu.nethome.home.system.HomeService;
 
@@ -68,7 +64,7 @@ public class LocalHomeItemProxy implements HomeItemProxy {
         List<Attribute> result = new ArrayList<Attribute>();
 
         for (AttributeModel attributeModel : model.getAttributes()) {
-            result.add(new NewInternalAttribute(getAttributeValue(attributeModel.getName()), attributeModel));
+            result.add(new ModelAttribute(getAttributeValue(attributeModel.getName()), attributeModel));
         }
         return result;
     }

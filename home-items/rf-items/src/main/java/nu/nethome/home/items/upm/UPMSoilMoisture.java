@@ -37,8 +37,8 @@ public class UPMSoilMoisture extends HomeItemAdapter implements HomeItem, ValueI
 
     private static final String MODEL = ("<?xml version = \"1.0\"?> \n"
             + "<HomeItem Class=\"UPMSoilMoisture\" Category=\"Gauges\" >"
-            + "  <Attribute Name=\"Moisture\" 	Type=\"String\" Get=\"getValue\" Default=\"true\" />"
-            + "  <Attribute Name=\"BatteryLevel\" 	Type=\"String\" Get=\"getBatteryLevel\" />"
+            + "  <Attribute Name=\"Moisture\" 	Type=\"String\" Get=\"getValue\" Default=\"true\" Unit=\"%\" />"
+            + "  <Attribute Name=\"BatteryLevel\" 	Type=\"String\" Get=\"getBatteryLevel\" Unit=\"%\" />"
             + "  <Attribute Name=\"TimeSinceUpdate\" 	Type=\"String\" Get=\"getTimeSinceUpdate\" />"
             + "  <Attribute Name=\"HouseCode\" 	Type=\"String\" Get=\"getHouseCode\" 	Set=\"setHouseCode\" />"
             + "  <Attribute Name=\"DeviceCode\" Type=\"String\" Get=\"getDeviceCode\" 	Set=\"setDeviceCode\" />"

@@ -122,7 +122,7 @@ public class MBMThermometer extends HomeItemAdapter implements HomeItem, ValueIt
 	}
 	private final String m_Model = ("<?xml version = \"1.0\"?> \n"
 			+ "<HomeItem Class=\"MBMThermometer\" Category=\"Thermometers\" >"
-			+ "  <Attribute Name=\"Temperature\" 	Type=\"String\" Get=\"getValue\" Default=\"true\" />"
+			+ "  <Attribute Name=\"Temperature\" 	Type=\"String\" Get=\"getValue\" Default=\"true\"  Unit=\"°C\" />"
 			+ "  <Attribute Name=\"Port\" Type=\"String\" Get=\"getPort\" 	Set=\"setPort\" />"
 			+ "  <Attribute Name=\"SensorName\"	Type=\"String\" Get=\"getSensorName\" 	Set=\"setSensorName\" />"
 			+ "  <Attribute Name=\"LogFile\" Type=\"String\" Get=\"getLogFile\" 	Set=\"setLogFile\" />"

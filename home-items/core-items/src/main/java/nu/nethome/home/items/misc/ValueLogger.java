@@ -19,10 +19,10 @@
 
 package nu.nethome.home.items.misc;
 
-import nu.nethome.home.item.HomeItem;
-import nu.nethome.home.item.ValueItem;
-import nu.nethome.home.system.Event;
+import nu.nethome.home.impl.CommandLineExecutor;
+import nu.nethome.home.item.*;
 import nu.nethome.home.system.HomeService;
+import nu.nethome.util.plugin.Plugin;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -38,194 +38,65 @@ import java.util.logging.Logger;
  * 
  * @author Stefan
  */
-public class ValueLogger extends TimerTask implements HomeItem {
+@SuppressWarnings("UnusedDeclaration")
+@Plugin
+@HomeItemType("Gauges")
+public class ValueLogger extends HomeItemAdapter implements ValueItem, HomeItem {
 
 	private final String m_Model = ("<?xml version = \"1.0\"?> \n"
-			+ "<HomeItem Class=\"ValueLogger\" >"
-			+ "  <Attribute Name=\"File Name\" Type=\"String\" Get=\"getFileName\" 	Set=\"setFileName\" />"
-			+ "  <Attribute Name=\"ValueObjects\" Type=\"String\" Get=\"getValueObjects\" 	Set=\"setValueObjects\" />"
-			+ "  <Attribute Name=\"Interval\" Type=\"String\" Get=\"getInterval\" 	Set=\"setInterval\" />"
-			+ "  <Attribute Name=\"TimeFormat\" Type=\"String\" Get=\"getTimeFormat\" 	Set=\"setTimeFormat\" />"
-			+ "  <Attribute Name=\"ValueSeparator\" Type=\"String\" Get=\"getValueSeparator\" 	Set=\"setValueSeparator\" />"
-			+ "</HomeItem> "); 
+			+ "<HomeItem Class=\"ValueLogger\" Category=\"Gauges\"  >"
+            + "  <Attribute Name=\"Value\" Type=\"String\" Get=\"getValue\" Default=\"true\" />"
+            + "  <Attribute Name=\"ValueAction\" Type=\"String\" Get=\"getValueAction\" 	Set=\"setValueAction\" />"
+            + "  <Attribute Name=\"LogFile\" Type=\"String\" Get=\"getLogFile\" 	Set=\"setLogFile\" />"
+			+ "</HomeItem> ");
 
 	private static Logger logger = Logger.getLogger(ValueLogger.class.getName());
-	protected String m_Name = "NoNameYet";
-	protected long m_ID = 0L;
-	protected HomeService m_EventBroker;
-	protected Timer m_Timer = new Timer();
+    protected CommandLineExecutor executor;
 
 	// Public attributes
-	protected String m_FileName = "c:\\data\\logs\\Temperature.log";
-	protected String m_ValueObjects = "Yard Thermometer";
-	protected int m_Interval = 15;
-	protected String m_TimeFormat = "yyyy.MM.dd HH:mm:ss;";
-	protected String m_ValueSeparator = ";";
+    private LoggerComponent valueLoggerComponent = new LoggerComponent(this);
+    protected String valueAction = "get,OutThermometer,Temperature";
 
-	public ValueLogger() {
-	}
-	
 	public String getModel() {
 		return m_Model;
 	}
 
-	public void setName(String name) {
-		m_Name = name;
-	}
-
-	public String getName() {
-		return m_Name;
-	}
-
-	public long getItemId() {
-		return m_ID;
-	}
-
-	public void setItemId(long id) {
-		m_ID = id;
-	}
-
-    public boolean receiveEvent(Event event) {
-        return false;
+    @Override
+    public void activate(HomeService server) {
+        super.activate(server);
+        executor = new CommandLineExecutor(server, true);
+        valueLoggerComponent.activate();
     }
 
-	
-	public void activate(HomeService server) {
-        m_EventBroker = server;
-		// Get current time
-	    Calendar date = Calendar.getInstance();
-	    // Start at next even hour
-	    date.set(Calendar.HOUR, date.get(Calendar.HOUR) + 1);
-	    date.set(Calendar.MINUTE, 0);
-	    date.set(Calendar.SECOND, 0);
-	    date.set(Calendar.MILLISECOND, 0);
-	    // Schedule the job at m_Interval minutes interval
-	    m_Timer.schedule(
-	    		this,
-				date.getTime(),
-				1000 * 60 * m_Interval
-	    );
-	}
+    @Override
+    public void stop() {
+        valueLoggerComponent.stop();
+    }
 
-	/**
-	 * HomeItem method which stops all object activity for program termination
-	 */
-	public void stop() {
-		m_Timer.cancel();
-	}
+    public String getLogFile() {
+        return valueLoggerComponent.getFileName();
+    }
 
-	public void run() {
-		logger.fine("Value Log Timer Fired");
-		try {
-	        BufferedWriter out = new BufferedWriter(new FileWriter(m_FileName, true));
-	        // Format the current time.
-	        SimpleDateFormat formatter
-	            = new SimpleDateFormat (m_TimeFormat);
-	        Date currentTime = new Date();
-	        String dateString = formatter.format(currentTime);
-	        String newLogLine = dateString;
-		    LinkedList valueObjects = stringToList(m_ValueObjects);
-		    ListIterator i = valueObjects.listIterator();
-			while(i.hasNext()) {
-				String valueObject = i.next().toString();
-				ValueItem valueItem = findValueItem(valueObject);
-				if (valueItem != null)
-				{
-					newLogLine += valueItem.getValue();
-					if (i.hasNext()){
-						newLogLine += m_ValueSeparator;
-					}
-				}
-			}
-	        out.write(newLogLine);
-	        out.newLine();
-	        out.close();
-		}
-		catch (IOException e) {
-			logger.warning("Failed to open log file: " + m_FileName + " Error:" + e.toString());
-		}
-	}
+    public void setLogFile(String logfile) {
+        valueLoggerComponent.setFileName(logfile);
+    }
 
-	public LinkedList stringToList(String list) {
-		LinkedList linkList = new LinkedList();
-		int start = 0;
-		int end = 0;
-		
-		while ((end = list.indexOf(",", end + 1)) != -1) {
-			String temp = new String(list.substring(start, end));
-			linkList.add(temp);
-			start = end + 1;
-		}
-		String temp = new String(list.substring(start, list.length()));
-		linkList.add(temp);
-		return linkList;
-	}
-	
-	// NYI - now only works for UPMThermometer, should work for all "value items"
-	protected ValueItem findValueItem(String name){
-		return (ValueItem)m_EventBroker.openInstance(name).getInternalRepresentation();
-	}
+    public String getValueAction() {
+        return valueAction;
+    }
 
-	/**
-	 * @return Returns the m_FileName.
-	 */
-	public String getFileName() {
-		return m_FileName;
-	}
-	/**
-	 * @param FileName The m_FileName to set.
-	 */
-	public void setFileName(String FileName) {
-		m_FileName = FileName;
-	}
+    public void setValueAction(String valueAction) {
+        this.valueAction = valueAction;
+    }
 
-	/**
-	 * @return Returns the m_Interval.
-	 */
-	public String getInterval() {
-		return Integer.toString(m_Interval);
-	}
-	/**
-	 * @param Interval The m_Interval to set.
-	 */
-	public void setInterval(String Interval) {
-		m_Interval = Integer.parseInt(Interval);
-	}
-	/**
-	 * @return Returns the m_ValueObjects.
-	 */
-	public String getValueObjects() {
-		return m_ValueObjects;
-	}
-	/**
-	 * @param ValueObjects The m_ValueObjects to set.
-	 */
-	public void setValueObjects(String ValueObjects) {
-		m_ValueObjects = ValueObjects;
-	}	
-	/**
-	 * @return Returns the m_TimeFormat.
-	 */
-	public String getTimeFormat() {
-		return m_TimeFormat;
-	}
-	/**
-	 * @param TimeFormat The m_TimeFormat to set.
-	 */
-	public void setTimeFormat(String TimeFormat) {
-		m_TimeFormat = TimeFormat;
-	}	
-	/**
-	 * @return Returns the m_ValueSeparator.
-	 */
-	public String getValueSeparator() {
-		return m_ValueSeparator;
-	}
-	/**
-	 * @param ValueSeparator The m_ValueSeparator to set.
-	 */
-	public void setValueSeparator(String ValueSeparator) {
-		m_ValueSeparator = ValueSeparator;
-	}	
+    @Override
+    public String getValue() {
+        String result = executor.executeCommandLine(getValueAction());
+        String results[] = result.split(",");
+        if (results.length != 3 || !results[0].equalsIgnoreCase("ok") || results[2].length() == 0) {
+            return "";
+        }
+        return results[2].replace("%2C", ".");
+    }
 }
 

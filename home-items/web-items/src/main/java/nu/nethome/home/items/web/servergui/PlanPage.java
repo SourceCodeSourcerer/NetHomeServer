@@ -19,10 +19,7 @@
 
 package nu.nethome.home.items.web.servergui;
 
-import nu.nethome.home.item.Action;
-import nu.nethome.home.item.ExecutionFailure;
-import nu.nethome.home.item.HomeItemModel;
-import nu.nethome.home.item.HomeItemProxy;
+import nu.nethome.home.item.*;
 import nu.nethome.home.items.infra.Plan;
 import nu.nethome.home.system.DirectoryEntry;
 import nu.nethome.home.system.HomeService;
@@ -234,8 +231,12 @@ public class PlanPage implements HomePageInterface {
         String locationClass = "icon " + arrowIconImageClass;
         String itemName = item.getAttributeValue("Name");
         String itemId = item.getAttributeValue("ID");
-        String mainAttribute = HomeGUI.toURL(model.getDefaultAttribute());
-        String itemText = arguments.isEditMode() ? itemName : item.getAttributeValue(mainAttribute);
+        String mainAttribute = HomeGUI.toURL(model.getDefaultAttribute() != null ? model.getDefaultAttribute().getName() : "");
+        String mainAttributeValue = item.getAttributeValue(mainAttribute);
+        if (mainAttributeValue.length() > 0 && model.getDefaultAttribute().getUnit().length() > 0) {
+            mainAttributeValue += " " + model.getDefaultAttribute().getUnit();
+        }
+        String itemText = arguments.isEditMode() ? itemName : mainAttributeValue;
 
         // Make an estimate of how many rows of action buttons there will be
         int size = 0;
@@ -276,7 +277,7 @@ public class PlanPage implements HomePageInterface {
             p.println("    <ul class=\"itemlocation\" onclick=\"callItemAction('" + item.getAttributeValue("ID") + "', '" + model.getDefaultAction() + "');\" href=\"javascript:void(0)\">");
         }
         p.println("        <li class=\"" + locationClass + "\" " + arrowIconAttributes + "/>");
-        p.println("        <li class=\"itemvalue\" data-item=\"" + itemId + "\">" + itemText + "</li>");
+        p.println("        <li class=\"itemvalue\"  " + getUnitAttribute(model) + " data-item=\"" + itemId + "\">" + itemText + "</li>");
         p.println("    </ul>");
         p.println("</div>");
 
@@ -290,7 +291,7 @@ public class PlanPage implements HomePageInterface {
         p.println("  <li>");
         p.println("   <ul>");
         p.println("    <li><a href=\"" + localURL + "?page=edit&name=" + itemId + "&return=" + this.getPageNameURL() +
-                this.subPageArg(arguments) + "\">" + itemName + ": </a><span class=\"itemvalue\" data-item=\"" + itemId + "\"></span></li>");
+                this.subPageArg(arguments) + "\">" + itemName + ": </a><span class=\"itemvalue\" " + getUnitAttribute(model) + " data-item=\"" + itemId + "\"></span></li>");
         p.println("    <li><ul>");
         int count = 0;
         if (hasLogFile(item)) {
@@ -309,6 +310,14 @@ public class PlanPage implements HomePageInterface {
         p.println("  </li>");
         p.println(" </ul>");
         p.println("</div>");
+    }
+
+    private String getUnitAttribute(HomeItemModel model) {
+        AttributeModel att = model.getDefaultAttribute();
+        if (att != null && att.getUnit() != null && att.getUnit().length() > 0) {
+           return " data-unit=\"" + att.getUnit() + "\" ";
+        }
+        return "";
     }
 
     private boolean hasLogFile(HomeItemProxy item) {

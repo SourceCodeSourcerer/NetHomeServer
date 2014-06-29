@@ -50,6 +50,11 @@ public interface Attribute {
     String getType();
 
     /**
+     * @return the unit of the attribute value
+     */
+    String getUnit();
+
+    /**
      * @return true if the attribute is read only
      */
     boolean isReadOnly();

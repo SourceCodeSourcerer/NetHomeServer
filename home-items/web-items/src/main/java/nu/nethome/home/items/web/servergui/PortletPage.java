@@ -159,9 +159,12 @@ public abstract class PortletPage implements HomePageInterface {
         }
 
         String defaultAttributeValue = "";
-        boolean hasDefaultAttribute = model.getDefaultAttribute().length() > 0;
+        boolean hasDefaultAttribute = model.getDefaultAttribute() != null;
         if (hasDefaultAttribute) {
-            defaultAttributeValue = item.getAttributeValue(model.getDefaultAttribute());
+            defaultAttributeValue = item.getAttributeValue(model.getDefaultAttribute().getName());
+            if (defaultAttributeValue.length() > 0) {
+                defaultAttributeValue += " " + model.getDefaultAttribute().getUnit();
+            }
         }
 
         List<Action> actions = model.getActions();

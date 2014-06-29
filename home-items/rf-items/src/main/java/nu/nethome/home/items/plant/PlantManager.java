@@ -34,8 +34,8 @@ public class PlantManager extends HomeItemAdapter implements HomeItem {
     private static final String MODEL = ("<?xml version = \"1.0\"?> \n"
             + "<HomeItem Class=\"PlantManager\" Category=\"Hardware\" >"
             + "  <Attribute Name=\"State\" Type=\"String\" Get=\"getState\" Default=\"true\" />"
-            + "  <Attribute Name=\"TankLevel\" Type=\"String\" Get=\"getTankLevel\" />"
-            + "  <Attribute Name=\"SoilMoisture\" Type=\"String\" Get=\"getSoilMoisture\" />"
+            + "  <Attribute Name=\"TankLevel\" Type=\"String\" Get=\"getTankLevel\"  Unit=\"%\" />"
+            + "  <Attribute Name=\"SoilMoisture\" Type=\"String\" Get=\"getSoilMoisture\"  Unit=\"%\" />"
             + "  <Attribute Name=\"Address\" Type=\"String\" Get=\"getPumpSwitchAddress\" 	Set=\"setPumpSwitchAddress\" />"
             + "  <Attribute Name=\"Button\" Type=\"String\" Get=\"getPumpSwitchButton\" 	Set=\"setPumpSwitchButton\" />"
             + "  <Attribute Name=\"MoistureItem\" 	Type=\"Item\" Get=\"getMoistureItem\" 	Set=\"setMoistureItem\" />"
@@ -100,7 +100,7 @@ public class PlantManager extends HomeItemAdapter implements HomeItem {
         pause(PUMP_RUNNING_PAUSE);      // Wait a bit longer so the pump engine has finished to avoid the radio interference from it
         sendCommand(OFF_COMMAND);       // send the off signal to reset the receiver to its of state
         pause(COMMAND_REPEAT_PAUSE);    // Pause a while to get past any radio interference...
-        sendCommand(OFF_COMMAND);       // ...and resend the on signal
+        sendCommand(OFF_COMMAND);       // ...and resend the off signal
         waterCount++;
         pause(INTER_DISPENSE_PAUSE);    // Wait a bit longer, so it is not possible to trigger the watering to often
         isDispensing = false;

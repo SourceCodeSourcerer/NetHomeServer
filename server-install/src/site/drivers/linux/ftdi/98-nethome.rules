@@ -1,13 +1,13 @@
 # /etc/udev/rules.d/98-nethome.rules contains nethome udev rules
 # ELV FHZ 1000 PC
 SYSFS{idProduct}=="f06f", SYSFS{idVendor}=="0403", RUN+="/sbin/modprobe -q ftdi_sio product=0xf06f vendor=0x0403"
-SUBSYSTEM=="usb",ATTRS{idProduct}=="f06f", ATTRS{idVendor}=="0403", RUN+="/sbin/modprobe -q ftdi_sio product=0xf06f vendor=0x0403"
-SUBSYSTEM=="usbmisc",ATTRS{idProduct}=="f06f", ATTRS{idVendor}=="0403", RUN+="/sbin/modprobe -q ftdi_sio product=0xf06f vendor=0x0403"
+SUBSYSTEM=="usb",ATTRS{idProduct}=="f06f", ATTRS{idVendor}=="0403", RUN+="/etc/ftdi_fhz1000.sh"
+SUBSYSTEM=="usbmisc",ATTRS{idProduct}=="f06f", ATTRS{idVendor}=="0403", RUN+="/etc/ftdi_fhz1000.sh"
 # ELV FHZ 1300 PC
 SYSFS{idProduct}=="e0e8", SYSFS{idVendor}=="0403", RUN+="/sbin/modprobe -q ftdi_sio product=0xe0e8 vendor=0x0403"
-SUBSYSTEM=="usb",ATTRS{idProduct}=="e0e8", ATTRS{idVendor}=="0403", RUN+="/sbin/modprobe -q ftdi_sio product=0xe0e8 vendor=0x0403"
-SUBSYSTEM=="usbmisc",ATTRS{idProduct}=="e0e8", ATTRS{idVendor}=="0403", RUN+="/sbin/modprobe -q ftdi_sio product=0xe0e8 vendor=0x0403"
+SUBSYSTEM=="usb",ATTRS{idProduct}=="e0e8", ATTRS{idVendor}=="0403", RUN+="/etc/ftdi_fhz1300.sh"
+SUBSYSTEM=="usbmisc",ATTRS{idProduct}=="e0e8", ATTRS{idVendor}=="0403", RUN+="/etc/ftdi_fhz1300.sh"
 # Tellstick
 SYSFS{idProduct}=="0c31", SYSFS{idVendor}=="1781", RUN+="/sbin/modprobe -q ftdi_sio product=0x0c31 vendor=0x1781"
-SUBSYSTEM=="usb",ATTRS{idProduct}=="0c31", ATTRS{idVendor}=="1781", RUN+="/sbin/modprobe -q ftdi_sio product=0x0c31 vendor=0x1781"
-SUBSYSTEM=="usbmisc",ATTRS{idProduct}=="0c31", ATTRS{idVendor}=="1781", RUN+="/sbin/modprobe -q ftdi_sio product=0x0c31 vendor=0x1781"
+SUBSYSTEM=="usb",ATTRS{idProduct}=="0c31", ATTRS{idVendor}=="1781", RUN+="/etc/ftdi_tellstick.sh"
+SUBSYSTEM=="usbmisc",ATTRS{idProduct}=="0c31", ATTRS{idVendor}=="1781", RUN+="/etc/ftdi_tellstick.sh"

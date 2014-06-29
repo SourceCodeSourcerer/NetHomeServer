@@ -93,24 +93,29 @@ function getItemValues() {
     $.getJSON(url, updateItemValues);
 }
 
-function updateItemValues(data) {
-    var valueElements = $(".itemvalue").toArray();
-    var id;
+function updateItemValues(itemMainAttributeValues) {
+    var attributeValueElements = $(".itemvalue").toArray();
+    var itemId;
     var i;
     var iconClassForValue;
     var lastIconClass;
+    var attributeValue;
 
-    for (i = 0; i < valueElements.length; i++) {
-        id = $(valueElements[i]).attr("data-item");
-        if (data[id]) {
-            valueElements[i].innerHTML = data[id];
+    for (i = 0; i < attributeValueElements.length; i++) {
+        itemId = $(attributeValueElements[i]).attr("data-item");
+        if (itemMainAttributeValues[itemId]) {
+            attributeValue = itemMainAttributeValues[itemId];
+            if ($(attributeValueElements[i]).attr("data-unit")) {
+                attributeValue += " " + $(attributeValueElements[i]).attr("data-unit");
+            }
+            attributeValueElements[i].innerHTML = attributeValue;
         }
     }
     var icons = $(".icon").toArray();
     for (i = 0; i < icons.length; i++) {
-        id = $(icons[i]).attr("data-item");
-        if (id && data[id]) {
-            iconClassForValue = $(icons[i]).attr("data-" + data[id]);
+        itemId = $(icons[i]).attr("data-item");
+        if (itemId && itemMainAttributeValues[itemId]) {
+            iconClassForValue = $(icons[i]).attr("data-" + itemMainAttributeValues[itemId]);
             lastIconClass = $(icons[i]).attr("data-lastclass");
             if (lastIconClass) {
                 $(icons[i]).removeClass(lastIconClass);

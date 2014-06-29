@@ -42,9 +42,9 @@ public class UPMWindSpeed extends HomeItemAdapter implements HomeItem, ValueItem
 
 	private final String m_Model = ("<?xml version = \"1.0\"?> \n"
 			+ "<HomeItem Class=\"UPMWindSpeed\" Category=\"Gauges\" >"
-			+ "  <Attribute Name=\"WindSpeed\" 	Type=\"String\" Get=\"getValue\" Default=\"true\" />"
-			+ "  <Attribute Name=\"WindSpeedMean\" 	Type=\"String\" Get=\"getWindSpeedMean\" />"
-			+ "  <Attribute Name=\"WindSpeedGust\" 	Type=\"String\" Get=\"getWindSpeedGust\" />"
+			+ "  <Attribute Name=\"WindSpeed\" 	Type=\"String\" Get=\"getValue\" Default=\"true\"  Unit=\"m/s\" />"
+			+ "  <Attribute Name=\"WindSpeedMean\" 	Type=\"String\" Get=\"getWindSpeedMean\" Unit=\"m/s\" />"
+			+ "  <Attribute Name=\"WindSpeedGust\" 	Type=\"String\" Get=\"getWindSpeedGust\" Unit=\"m/s\" />"
 			+ "  <Attribute Name=\"BatteryStatus\" 	Type=\"String\" Get=\"getLowBattery\" />"
 			+ "  <Attribute Name=\"LogFile\" Type=\"String\" Get=\"getLogFile\" 	Set=\"setLogFile\" />"
 			+ "  <Attribute Name=\"LastUpdate\" Type=\"String\" Get=\"getLastUpdate\" />"

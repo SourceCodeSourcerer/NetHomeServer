@@ -247,7 +247,7 @@ public class HomeItemFileLoader implements HomeItemLoader {
             } else if (attributeName.equals(HomeItemProxy.NAME_ATTRIBUTE)) {
                 item.setName(value);
             } else {
-                AttributeModel attributeModel = model.getAttribute(attributeName);
+                ReflectionAttributeModel attributeModel = model.getAttribute(attributeName);
                 if (attributeModel.isCanInit()) {
                     attributeModel.initValue(item, value);
                 }

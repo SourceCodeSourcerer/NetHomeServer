@@ -48,7 +48,7 @@ public interface HomeItemModel {
 
     String getDefaultAction();
 
-    String getDefaultAttribute();
+    AttributeModel getDefaultAttribute();
 
     boolean hasAttribute(String attributeName);
 

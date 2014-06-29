@@ -39,7 +39,7 @@ public class LmSensorsFan extends LmSensorsThermometer {
 
 	private final String m_Model = ("<?xml version = \"1.0\"?> \n"
 			+ "<HomeItem Class=\"LmSensorsFan\"  Category=\"Gauges\" >"
-			+ "  <Attribute Name=\"Speed\" 	Type=\"String\" Get=\"getValue\" Default=\"true\" />"
+			+ "  <Attribute Name=\"Speed\" 	Type=\"String\" Get=\"getValue\" Default=\"true\"  Unit=\"rpm\" />"
 			+ "  <Attribute Name=\"SensorName\"	Type=\"String\" Get=\"getSensorName\" 	Set=\"setSensorName\" />"
 			+ "  <Attribute Name=\"LogFile\" Type=\"String\" Get=\"getLogFile\" 	Set=\"setLogFile\" />"
 			+ "</HomeItem> "); 

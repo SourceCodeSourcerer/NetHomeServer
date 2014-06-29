@@ -20,10 +20,7 @@
 package nu.nethome.home.impl;
 
 import com.sun.org.apache.xerces.internal.parsers.DOMParser;
-import nu.nethome.home.item.Action;
-import nu.nethome.home.item.HomeItem;
-import nu.nethome.home.item.HomeItemModel;
-import nu.nethome.home.item.HomeItemProxy;
+import nu.nethome.home.item.*;
 import org.w3c.dom.*;
 import org.xml.sax.InputSource;
 
@@ -43,14 +40,14 @@ public class StaticHomeItemModel implements HomeItemModel {
     private String category = "";
     private int startOrder = 5;
     private ActionModel defaultAction;
-    private AttributeModel defaultAttribute;
+    private ReflectionAttributeModel defaultAttribute;
     private Map<String, ActionModel> actions = new HashMap<String, ActionModel>();
-    private Map<String, AttributeModel> attributes = new HashMap<String, AttributeModel>();
+    private Map<String, ReflectionAttributeModel> attributes = new HashMap<String, ReflectionAttributeModel>();
     private List<AttributeModel> attributesInOrder = new ArrayList<AttributeModel>();
     private List<Action> actionsInOrder = new ArrayList<Action>();
     private static Map<Class<? extends HomeItem>, StaticHomeItemModel> modelCache = new HashMap<Class<? extends HomeItem>, StaticHomeItemModel>();
-    private static AttributeModel nameAttribute = new AttributeModel(HomeItemProxy.NAME_ATTRIBUTE, "String", HomeItem.class, "getName", null, null);
-    private static AttributeModel modelAttribute = new AttributeModel(HomeItemProxy.MODEL_ATTRIBUTE, "String", HomeItem.class, "getModel", null, null);
+    private static ReflectionAttributeModel nameAttribute = new ReflectionAttributeModel(HomeItemProxy.NAME_ATTRIBUTE, "String", null, HomeItem.class, "getName", null, null);
+    private static ReflectionAttributeModel modelAttribute = new ReflectionAttributeModel(HomeItemProxy.MODEL_ATTRIBUTE, "String", null, HomeItem.class, "getModel", null, null);
     private boolean isMorphing = false;
 
     public static StaticHomeItemModel getModel(HomeItem item) throws ModelException {
@@ -122,9 +119,10 @@ public class StaticHomeItemModel implements HomeItemModel {
         String setMethod = getNodeAttributeValue(nodeAttributes, "Set");
         String initMethod = getNodeAttributeValue(nodeAttributes, "Init");
         String type = getNodeAttributeValue(nodeAttributes, "Type");
+        String unit = getNodeAttributeValue(nodeAttributes, "Unit");
         List<String> values = parseAttributeStringList(attributeNode);
         if (name != null && type != null) {
-            AttributeModel model = new AttributeModel(name, type, aClass, getMethod, setMethod, initMethod, values);
+            ReflectionAttributeModel model = new ReflectionAttributeModel(name, type, unit, aClass, getMethod, setMethod, initMethod, values);
             addAttribute(name, model);
             if (getNodeAttributeValue(nodeAttributes, "Default") != null) {
                 defaultAttribute = model;
@@ -132,7 +130,7 @@ public class StaticHomeItemModel implements HomeItemModel {
         }
     }
 
-    private void addAttribute(String name, AttributeModel model) {
+    private void addAttribute(String name, ReflectionAttributeModel model) {
         attributes.put(name, model);
         attributesInOrder.add(model);
     }
@@ -247,8 +245,8 @@ public class StaticHomeItemModel implements HomeItemModel {
     /**
      * @return the default attribute of the class. Empty string if none.
      */
-    public String getDefaultAttribute() {
-        return defaultAttribute != null ? defaultAttribute.getName() : "";
+    public AttributeModel getDefaultAttribute() {
+        return defaultAttribute;
     }
 
     @Override
@@ -269,8 +267,8 @@ public class StaticHomeItemModel implements HomeItemModel {
         return action;
     }
 
-    public AttributeModel getAttribute(String attributeName) throws ModelException {
-        AttributeModel attribute = attributes.get(attributeName);
+    public ReflectionAttributeModel getAttribute(String attributeName) throws ModelException {
+        ReflectionAttributeModel attribute = attributes.get(attributeName);
         if (attribute == null) {
             throw new ModelException("No such attribute: " + attributeName + " in " + className);
         }
