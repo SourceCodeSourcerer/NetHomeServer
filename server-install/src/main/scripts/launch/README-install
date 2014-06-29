@@ -3,10 +3,10 @@ The NetHomeServer can be installed as a daemon on a linux system.
 To install, you need to be root.
 Change into the directory where the NetHomeServer distribution is located.
 
-The following example works on a RaspberryPie.
+The following example works on a Raspberry Pi.
 
 REQUIREMENTS
-- Java JRE 7/8 installed on the Rasberry Pie.
+- Java JRE 7/8 installed on the Raspberry Pi.
 
   Refer to: https://wiki.openjdk.java.net/display/OpenJFX/OpenJFX+on+the+Raspberry+Pi
   wget http://www.java.net/download/jdk8/archive/b109/binaries/jdk-8-ea-b109-linux-arm-vfp-hflt-25_sep_2013.tar.gz --no-check-certificate
@@ -25,6 +25,9 @@ REQUIREMENTS
   Check:
   /opt/jdk1.8.0/bin/java -version
 
+  You may also install Java JDK 7 by the following newly added feature:
+  sudo apt-get update && sudo apt-get install oracle-java7-jdk
+
 - Downloaded the nethomeserver binaries.
 
 - If you are going to use a TellStick:
@@ -37,7 +40,7 @@ Run the following command:
   sudo ./install_daemon.sh
 
 This will make sure to setup a daemon that can be used to start/stop and show status of the
-server. It will also make sure the script is executed at startup of the Raspberry Pie.
+server. It will also make sure the script is executed at startup of the Raspberry Pi.
 
 INSTALL EXPLAINED
 The installation script starts with copying needed driver files and then continues replacing

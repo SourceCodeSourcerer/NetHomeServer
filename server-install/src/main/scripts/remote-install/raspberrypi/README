@@ -1,0 +1,29 @@
+This is how I set up my Raspberry Pi when it has crashed for any reason.
+
+- Reboot the Pi and from the Berryboot menu select to Restore from Image.
+  This will ERASE EVERYTHING on the pi, but that's the plan.
+- Let tht Pi reboot again and display the Raspberry Pi Config Tool on startup.
+  Change user password, I always do this unless you want to stick with 'raspberry'.
+  If you want to: change the name of your Pi to something else (advanced options: hostname).
+  Enable SSH to be able to login remotely (advanced options).
+  I also update the tool to latest version (advanced options).
+  Note: You can re-run this utility at any time with 'sudo raspi-config'.
+- Exit the config tool, and:
+  Reboot the pi: 'sudo shutdown -r now'
+- Let the Pi reboot and from another computer:
+  ssh mypi@mypiname
+  Note: Obviously, you would need to provide your Pi's host name and password.
+- Now, logged in I begin by downloading of the following script from my GitHub repo:
+  wget https://raw.githubusercontent.com/SourceCodeSourcerer/NetHomeServer/master/server-install/src/main/scripts/remote-install/raspberrypi/clean_setup.sh
+- Make it executable, and then - Important! - launch it as root:
+  chmod +x clean_setup.sh
+  sudo ./clean_setup.sh
+- Answer all the questions with 'Y' and have the script download and setup the components, which are: Java JDK 7, noip support, Tellstick, and NetHomeServer.
+- After the script has finished, you may want to check whether your Tellstick - you do have one, don't you? - is configured in Linux:
+  http://wiki.nethome.nu/doku.php/installtellstickdriverlinux?s[]=tellstick
+- Now everything should be set up, except 'your' default.xml file. So what I do then is to copy over the backup - Yes! I do have a backup - to the pi:
+  scp default.xml mypi@mypiname:nethomeservernightly/lib
+- Lastly: reboot and enjoy!
+  sudo shutdown -r now
+
+
