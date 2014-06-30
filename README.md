@@ -17,12 +17,14 @@ These scripts are located under server-install/src/main/scripts. So to configure
 environment for a 64 bits Windows 7 platform you would have to:
 
 >cd server-install\src\main\scripts
+
 >setup_win64.bat
 
 On Linux and MAC you also have to make the script executable before running it.
 For example:
 
->cd src/main/scripts
+>cd server-install/src/main/scripts
+
 >chmod +x setup_macosx_cocoa64.sh
 
 >./setup_macosx_cocoa64.sh
