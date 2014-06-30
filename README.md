@@ -24,6 +24,7 @@ For example:
 
 >cd src/main/scripts
 >chmod +x setup_macosx_cocoa64.sh
+
 >./setup_macosx_cocoa64.sh
 
 This will copy the correct version of the rxtx runtime libraries to the
