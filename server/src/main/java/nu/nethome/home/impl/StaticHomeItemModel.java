@@ -19,275 +19,301 @@
 
 package nu.nethome.home.impl;
 
-import com.sun.org.apache.xerces.internal.parsers.DOMParser;
-import nu.nethome.home.item.*;
-import org.w3c.dom.*;
-import org.xml.sax.InputSource;
-
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import nu.nethome.home.item.Action;
+import nu.nethome.home.item.AttributeModel;
+import nu.nethome.home.item.HomeItem;
+import nu.nethome.home.item.HomeItemModel;
+import nu.nethome.home.item.HomeItemProxy;
+
+import org.apache.xerces.impl.xs.dom.DOMParser;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 /**
- * This class can process the HomeItem model description XML-file and extract the
- * information into Java objects. It is used both internally by the server for model
- * processing and by HomeItems via the HomeItemModel interface
+ * This class can process the HomeItem model description XML-file and extract the information into Java objects. It is used both
+ * internally by the server for model processing and by HomeItems via the HomeItemModel interface
  */
 public class StaticHomeItemModel implements HomeItemModel {
 
-    private final int modelHash;
-    private String className = "";
-    private String category = "";
-    private int startOrder = 5;
-    private ActionModel defaultAction;
-    private ReflectionAttributeModel defaultAttribute;
-    private Map<String, ActionModel> actions = new HashMap<String, ActionModel>();
-    private Map<String, ReflectionAttributeModel> attributes = new HashMap<String, ReflectionAttributeModel>();
-    private List<AttributeModel> attributesInOrder = new ArrayList<AttributeModel>();
-    private List<Action> actionsInOrder = new ArrayList<Action>();
-    private static Map<Class<? extends HomeItem>, StaticHomeItemModel> modelCache = new HashMap<Class<? extends HomeItem>, StaticHomeItemModel>();
-    private static ReflectionAttributeModel nameAttribute = new ReflectionAttributeModel(HomeItemProxy.NAME_ATTRIBUTE, "String", null, HomeItem.class, "getName", null, null);
-    private static ReflectionAttributeModel modelAttribute = new ReflectionAttributeModel(HomeItemProxy.MODEL_ATTRIBUTE, "String", null, HomeItem.class, "getModel", null, null);
-    private boolean isMorphing = false;
+	private final int modelHash;
+	private String className = "";
+	private String category = "";
+	private int startOrder = 5;
+	private ActionModel defaultAction;
+	private ReflectionAttributeModel defaultAttribute;
+	private Map<String, ActionModel> actions = new HashMap<String, ActionModel>();
+	private Map<String, ReflectionAttributeModel> attributes = new HashMap<String, ReflectionAttributeModel>();
+	private List<AttributeModel> attributesInOrder = new ArrayList<AttributeModel>();
+	private List<Action> actionsInOrder = new ArrayList<Action>();
+	private static Map<Class<? extends HomeItem>, StaticHomeItemModel> modelCache = new HashMap<Class<? extends HomeItem>, StaticHomeItemModel>();
+	private static ReflectionAttributeModel nameAttribute = new ReflectionAttributeModel(HomeItemProxy.NAME_ATTRIBUTE, "String",
+			null, HomeItem.class, "getName", null, null);
+	private static ReflectionAttributeModel modelAttribute = new ReflectionAttributeModel(HomeItemProxy.MODEL_ATTRIBUTE, "String",
+			null, HomeItem.class, "getModel", null, null);
+	private boolean isMorphing = false;
 
-    public static StaticHomeItemModel getModel(HomeItem item) throws ModelException {
-        synchronized (modelCache) {
-            StaticHomeItemModel foundModel = modelCache.get(item.getClass());
-            if ((foundModel == null) || (foundModel != null && foundModel.isMorphing() && foundModel.hasMorphed(item))) {
-                foundModel = new StaticHomeItemModel(item);
-                modelCache.put(item.getClass(), foundModel);
-            }
-            return foundModel;
-        }
-    }
+	public static StaticHomeItemModel getModel(HomeItem item) throws ModelException {
+		synchronized (modelCache) {
+			StaticHomeItemModel foundModel = modelCache.get(item.getClass());
+			if ((foundModel == null) || (foundModel != null && foundModel.isMorphing() && foundModel.hasMorphed(item))) {
+				foundModel = new StaticHomeItemModel(item);
+				modelCache.put(item.getClass(), foundModel);
+			}
+			return foundModel;
+		}
+	}
 
-    public static void clearCache() {
-        modelCache.clear();
-    }
+	public static void clearCache() {
+		modelCache.clear();
+	}
 
-    public StaticHomeItemModel(HomeItem item) throws ModelException {
-        String modelXML = item.getModel();
-        modelHash = modelXML.hashCode();
-        // Start parsing the Items model description
-        DOMParser parser = new DOMParser();
-        ByteArrayInputStream byteStream;
-        try {
-            byteStream = new ByteArrayInputStream(modelXML.getBytes("UTF-8"));
-            InputSource source = new InputSource(byteStream);
-            parser.parse(source);
-        } catch (UnsupportedEncodingException e1) {
-            throw new ModelException("Failed parsing model for " + item.getName(), e1);
-        } catch (Exception e) {
-            throw new ModelException("Failed parsing model for " + item.getName(), e);
-        }
-        Document document = parser.getDocument();
-        parseHomeItemDocument(document, item.getClass());
-        addDefaultAttributes();
-    }
+	public StaticHomeItemModel(HomeItem item) throws ModelException {
+		String modelXML = item.getModel();
+		modelHash = modelXML.hashCode();
+		// Start parsing the Items model description
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		try {
+			ByteArrayInputStream byteStream;
+			byteStream = new ByteArrayInputStream(modelXML.getBytes("UTF-8"));
+			InputSource source = new InputSource(byteStream);
+			DocumentBuilder builder = dbf.newDocumentBuilder();
+			Document document = builder.parse(source);
+			parseHomeItemDocument(document, item.getClass());
+			addDefaultAttributes();
+		}
+		catch (SAXException e) {
+			throw new ModelException("Failed parsing model for " + item.getName(), e);
+		}
+		catch (ParserConfigurationException e) {
+			throw new ModelException("Failed parsing model for " + item.getName(), e);
+		}
+		catch (IOException e) {
+			System.err.println(e);
+			System.exit(1);
+		}
+	}
 
-    private void addDefaultAttributes() {
-        attributes.put(nameAttribute.getName(), nameAttribute);
-        attributes.put(modelAttribute.getName(), modelAttribute);
-    }
+	private void addDefaultAttributes() {
+		attributes.put(nameAttribute.getName(), nameAttribute);
+		attributes.put(modelAttribute.getName(), modelAttribute);
+	}
 
-    private void parseHomeItemDocument(Document document, Class<? extends HomeItem> aClass) throws ModelException {
-        Node homeItem = document.getDocumentElement();
-        if (!homeItem.getNodeName().equals("HomeItem")) {
-            throw new ModelException("Parsing failed, Not a HomeItem");
-        }
-        parseItemAttributes(homeItem);
+	private void parseHomeItemDocument(Document document, Class<? extends HomeItem> aClass) throws ModelException {
+		Node homeItem = document.getDocumentElement();
+		if (!homeItem.getNodeName().equals("HomeItem")) {
+			throw new ModelException("Parsing failed, Not a HomeItem");
+		}
+		parseItemAttributes(homeItem);
 
-        NodeList elements = homeItem.getChildNodes();
-        if (elements != null) {
-            int numberOfChilds = elements.getLength();
-            for (int loopIndex = 0; loopIndex < numberOfChilds; loopIndex++) {
-                Node currentNode = elements.item(loopIndex);
-                if (isActionNode(currentNode)) {
-                    parseActionModel(currentNode, aClass);
-                }
-                if (isAttributeNode(currentNode)) {
-                    parseAttributeModel(currentNode, aClass);
-                }
-            }
-        }
-    }
+		NodeList elements = homeItem.getChildNodes();
+		if (elements != null) {
+			int numberOfChilds = elements.getLength();
+			for (int loopIndex = 0; loopIndex < numberOfChilds; loopIndex++) {
+				Node currentNode = elements.item(loopIndex);
+				if (isActionNode(currentNode)) {
+					parseActionModel(currentNode, aClass);
+				}
+				if (isAttributeNode(currentNode)) {
+					parseAttributeModel(currentNode, aClass);
+				}
+			}
+		}
+	}
 
-    private void parseAttributeModel(Node attributeNode, Class<? extends HomeItem> aClass) {
-        NamedNodeMap nodeAttributes = attributeNode.getAttributes();
-        String name = getNodeAttributeValue(nodeAttributes, HomeItemProxy.NAME_ATTRIBUTE);
-        String getMethod = getNodeAttributeValue(nodeAttributes, "Get");
-        String setMethod = getNodeAttributeValue(nodeAttributes, "Set");
-        String initMethod = getNodeAttributeValue(nodeAttributes, "Init");
-        String type = getNodeAttributeValue(nodeAttributes, "Type");
-        String unit = getNodeAttributeValue(nodeAttributes, "Unit");
-        List<String> values = parseAttributeStringList(attributeNode);
-        if (name != null && type != null) {
-            ReflectionAttributeModel model = new ReflectionAttributeModel(name, type, unit, aClass, getMethod, setMethod, initMethod, values);
-            addAttribute(name, model);
-            if (getNodeAttributeValue(nodeAttributes, "Default") != null) {
-                defaultAttribute = model;
-            }
-        }
-    }
+	private void parseAttributeModel(Node attributeNode, Class<? extends HomeItem> aClass) {
+		NamedNodeMap nodeAttributes = attributeNode.getAttributes();
+		String name = getNodeAttributeValue(nodeAttributes, HomeItemProxy.NAME_ATTRIBUTE);
+		String getMethod = getNodeAttributeValue(nodeAttributes, "Get");
+		String setMethod = getNodeAttributeValue(nodeAttributes, "Set");
+		String initMethod = getNodeAttributeValue(nodeAttributes, "Init");
+		String type = getNodeAttributeValue(nodeAttributes, "Type");
+		String unit = getNodeAttributeValue(nodeAttributes, "Unit");
+		List<String> values = parseAttributeStringList(attributeNode);
+		if (name != null && type != null) {
+			ReflectionAttributeModel model = new ReflectionAttributeModel(name, type, unit, aClass, getMethod, setMethod, initMethod,
+					values);
+			addAttribute(name, model);
+			if (getNodeAttributeValue(nodeAttributes, "Default") != null) {
+				defaultAttribute = model;
+			}
+		}
+	}
 
-    private void addAttribute(String name, ReflectionAttributeModel model) {
-        attributes.put(name, model);
-        attributesInOrder.add(model);
-    }
+	private void addAttribute(String name, ReflectionAttributeModel model) {
+		attributes.put(name, model);
+		attributesInOrder.add(model);
+	}
 
-    private List<String> parseAttributeStringList(Node item) {
-        List<String> result = new ArrayList<String>();
-        if (item.hasChildNodes()) {
-            // Grab all the values of the model and save
-            NodeList listOfPossibleAttributeValues = item.getChildNodes();
-            for (int i = 0; i < listOfPossibleAttributeValues.getLength(); i++) {
-                if (listOfPossibleAttributeValues.item(i).getNodeName()
-                        .compareToIgnoreCase("item") == 0) {
-                    result.add(listOfPossibleAttributeValues.item(
-                            i).getTextContent());
-                }
-            }
-        }
-        return result;
-    }
+	private List<String> parseAttributeStringList(Node item) {
+		List<String> result = new ArrayList<String>();
+		if (item.hasChildNodes()) {
+			// Grab all the values of the model and save
+			NodeList listOfPossibleAttributeValues = item.getChildNodes();
+			for (int i = 0; i < listOfPossibleAttributeValues.getLength(); i++) {
+				if (listOfPossibleAttributeValues.item(i).getNodeName().compareToIgnoreCase("item") == 0) {
+					result.add(listOfPossibleAttributeValues.item(i).getTextContent());
+				}
+			}
+		}
+		return result;
+	}
 
-    private String getNodeAttributeValue(NamedNodeMap attributes, String nameAttribute) {
-        if ((attributes == null) || (attributes.getNamedItem(nameAttribute) == null)) {
-            return null;
-        }
-        return attributes.getNamedItem(nameAttribute).getNodeValue();
-    }
+	private String getNodeAttributeValue(NamedNodeMap attributes, String nameAttribute) {
+		if ((attributes == null) || (attributes.getNamedItem(nameAttribute) == null)) {
+			return null;
+		}
+		return attributes.getNamedItem(nameAttribute).getNodeValue();
+	}
 
-    private void parseActionModel(Node actionNode, Class<? extends HomeItem> aClass) {
-        NamedNodeMap attributes = actionNode.getAttributes();
-        String name = getNodeAttributeValue(attributes, HomeItemProxy.NAME_ATTRIBUTE);
-        String method = getNodeAttributeValue(attributes, "Method");
-        if (name != null && method != null) {
-            try {
-                ActionModel model = new ActionModel(name, method, aClass);
-                addAction(name, model);
-                if (getNodeAttributeValue(attributes, "Default") != null) {
-                    defaultAction = model;
-                }
-            } catch (NoSuchMethodException e) {
-                // Not adding the action
-            }
-        }
-    }
+	private void parseActionModel(Node actionNode, Class<? extends HomeItem> aClass) {
+		NamedNodeMap attributes = actionNode.getAttributes();
+		String name = getNodeAttributeValue(attributes, HomeItemProxy.NAME_ATTRIBUTE);
+		String method = getNodeAttributeValue(attributes, "Method");
+		if (name != null && method != null) {
+			try {
+				ActionModel model = new ActionModel(name, method, aClass);
+				addAction(name, model);
+				if (getNodeAttributeValue(attributes, "Default") != null) {
+					defaultAction = model;
+				}
+			}
+			catch (NoSuchMethodException e) {
+				// Not adding the action
+			}
+		}
+	}
 
-    private void addAction(String name, ActionModel model) {
-        actions.put(name, model);
-        actionsInOrder.add(model);
-    }
+	private void addAction(String name, ActionModel model) {
+		actions.put(name, model);
+		actionsInOrder.add(model);
+	}
 
-    private boolean isAttributeNode(Node currentNode) {
-        return currentNode.getNodeName().equals("Attribute");
-    }
+	private boolean isAttributeNode(Node currentNode) {
+		return currentNode.getNodeName().equals("Attribute");
+	}
 
-    private boolean isActionNode(Node currentNode) {
-        return currentNode.getNodeName().equals("Action");
-    }
+	private boolean isActionNode(Node currentNode) {
+		return currentNode.getNodeName().equals("Action");
+	}
 
-    private void parseItemAttributes(Node homeItem) {
-        int numberAttributes = 0;
-        if (homeItem.getAttributes() != null) {
-            numberAttributes = homeItem.getAttributes().getLength();
-        }
-        // Loop through all the attribute element's attributes and process them
-        for (int elemAttIndex = 0; elemAttIndex < numberAttributes; elemAttIndex++) {
-            Attr attribute = (Attr) homeItem.getAttributes().item(elemAttIndex);
-            String name = attribute.getNodeName();
-            String value = attribute.getNodeValue();
-            // Check for Name Element
-            if (name.equals("Class")) {
-                className = value;
-            }
-            if (name.equals("Category")) {
-                category = value;
-            }
-            if (name.equals("StartOrder")) {
-                startOrder = Integer.parseInt(value);
-            }
-            if (name.equals("Morphing") && value.equalsIgnoreCase("true")) {
-                this.isMorphing = true;
-            }
-        }
-    }
+	private void parseItemAttributes(Node homeItem) {
+		int numberAttributes = 0;
+		if (homeItem.getAttributes() != null) {
+			numberAttributes = homeItem.getAttributes().getLength();
+		}
+		// Loop through all the attribute element's attributes and process them
+		for (int elemAttIndex = 0; elemAttIndex < numberAttributes; elemAttIndex++) {
+			Attr attribute = (Attr) homeItem.getAttributes().item(elemAttIndex);
+			String name = attribute.getNodeName();
+			String value = attribute.getNodeValue();
+			// Check for Name Element
+			if (name.equals("Class")) {
+				className = value;
+			}
+			if (name.equals("Category")) {
+				category = value;
+			}
+			if (name.equals("StartOrder")) {
+				startOrder = Integer.parseInt(value);
+			}
+			if (name.equals("Morphing") && value.equalsIgnoreCase("true")) {
+				this.isMorphing = true;
+			}
+		}
+	}
 
-    /**
-     * @return the Category
-     */
-    public String getCategory() {
-        return category;
-    }
+	/**
+	 * @return the Category
+	 */
+	public String getCategory() {
+		return category;
+	}
 
-    /**
-     * @return the ClassName
-     */
-    public String getClassName() {
-        return className;
-    }
+	/**
+	 * @return the ClassName
+	 */
+	public String getClassName() {
+		return className;
+	}
 
-    /**
-     * @return the startOrder
-     */
-    public int getStartOrder() {
-        return startOrder;
-    }
+	/**
+	 * @return the startOrder
+	 */
+	public int getStartOrder() {
+		return startOrder;
+	}
 
-    /**
-     * @return the default action of the class. Empty string if none.
-     */
-    public String getDefaultAction() {
-        return defaultAction != null ? defaultAction.getName() : "";
-    }
+	/**
+	 * @return the default action of the class. Empty string if none.
+	 */
+	public String getDefaultAction() {
+		return defaultAction != null ? defaultAction.getName() : "";
+	}
 
-    /**
-     * @return the default attribute of the class. Empty string if none.
-     */
-    public AttributeModel getDefaultAttribute() {
-        return defaultAttribute;
-    }
+	/**
+	 * @return the default attribute of the class. Empty string if none.
+	 */
+	public AttributeModel getDefaultAttribute() {
+		return defaultAttribute;
+	}
 
-    @Override
-    public boolean hasAttribute(String attributeName) {
-        return attributes.get(attributeName) != null;
-    }
+	@Override
+	public boolean hasAttribute(String attributeName) {
+		return attributes.get(attributeName) != null;
+	}
 
-    @Override
-    public boolean hasAction(String actionName) {
-        return actions.get(actionName) != null;
-    }
+	@Override
+	public boolean hasAction(String actionName) {
+		return actions.get(actionName) != null;
+	}
 
-    public ActionModel getAction(String name) throws ModelException {
-        ActionModel action = actions.get(name);
-        if (action == null) {
-            throw new ModelException("No such action: " + name + " in " + className);
-        }
-        return action;
-    }
+	public ActionModel getAction(String name) throws ModelException {
+		ActionModel action = actions.get(name);
+		if (action == null) {
+			throw new ModelException("No such action: " + name + " in " + className);
+		}
+		return action;
+	}
 
-    public ReflectionAttributeModel getAttribute(String attributeName) throws ModelException {
-        ReflectionAttributeModel attribute = attributes.get(attributeName);
-        if (attribute == null) {
-            throw new ModelException("No such attribute: " + attributeName + " in " + className);
-        }
-        return attribute;
-    }
+	public ReflectionAttributeModel getAttribute(String attributeName) throws ModelException {
+		ReflectionAttributeModel attribute = attributes.get(attributeName);
+		if (attribute == null) {
+			throw new ModelException("No such attribute: " + attributeName + " in " + className);
+		}
+		return attribute;
+	}
 
-    public List<Action> getActions() {
-        return Collections.unmodifiableList(actionsInOrder);
-    }
+	public List<Action> getActions() {
+		return Collections.unmodifiableList(actionsInOrder);
+	}
 
-    public List<AttributeModel> getAttributes() {
-        return Collections.unmodifiableList(attributesInOrder);
-    }
+	public List<AttributeModel> getAttributes() {
+		return Collections.unmodifiableList(attributesInOrder);
+	}
 
-    public boolean isMorphing() {
-        return isMorphing;
-    }
+	public boolean isMorphing() {
+		return isMorphing;
+	}
 
-    public boolean hasMorphed(HomeItem item) {
-        return item.getModel().hashCode() != modelHash;
-    }
+	public boolean hasMorphed(HomeItem item) {
+		return item.getModel().hashCode() != modelHash;
+	}
 }

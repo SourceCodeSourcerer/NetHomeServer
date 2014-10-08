@@ -43,7 +43,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
-import sun.misc.BASE64Encoder;
+import org.apache.commons.codec.binary.Base64;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -341,9 +341,8 @@ public class TeamCityBuildMonitor extends HomeItemAdapter implements HomeItem {
             connection.setRequestProperty("Content-Type", "application/xml");
 
             if (username != null && username.length() > 0 && password != null) {
-                BASE64Encoder enc = new BASE64Encoder();
                 String userPassword = username + ":" + password;
-                String encodedAuthorization = enc.encode(userPassword.getBytes());
+                String encodedAuthorization = new org.apache.commons.codec.binary.Base64().encodeAsString(userPassword.getBytes());
                 connection.setRequestProperty("Authorization", "Basic " +
                         encodedAuthorization);
             }

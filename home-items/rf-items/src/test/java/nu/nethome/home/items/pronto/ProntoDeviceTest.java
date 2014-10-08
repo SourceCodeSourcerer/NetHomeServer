@@ -19,29 +19,36 @@
 
 package nu.nethome.home.items.pronto;
 
-import com.sun.org.apache.xerces.internal.parsers.SAXParser;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
 import nu.nethome.home.impl.HomeServer;
-import nu.nethome.home.impl.ModelException;
 import nu.nethome.home.impl.LocalHomeItemProxy;
+import nu.nethome.home.impl.ModelException;
 import nu.nethome.home.item.ExecutionFailure;
 import nu.nethome.home.item.HomeItemProxy;
 import nu.nethome.home.item.IllegalValueException;
 import nu.nethome.home.system.Event;
 import nu.nethome.home.system.HomeService;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
+import org.xml.sax.helpers.DefaultHandler;
 
 public class ProntoDeviceTest {
 
@@ -61,12 +68,14 @@ public class ProntoDeviceTest {
     }
 
     @Test
-    public void modelIsParsableXML() throws SAXException, IOException {
-        SAXParser parser = new SAXParser();
+    public void modelIsParsableXML() throws SAXException, IOException, ParserConfigurationException {
+        SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
+        SAXParser saxParser = saxParserFactory.newSAXParser();
+        DefaultHandler handler = new DefaultHandler();
         ByteArrayInputStream byteStream = new ByteArrayInputStream(pronto.getModel().getBytes());
         InputSource source = new InputSource(byteStream);
         // Just verify that the XML is valid
-        parser.parse(source);
+        saxParser.parse(source, handler);
     }
 
     @Test

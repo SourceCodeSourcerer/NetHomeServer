@@ -89,3 +89,16 @@ which on windows is located under your personal folder in a folder called
 .m2\repository
 
 For example: ```C:\Users\Stefan\.m2\repository```
+
+Run from commandline
+--------------------
+
+After being successfully built, NetHomeServer can be started from the commandline.
+
+Example given by running from a Linux box:
+
+    cd server-install/target/nethomeservernightly/nethomeservernightly
+    chmod +x HomeManager_64.sh
+    ./HomeManager_64.sh 
+
+Thereafter you should be able to open http://localhost:8020/home and see the demo page.

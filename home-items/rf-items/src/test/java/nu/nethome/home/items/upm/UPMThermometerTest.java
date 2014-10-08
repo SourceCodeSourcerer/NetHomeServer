@@ -91,7 +91,7 @@ public class UPMThermometerTest {
     public void updatedValues() throws IllegalValueException {
         Event testEvent = createEvent(20, false);
         temp.receiveEvent(testEvent);
-        assertThat(proxy.getAttributeValue("Temperature"), is("20,0"));
+        assertThat(proxy.getAttributeValue("Temperature"), is("20.0"));
         assertThat(proxy.getAttributeValue("LastUpdate").length() > 0, is(true));
         assertThat(proxy.getAttributeValue("TimeSinceUpdate"), is("0"));
         assertThat(proxy.getAttributeValue("BatteryLevel"), is("100"));

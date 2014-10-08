@@ -19,24 +19,30 @@
 
 package nu.nethome.home.items.net;
 
-import com.sun.org.apache.xerces.internal.parsers.SAXParser;
-import nu.nethome.home.items.MockHomeItemProxy;
-import nu.nethome.home.items.MockServiceConnection;
-import nu.nethome.home.items.MockTCPClient;
-import nu.nethome.home.system.Event;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import nu.nethome.home.items.MockHomeItemProxy;
+import nu.nethome.home.items.MockServiceConnection;
+import nu.nethome.home.items.MockTCPClient;
+import nu.nethome.home.system.Event;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
+
 
 public class TCPCommandPortTest {
 	// Local Members
@@ -55,12 +61,13 @@ public class TCPCommandPortTest {
 	}
 
 	@Test
-	public void testGetModel() throws SAXException, IOException {
-		SAXParser parser = new SAXParser();
+	public void testGetModel() throws SAXException, IOException, ParserConfigurationException {
+		SAXParserFactory factory = SAXParserFactory.newInstance();
+		SAXParser parser = factory.newSAXParser();
 		ByteArrayInputStream byteStream = new ByteArrayInputStream(m_TestItem.getModel().getBytes());
 		InputSource source = new InputSource(byteStream);
 		// Just verify that the XML is valid
-		parser.parse(source);
+		parser.parse(source, new DefaultHandler());
 	}
 
 	@Test

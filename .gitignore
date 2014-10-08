@@ -11,3 +11,10 @@ target
 *.jar
 *.war
 *.ear
+*.classpath
+*.project
+*.settings
+*.so
+demo.xml
+Coders
+Utils
