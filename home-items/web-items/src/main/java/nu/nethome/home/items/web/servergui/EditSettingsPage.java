@@ -38,8 +38,8 @@ import java.util.List;
  * Time: 15:35
  */
 public class EditSettingsPage extends EditItemPage {
-    public EditSettingsPage(String mLocalURL, HomeService server) {
-        super(mLocalURL, server, "", null);
+    public EditSettingsPage(String mLocalURL, HomeService server, EditPermission editPermission) {
+        super(mLocalURL, server, "", null, editPermission);
         pageName = "settings";
     }
 

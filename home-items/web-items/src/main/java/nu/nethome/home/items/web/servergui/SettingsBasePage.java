@@ -34,10 +34,10 @@ public class SettingsBasePage extends PortletPage {
     private final HomeService server;
     private List<PortletPage> subpages = new ArrayList<PortletPage>();
 
-    public SettingsBasePage(String mLocalURL, HomeService server) {
+    public SettingsBasePage(String mLocalURL, HomeService server, EditPermission editPermission) {
         super(mLocalURL);
         this.server = server;
-        subpages.add(new EditSettingsPage(mLocalURL, server));
+        subpages.add(new EditSettingsPage(mLocalURL, server, editPermission));
         subpages.add(new LogPage(mLocalURL, server));
         subpages.add(new CodersPage(mLocalURL, server));
     }

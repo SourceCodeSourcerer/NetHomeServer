@@ -235,7 +235,7 @@ public abstract class PortletPage implements HomePageInterface {
         String state = item1.getAttributeValue("State");
 
         p.println("   <li class=\"homeitem\">");
-        if (state.equalsIgnoreCase("On")) {
+        if (!state.isEmpty() && !state.equalsIgnoreCase("Off")) {
             p.println("	 <img src=\"web/home/lamp_on.png\" />");
         } else {
             p.println("	 <img src=\"web/home/lamp_off.png\" />");

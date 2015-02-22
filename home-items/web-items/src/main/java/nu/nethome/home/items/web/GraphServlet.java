@@ -19,6 +19,7 @@
 
 package nu.nethome.home.items.web;
 
+import nu.nethome.home.system.HomeService;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
@@ -55,10 +56,15 @@ import java.util.Scanner;
 public class GraphServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
+    private final HomeService server;
 
-	private SimpleDateFormat m_Format = new SimpleDateFormat("yyyyMMddHHmmss");
+    private SimpleDateFormat m_Format = new SimpleDateFormat("yyyyMMddHHmmss");
 
-	/**
+    public GraphServlet(HomeService server) {
+        this.server = server;
+    }
+
+    /**
 	 * This is the main enterence point of the class. This is called when a http request is
 	 * routed to this servlet.
 	 */
@@ -69,7 +75,7 @@ public class GraphServlet extends HttpServlet {
 
 		// Analyse arguments
 		String fileName = req.getParameter("file");
-		if (fileName != null) fileName = fromURL(fileName);
+		if (fileName != null) fileName = getFullFileName(fromURL(fileName));
 		String startTimeString = req.getParameter("start");
 		String stopTimeString = req.getParameter("stop");
 		try {
@@ -240,6 +246,14 @@ public class GraphServlet extends HttpServlet {
 		p.close();
 		return;
 	}
+
+    private String getFullFileName(String fileName) {
+        if (fileName.contains(File.pathSeparator) || fileName.contains("/")) {
+            return fileName;
+        } else {
+            return server.getConfiguration().getLogDirectory() + fileName;
+        }
+    }
 
 	public static String fromURL(String aURLFragment){
 		String result = null;

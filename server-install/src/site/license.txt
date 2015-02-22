@@ -15,6 +15,12 @@ NetHomeServer uses a number of external libraries in source or jar-form.
 Here is a list of the terms and conditions under which these external
 libraries are used and may be distributed:
 
+* babbler (xmpp-core-client.jar)
+
+A great client API for accessing the XMPP- (Jabber) protocol. Written by
+Christian Schudt and released under the MIT License (MIT), http://sco0ter.bitbucket.org/babbler/license.html.
+See http://sco0ter.bitbucket.org/babbler for more information about the library.
+
 * jd2xx.jar
 
 Java native interface port of Future Technology Devices International (FTDI) 
@@ -79,4 +85,8 @@ maintained by the jQuery Foundation (https://jquery.org/) and released under the
 * jqPlot
 jqPlot is great javascript a graphing library written and maintained by Chris Leonello (http://www.jqplot.com).
 jqPlot is an open source project dual licensed under the MIT and GPL version 2 licenses.
+
+* Cyberlink4Java
+An uPnP stack for Java. Copyright (c) 2003-2010, Satoshi Konno, All rights reserved.
+See CyberLink4JavaLicense.txt for details
 

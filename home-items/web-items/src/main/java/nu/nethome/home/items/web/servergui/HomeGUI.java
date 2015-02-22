@@ -64,6 +64,7 @@ public class HomeGUI extends HttpServlet implements FinalEventListener, HomeItem
             + "  <Attribute Name=\"RightBanner\" Type=\"String\" Get=\"getCustomRightBannerFile\" 	Set=\"setCustomRightBannerFile\" />"
             + "  <Attribute Name=\"PlanPage\" Type=\"Item\" Get=\"getPlanPage\" 	Set=\"setPlanPage\" />"
             + "  <Attribute Name=\"Location\" Type=\"Item\" Get=\"getDefaultLocation\" 	Set=\"setDefaultLocation\" />"
+            + "  <Attribute Name=\"AllowEdit\" Type=\"Boolean\" Get=\"getAllowEdit\" 	Set=\"setAllowEdit\" />"
             + "</HomeItem> ");
     public static final int REPORT_ITEMS_PERIOD_MS = 60000;
     public static final int MAX_EVENT_ID_LENGTH = 60;
@@ -83,6 +84,7 @@ public class HomeGUI extends HttpServlet implements FinalEventListener, HomeItem
     private String defaultPlanPage = "HomePlan";
     private String defaultLocation = "";
     private String mediaDirectory = "";
+    private boolean allowEdit = true;
     private CreationEventCache creationEvents = new CreationEventCache();
     private long lastItemReportTime = 0L;
 
@@ -143,11 +145,20 @@ public class HomeGUI extends HttpServlet implements FinalEventListener, HomeItem
         pages.add(new PlanPage(localURL, getDefaultPlanAccessor()));
         pages.add(new RoomsPage(localURL, getDefaultLocationAccessor()));
         pages.add(new ServerFloor(localURL));
-        pages.add(new EditItemPage(localURL, homeServer, mediaDirectory, creationEvents));
-        pages.add(new SettingsBasePage(localURL, homeServer));
+        pages.add(new EditItemPage(localURL, homeServer, mediaDirectory, creationEvents, getEditPermission()));
+        pages.add(new SettingsBasePage(localURL, homeServer, getEditPermission()));
         pages.add(new GraphPage(localURL, homeServer));
         homeServer.registerFinalEventListener(this);
         creationEvents.addItemInfo(hserver.listClasses());
+    }
+
+    private EditPermission getEditPermission() {
+        return new EditPermission() {
+            @Override
+            public boolean isEditPermitted() {
+                return allowEdit;
+            }
+        };
     }
 
     private DefaultPageIdentity getDefaultLocationAccessor() {
@@ -212,7 +223,9 @@ public class HomeGUI extends HttpServlet implements FinalEventListener, HomeItem
                 printPageData(p, arguments);
 
                 // Print Navigation Bar
-                printNavigationBar(p, pagePlugin, arguments);
+                if (allowEdit) {
+                    printNavigationBar(p, pagePlugin, arguments);
+                }
 
                 // Let the plugin print the actual page
                 pagePlugin.printPage(req, res, homeServer);
@@ -622,6 +635,14 @@ public class HomeGUI extends HttpServlet implements FinalEventListener, HomeItem
         this.defaultLocation = defaultLocation;
     }
 
+    public String getAllowEdit() {
+        return allowEdit ? "Yes" : "No";
+    }
+
+    public void setAllowEdit(String allowEdit) {
+        this.allowEdit = allowEdit.equalsIgnoreCase("Yes") || allowEdit.equalsIgnoreCase("True");
+    }
+
     @Override
     public void receiveFinalEvent(Event event, boolean isHandled) {
         creationEvents.newEvent(event, isHandled);
@@ -662,6 +683,4 @@ public class HomeGUI extends HttpServlet implements FinalEventListener, HomeItem
         p.printf ("   <td><a onclick=\"location.href=homeManager.classUrl + '&event=%d';return false;\" href=\"%s?page=edit&event=%d\">Select Event</a></td>\n", event.getId(), localURL, event.getId());
         p.println("  </tr>");
     }
-
-
 }

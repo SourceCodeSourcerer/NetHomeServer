@@ -13,15 +13,12 @@ public class ItemEvent {
     private Date received;
     private long id;
     private boolean wasHandled;
-    private static Long idCounter = new Long(0);
-    private static String ignoredAttributeNames[] = {"Type", "UPM.SequenceNumber", "Direction", "Value", "UPM.Primary",
-            "UPM.Secondary", "UPM.LowBattery", "Hue.Brightness", "Hue.Command", "Oregon.Temp", "Oregon.Moisture"};
-    private static Set<String> ignoredAttributes = new HashSet<String>(Arrays.asList(ignoredAttributeNames));
+    private static Long idCounter = (long) 0;
 
-    public ItemEvent(Event event, boolean wasHandled) {
+    public ItemEvent(Event event, String content, boolean wasHandled) {
         id = getNewId();
         updateEvent(event, wasHandled);
-        content = extractContent(event);
+        this.content = content;
     }
 
     public void updateEvent(Event event, boolean wasHandled) {
@@ -35,44 +32,6 @@ public class ItemEvent {
             idCounter++;
             return idCounter;
         }
-    }
-
-    public static String extractContent(Event event) {
-        String divider="";
-        StringBuilder result = new StringBuilder();
-        result.append(stripProtocolSuffix(event.getAttribute("Type")));
-        result.append(":");
-        for (String attributeName : event.getAttributeNames()) {
-            String value = event.getAttribute(attributeName);
-            if (!isAttributeIgnored(attributeName, value)) {
-                result.append(divider);
-                result.append(stripNamePrefix(attributeName));
-                result.append("=");
-                result.append(value);
-                divider = ",";
-            }
-        }
-        return result.toString();
-    }
-
-    private static String stripProtocolSuffix(String type) {
-        int index = type.indexOf("_");
-        if (index > 0 && index < type.length() - 1) {
-            return type.substring(0, index);
-        }
-        return type;
-    }
-
-    private static String stripNamePrefix(String attributeName) {
-        int index = attributeName.indexOf(".");
-        if (index > 0 && index < attributeName.length() - 1) {
-            return attributeName.substring(index + 1, attributeName.length());
-        }
-        return attributeName;
-    }
-
-    private static boolean isAttributeIgnored(String attributeName, String value) {
-        return ignoredAttributes.contains(attributeName) || value.length() == 0;
     }
 
     public Event getEvent() {

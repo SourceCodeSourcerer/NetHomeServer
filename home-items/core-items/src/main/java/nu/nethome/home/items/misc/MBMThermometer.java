@@ -130,7 +130,7 @@ public class MBMThermometer extends HomeItemAdapter implements HomeItem, ValueIt
 			+ "</HomeItem> "); 
 
 	private static Logger logger = Logger.getLogger(MBMThermometer.class.getName());
-	protected LoggerComponent m_TempLogger = new LoggerComponent(this);
+	protected ExtendedLoggerComponent m_TempLogger = new ExtendedLoggerComponent(this);
 
 	// Public attributes
 	protected double temperature = 0;
@@ -168,7 +168,7 @@ public class MBMThermometer extends HomeItemAdapter implements HomeItem, ValueIt
 	}
 
 	public void activate() {
-		m_TempLogger.activate();
+		m_TempLogger.activate(server);
 	}
 
 	/**

@@ -49,7 +49,7 @@ public class UPMHygrometer extends HomeItemAdapter implements HomeItem, ValueIte
             + "</HomeItem> ");
     private static final int BACKWARDS_COMPATIBILITY = 2;
     private static Logger logger = Logger.getLogger(UPMHygrometer.class.getName());
-    private LoggerComponent moistureLoggerComponent = new LoggerComponent(this);
+    private ExtendedLoggerComponent moistureLoggerComponent = new ExtendedLoggerComponent(this);
 
     // Public attributes
     private double humidity = 0;
@@ -103,7 +103,7 @@ public class UPMHygrometer extends HomeItemAdapter implements HomeItem, ValueIte
       * @see ssg.home.HomeItem#activate()
       */
     public void activate() {
-        moistureLoggerComponent.activate();
+        moistureLoggerComponent.activate(server);
     }
 
     /**

@@ -8,6 +8,8 @@ import nu.nethome.home.system.HomeService;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Locale;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
@@ -21,6 +23,7 @@ public class FineOffsetRainGaugeTest {
 
     @Before
     public void setUp() throws Exception {
+        Locale.setDefault(Locale.GERMAN);
         rainGauge = new FineOffsetRainGauge();
         proxy = new LocalHomeItemProxy(rainGauge);
     }

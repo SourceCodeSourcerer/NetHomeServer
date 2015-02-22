@@ -110,14 +110,12 @@ public class NexaLCDimmer extends NexaLCLamp implements HomeItem {
             sendDimCommand(onDimLevel);
         } else {
             super.on();
-            currentDimLevel = 100;
         }
     }
 
     @Override
     public void off() {
         super.off();
-        currentDimLevel = 0;
     }
 
     /**

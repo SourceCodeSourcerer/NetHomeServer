@@ -1,0 +1,176 @@
+<?xml version = "1.0" encoding="UTF-8"?>
+<HomeItems>
+	<HomeItem Class="Room" >
+		<Attribute Name="ID">33</Attribute>
+		<Attribute Name="Name">Bed Room</Attribute>
+		<Attribute Name="Items">43,56,40,39,58</Attribute>
+		<Attribute Name="Position">Left</Attribute>
+	</HomeItem>
+	<HomeItem Class="NexaLCLamp" >
+		<Attribute Name="ID">56</Attribute>
+		<Attribute Name="Name">Bedroom Lamp</Attribute>
+		<Attribute Name="State">Off</Attribute>
+		<Attribute Name="Address">938457</Attribute>
+		<Attribute Name="Button">1</Attribute>
+		<Attribute Name="TransmissionRepeats"></Attribute>
+	</HomeItem>
+	<HomeItem Class="Plan" >
+		<Attribute Name="ID">54</Attribute>
+		<Attribute Name="Name">CreatedPlan</Attribute>
+		<Attribute Name="Items">43,44,56,55,36,37</Attribute>
+		<Attribute Name="ImageFile">media/home.jpg</Attribute>
+		<Attribute Name="ItemLocations">43#-22#92,44#715#363,56#257#78,55#457#32,36#708#241,37#768#242</Attribute>
+		<Attribute Name="UpdateInterval">2</Attribute>
+		<Attribute Name="ClickAction">DefaultAction</Attribute>
+	</HomeItem>
+	<HomeItem Class="Location" >
+		<Attribute Name="ID">48</Attribute>
+		<Attribute Name="Name">DefaultLocation</Attribute>
+		<Attribute Name="Items">33,38,31,49,60</Attribute>
+	</HomeItem>
+	<HomeItem Class="HomeServer" >
+		<Attribute Name="ID">5</Attribute>
+		<Attribute Name="Name">Event Broker</Attribute>
+		<Attribute Name="Version">2.1-SNAPSHOT-44364</Attribute>
+		<Attribute Name="SentEventCount">9</Attribute>
+		<Attribute Name="EventsPerMinute">0</Attribute>
+		<Attribute Name="FileName">/etc/opt/nethome/config.xml</Attribute>
+		<Attribute Name="UpgradeCommand">c:\upgrade.bat</Attribute>
+		<Attribute Name="LogFile"></Attribute>
+		<Attribute Name="UpTime">1 minutes</Attribute>
+		<Attribute Name="MaxDistributionTime">5.39</Attribute>
+		<Attribute Name="AverageDistributionTime">1.95</Attribute>
+		<Attribute Name="MaxItemTime">1.77</Attribute>
+		<Attribute Name="MaxItemName">Freezer Temperature</Attribute>
+		<Attribute Name="AlarmCount">2</Attribute>
+		<Attribute Name="TotalLogRows">6</Attribute>
+	</HomeItem>
+	<HomeItem Class="UPMThermometer" >
+		<Attribute Name="ID">36</Attribute>
+		<Attribute Name="Name">Freezer Temperature</Attribute>
+		<Attribute Name="Temperature">13.6</Attribute>
+		<Attribute Name="BatteryLevel">100</Attribute>
+		<Attribute Name="TimeSinceUpdate">54</Attribute>
+		<Attribute Name="HouseCode">2</Attribute>
+		<Attribute Name="DeviceCode">2</Attribute>
+		<Attribute Name="LogFile">/var/log/nethome/freezer.log</Attribute>
+		<Attribute Name="LastUpdate">21:11:13 2014.08.24 </Attribute>
+		<Attribute Name="K">0.0625</Attribute>
+		<Attribute Name="M">-50.0</Attribute>
+	</HomeItem>
+	<HomeItem Class="UPMThermometer" >
+		<Attribute Name="ID">37</Attribute>
+		<Attribute Name="Name">Fridge Temperature</Attribute>
+		<Attribute Name="Temperature"></Attribute>
+		<Attribute Name="BatteryLevel">100</Attribute>
+		<Attribute Name="TimeSinceUpdate">75</Attribute>
+		<Attribute Name="HouseCode">2</Attribute>
+		<Attribute Name="DeviceCode">3</Attribute>
+		<Attribute Name="LogFile">/var/log/nethome/fridge.log</Attribute>
+		<Attribute Name="LastUpdate"></Attribute>
+		<Attribute Name="K">0.0625</Attribute>
+		<Attribute Name="M">-50.0</Attribute>
+	</HomeItem>
+	<HomeItem Class="Room" >
+		<Attribute Name="ID">60</Attribute>
+		<Attribute Name="Name">Hardware</Attribute>
+		<Attribute Name="Items">,61</Attribute>
+		<Attribute Name="Position">Left</Attribute>
+	</HomeItem>
+	<HomeItem Class="Plan" >
+		<Attribute Name="ID">55</Attribute>
+		<Attribute Name="Name">HomeOutwards</Attribute>
+		<Attribute Name="Items">44,54</Attribute>
+		<Attribute Name="ImageFile">media/home_back.jpg</Attribute>
+		<Attribute Name="ItemLocations">44#27#27,54#358#23</Attribute>
+		<Attribute Name="UpdateInterval">2</Attribute>
+		<Attribute Name="ClickAction">Popup</Attribute>
+	</HomeItem>
+	<HomeItem Class="Room" >
+		<Attribute Name="ID">38</Attribute>
+		<Attribute Name="Name">Kitchen</Attribute>
+		<Attribute Name="Items">36,37,44</Attribute>
+		<Attribute Name="Position">Right</Attribute>
+	</HomeItem>
+	<HomeItem Class="NexaLCDimmer" >
+		<Attribute Name="ID">44</Attribute>
+		<Attribute Name="Name">Kitchen Lamp</Attribute>
+		<Attribute Name="State">Off</Attribute>
+		<Attribute Name="Address">123456</Attribute>
+		<Attribute Name="Button">1</Attribute>
+		<Attribute Name="OnDimLevel"></Attribute>
+		<Attribute Name="Level">0</Attribute>
+		<Attribute Name="DimLevel1">25</Attribute>
+		<Attribute Name="DimLevel2">50</Attribute>
+		<Attribute Name="DimLevel3">75</Attribute>
+		<Attribute Name="DimLevel4">100</Attribute>
+		<Attribute Name="DimStep">10</Attribute>
+		<Attribute Name="TransmissionRepeats"></Attribute>
+	</HomeItem>
+	<HomeItem Class="DayLiteTimer" >
+		<Attribute Name="ID">58</Attribute>
+		<Attribute Name="Name">Lamp Timer</Attribute>
+		<Attribute Name="State">Disabled</Attribute>
+		<Attribute Name="Timezone identifier">Europe/Stockholm</Attribute>
+		<Attribute Name="Location: Lat,Long">59.225527,18.000718</Attribute>
+		<Attribute Name="Timer Today"></Attribute>
+		<Attribute Name="Sunrise Today"></Attribute>
+		<Attribute Name="Sunset Today"></Attribute>
+		<Attribute Name="Mondays">[S-01:00]-23:01</Attribute>
+		<Attribute Name="Tuesdays">[S-01:00]-23:01</Attribute>
+		<Attribute Name="Wednesdays">[S-01:00]-23:01</Attribute>
+		<Attribute Name="Thursdays">[S-01:00]-23:01</Attribute>
+		<Attribute Name="Fridays">[S-01:00]-23:01</Attribute>
+		<Attribute Name="Saturdays">[S-01:00]-23:01</Attribute>
+		<Attribute Name="Sundays">[S-01:00]-23:01</Attribute>
+		<Attribute Name="OnCommand">call,56,on</Attribute>
+		<Attribute Name="OffCommand">call,56,off</Attribute>
+	</HomeItem>
+	<HomeItem Class="UPMThermometer" >
+		<Attribute Name="ID">43</Attribute>
+		<Attribute Name="Name">Outside Temp</Attribute>
+		<Attribute Name="Temperature"></Attribute>
+		<Attribute Name="BatteryLevel">100</Attribute>
+		<Attribute Name="TimeSinceUpdate">74</Attribute>
+		<Attribute Name="HouseCode">2</Attribute>
+		<Attribute Name="DeviceCode">4</Attribute>
+		<Attribute Name="LogFile">/var/log/nethome/outside.log</Attribute>
+		<Attribute Name="LastUpdate"></Attribute>
+		<Attribute Name="K">0.0625</Attribute>
+		<Attribute Name="M">-50.0</Attribute>
+	</HomeItem>
+	<HomeItem Class="Tellstick" >
+		<Attribute Name="ID">61</Attribute>
+		<Attribute Name="Name">Tellstick</Attribute>
+		<Attribute Name="State">Connected</Attribute>
+		<Attribute Name="ReceivedProtocols">UPM,NexaL,Nexa,Oregon,FineOffset</Attribute>
+		<Attribute Name="TransmittedProtocols">Pronto,NexaL,NexaFire,Nexa,X10,Zhejiang,Emotiva,Deltronic,RisingSun,Waveman</Attribute>
+		<Attribute Name="PortName">/dev/ttyUSB0</Attribute>
+		<Attribute Name="FirmwareVersion">12</Attribute>
+		<Attribute Name="ReceivedMessages">7</Attribute>
+		<Attribute Name="SentMessages">0</Attribute>
+	</HomeItem>
+	<HomeItem Class="TempWEB" >
+		<Attribute Name="ID">46</Attribute>
+		<Attribute Name="Name">TempWeb</Attribute>
+		<Attribute Name="WEBServer">JettyWEB</Attribute>
+		<Attribute Name="LocalURL">/temp</Attribute>
+		<Attribute Name="ThermometerList">Freezer Temperature,Fridge Temperature,Outside Temp</Attribute>
+	</HomeItem>
+	<HomeItem Class="HomeGUI" >
+		<Attribute Name="ID">42</Attribute>
+		<Attribute Name="Name">WEB-GUI</Attribute>
+		<Attribute Name="WEBServer">22</Attribute>
+		<Attribute Name="LocalURL">/home</Attribute>
+		<Attribute Name="LeftBanner"></Attribute>
+		<Attribute Name="RightBanner"></Attribute>
+		<Attribute Name="PlanPage">54</Attribute>
+		<Attribute Name="Location">48</Attribute>
+	</HomeItem>
+	<HomeItem Class="JettyWEB" >
+		<Attribute Name="ID">22</Attribute>
+		<Attribute Name="Name">JettyWEB</Attribute>
+		<Attribute Name="Port">8020</Attribute>
+		<Attribute Name="MediaDirectory">/etc/opt/nethome/media</Attribute>
+	</HomeItem>
+</HomeItems>

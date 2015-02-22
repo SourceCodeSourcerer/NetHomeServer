@@ -603,6 +603,16 @@ span.iactions li{
 	width:380px;
 }
 
+.iteminput.checkbox {
+    width:auto;
+}
+
+textarea.iteminput {
+    max-width: 380px;
+    min-width: 380px;
+    height: 50px;
+}
+
 .iteminputrefs {
 	border-color: #C9C9CA #EDEDEF #EDEDEF #C9C9CA;
 	border-style:solid;

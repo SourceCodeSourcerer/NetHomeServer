@@ -23,6 +23,7 @@ import nu.nethome.home.item.*;
 import nu.nethome.home.system.*;
 import nu.nethome.util.plugin.PluginProvider;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -40,7 +41,7 @@ import java.util.prefs.Preferences;
  * @author Stefan Stromberg
  */
 @SuppressWarnings("UnusedDeclaration")
-public class HomeServer implements HomeItem, HomeService, ServiceState, ValueItem {
+public class HomeServer implements HomeItem, HomeService, ServiceState, ServiceConfiguration, ValueItem {
 
     private static final String MODEL;
 
@@ -54,9 +55,9 @@ public class HomeServer implements HomeItem, HomeService, ServiceState, ValueIte
                 + "  <Attribute Name=\"UpgradeCommand\" Type=\"String\" Get=\"getUpgradeCommand\" Set=\"setUpgradeCommand\" />"
                 + "  <Attribute Name=\"LogFile\" Type=\"String\" Get=\"getLogFile\" 	Set=\"setLogFile\" />"
                 + "  <Attribute Name=\"UpTime\" Type=\"String\" Get=\"getUpTime\" />"
-                + "  <Attribute Name=\"MaxDistributionTime\" Type=\"String\" Get=\"getMaxDistributionTime\" />"
-                + "  <Attribute Name=\"AverageDistributionTime\" Type=\"String\" Get=\"getAverageDistributionTime\" />"
-                + "  <Attribute Name=\"MaxItemTime\" Type=\"String\" Get=\"getMaxItemTime\" />"
+                + "  <Attribute Name=\"MaxDistributionTime\" Type=\"String\" Get=\"getMaxDistributionTime\" Unit=\"ms\" />"
+                + "  <Attribute Name=\"AverageDistributionTime\" Type=\"String\" Get=\"getAverageDistributionTime\"  Unit=\"ms\" />"
+                + "  <Attribute Name=\"MaxItemTime\" Type=\"String\" Get=\"getMaxItemTime\"  Unit=\"ms\" />"
                 + "  <Attribute Name=\"MaxItemName\" Type=\"String\" Get=\"getMaxItemName\" />"
                 + "  <Attribute Name=\"AlarmCount\" Type=\"String\" Get=\"getCurrentAlarmCountString\" />"
                 + "  <Attribute Name=\"TotalLogRows\" Type=\"String\" Get=\"getTotalLogRecordCountString\" />"
@@ -65,6 +66,7 @@ public class HomeServer implements HomeItem, HomeService, ServiceState, ValueIte
                 + "  <Action Name=\"StopServer\" Method=\"stopServer\" />"
                 + "  <Action Name=\"UpgradeServer\" Method=\"upgradeServer\" />"
                 + "  <Action Name=\"ResetStatistics\" Method=\"resetStatistics\" />"
+                + "  <Action Name=\"ClearLog\" Method=\"clearLog\" />"
                 + "</HomeItem> ");
     }
 
@@ -100,17 +102,18 @@ public class HomeServer implements HomeItem, HomeService, ServiceState, ValueIte
     private int currentWarningCount = 0;
     private boolean activated = false;
     private List<FinalEventListener> finalEventListeners = new LinkedList<FinalEventListener>();
-    private LoggerComponent eventCountlogger = new LoggerComponent(this);
+    private ExtendedLoggerComponent eventCountlogger = new ExtendedLoggerComponent(this);
     private long eventsCount = 0;
     private long eventsCountPerPeriod = 0;
     private int minuteCounter;
     private int minutesBetweenItemSave = 60;
+    private String logDirectory = "";
 
     public HomeServer() {
         eventQueue = new LinkedBlockingQueue<Event>(MAX_QUEUE_SIZE);
         logRecords = new LinkedBlockingDeque<LogRecord>(LOG_RECORD_CAPACITY);
         setupLogger();
-        eventCountlogger.activate();
+        eventCountlogger.activate(this);
     }
 
     private void setupLogger() {
@@ -161,6 +164,12 @@ public class HomeServer implements HomeItem, HomeService, ServiceState, ValueIte
             record.getMessage().startsWith("Could not open/create prefs root node");
     }
 
+    public String clearLog() {
+        logRecords.clear();
+        currentWarningCount = 0;
+        return "";
+    }
+
     public void run(HomeItemFactory factory, HomeItemLoader loader, PluginProvider pluginProvider) {
         this.factory = factory;
         this.homeItemLoader = loader;
@@ -198,6 +207,10 @@ public class HomeServer implements HomeItem, HomeService, ServiceState, ValueIte
     }
 
     public HomeService getService() {
+        return this;
+    }
+
+    public ServiceConfiguration getConfiguration() {
         return this;
     }
 
@@ -419,6 +432,7 @@ public class HomeServer implements HomeItem, HomeService, ServiceState, ValueIte
      * not yet activated.
      */
     public void loadItems() {
+        String currentFileName = getFileName();
         List<HomeItem> sortedItems = homeItemLoader.loadItems(getFileName(), factory, this);
 
         for (HomeItem item : sortedItems) {
@@ -460,6 +474,7 @@ public class HomeServer implements HomeItem, HomeService, ServiceState, ValueIte
             }
         }
         HomeServer.logger.info("Activated " + Integer.toString(activatedItemCount) + " of " + Integer.toString(itemCount) + " Items");
+        setFileName(currentFileName);
     }
 
     public void saveItems() {
@@ -671,5 +686,16 @@ public class HomeServer implements HomeItem, HomeService, ServiceState, ValueIte
 
     public void setLogFile(String logfile) {
         eventCountlogger.setFileName(logfile);
+    }
+
+    public String getLogDirectory() {
+        return logDirectory;
+    }
+
+    public void setLogDirectory(String logFileDirectory) {
+        this.logDirectory = logFileDirectory;
+        if (!this.logDirectory.isEmpty() && !this.logDirectory.endsWith(File.pathSeparator)) {
+            this.logDirectory += File.pathSeparator;
+        }
     }
 }

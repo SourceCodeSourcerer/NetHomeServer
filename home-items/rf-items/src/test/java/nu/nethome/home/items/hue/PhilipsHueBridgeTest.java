@@ -164,6 +164,64 @@ public class PhilipsHueBridgeTest {
         assertThat(result.size(), is(0));
     }
 
+    private static String SENSOR_LIST_REST_RESPONSE = "{\n" +
+            "    \"1\": {\n" +
+            "        \"state\": {\n" +
+            "            \"daylight\": false,\n" +
+            "            \"lastupdated\": \"none\"\n" +
+            "        },\n" +
+            "        \"config\": {\n" +
+            "            \"on\": true,\n" +
+            "            \"long\": \"none\",\n" +
+            "            \"lat\": \"none\",\n" +
+            "            \"sunriseoffset\": 30,\n" +
+            "            \"sunsetoffset\": -30\n" +
+            "        },\n" +
+            "        \"name\": \"Daylight\",\n" +
+            "        \"type\": \"Daylight\",\n" +
+            "        \"modelid\": \"PHDL00\",\n" +
+            "        \"manufacturername\": \"Philips\",\n" +
+            "        \"swversion\": \"1.0\"\n" +
+            "    },\n" +
+            "    \"2\": {\n" +
+            "        \"state\": {\n" +
+            "            \"buttonevent\": 18,\n" +
+            "            \"lastupdated\": \"2014-11-23T14:53:25\"\n" +
+            "        },\n" +
+            "        \"config\": {\n" +
+            "            \"on\": true\n" +
+            "        },\n" +
+            "        \"name\": \"ZGP Switch 1\",\n" +
+            "        \"type\": \"ZGPSwitch\",\n" +
+            "        \"modelid\": \"ZGPSWITCH\",\n" +
+            "        \"manufacturername\": \"none\",\n" +
+            "        \"uniqueid\": \"00:00:00:00:00:42:81:4d-f2\"\n" +
+            "    }\n" +
+            "}";
+
+    @Test
+    public void canListNoSensors() throws Exception {
+        when(restClient.get(anyString(), anyString(), any(JSONObject.class))).thenReturn(new JSONData("{}"));
+        List<Sensor> result = api.listSensors(USER_NAME);
+        verify(restClient, times(1)).get(eq("http://1.1.1.1"), eq("/api/test/sensors"), any(JSONObject.class));
+        assertThat(result.size(), is(0));
+    }
+
+    @Test
+    public void canListSensors() throws Exception {
+        when(restClient.get(anyString(), anyString(), any(JSONObject.class))).thenReturn(new JSONData(SENSOR_LIST_REST_RESPONSE));
+        List<Sensor> result = api.listSensors(USER_NAME);
+        verify(restClient, times(1)).get(eq("http://1.1.1.1"), eq("/api/test/sensors"), any(JSONObject.class));
+        assertThat(result.size(), is(2));
+        int zgpIndex = (result.get(0).getId().equals("2")) ? 0 : 1;
+        int dayLightIndex = (zgpIndex == 0) ? 1 : 0;
+        assertThat(result.get(dayLightIndex).getId(), is("1"));
+        assertThat(result.get(zgpIndex).getId(), is("2"));
+        assertThat(result.get(zgpIndex).getName(), is("ZGP Switch 1"));
+        assertThat(result.get(zgpIndex).getType(), is("ZGPSwitch"));
+        assertThat(result.get(zgpIndex).getModelid(), is("ZGPSWITCH"));
+    }
+
     @Test
     public void canRegisterUser() throws Exception {
         when(restClient.post(anyString(), anyString(), any(JSONObject.class))).thenReturn(new JSONData(REGISTER_USER_OK));

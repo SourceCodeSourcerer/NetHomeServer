@@ -54,7 +54,7 @@ public class OregonThermometer extends HomeItemAdapter implements HomeItem, Valu
             + "</HomeItem> ");
 
     protected Logger logger = Logger.getLogger(OregonThermometer.class.getName());
-    private LoggerComponent tempLoggerComponent = new LoggerComponent(this);
+    private ExtendedLoggerComponent tempLoggerComponent = new ExtendedLoggerComponent(this);
     private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("HH:mm:ss yyyy.MM.dd ");
 
     // Public attributes
@@ -116,7 +116,7 @@ public class OregonThermometer extends HomeItemAdapter implements HomeItem, Valu
     public void activate(HomeService server) {
         super.activate(server);
         // Activate the logger component
-        tempLoggerComponent.activate();
+        tempLoggerComponent.activate(server);
     }
 
     /**

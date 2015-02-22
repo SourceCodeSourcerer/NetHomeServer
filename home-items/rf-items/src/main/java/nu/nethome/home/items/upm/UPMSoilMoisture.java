@@ -56,7 +56,7 @@ public class UPMSoilMoisture extends HomeItemAdapter implements HomeItem, ValueI
     private static final int HIGHEST_POSSIBLE_RAW_VALUE = 2000;
     private static final int DEFAULT_100_RAW_VALUE = 1936;
     private static final int DEFAULT_0_RAW_VALUE = 960;
-    private LoggerComponent tempLoggerComponent = new LoggerComponent(this);
+    private ExtendedLoggerComponent tempLoggerComponent = new ExtendedLoggerComponent(this);
     private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("HH:mm:ss yyyy.MM.dd ");
 
     // Public attributes
@@ -119,7 +119,7 @@ public class UPMSoilMoisture extends HomeItemAdapter implements HomeItem, ValueI
     public void activate(HomeService server) {
         super.activate(server);
         // Activate the logger component
-        tempLoggerComponent.activate();
+        tempLoggerComponent.activate(server);
     }
 
     /**

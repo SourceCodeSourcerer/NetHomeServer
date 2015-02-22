@@ -40,7 +40,7 @@ public class NexaLCRemapButton extends RemapButton implements HomeItem {
 
     private static final String m_Model = ("<?xml version = \"1.0\"?> \n"
             + "<HomeItem Class=\"NexaLCRemapButton\" Category=\"Controls\" >"
-            + "  <Attribute Name=\"State\" 	Type=\"String\" Get=\"getState\" Default=\"true\" />"
+            + "  <Attribute Name=\"State\" 	Type=\"String\" Get=\"getState\" Init=\"setState\" Default=\"true\" />"
             + "  <Attribute Name=\"Address\" 	Type=\"String\" Get=\"getAddress\" 	Set=\"setAddress\" />"
             + "  <Attribute Name=\"Button\" Type=\"String\" Get=\"getButton\" 	Set=\"setButton\" />"
             + "  <Attribute Name=\"OnCommand\" Type=\"Command\" Get=\"getOnCommand\" 	Set=\"setOnCommand\" />"

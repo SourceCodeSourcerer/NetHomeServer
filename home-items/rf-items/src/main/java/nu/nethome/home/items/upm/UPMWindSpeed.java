@@ -59,7 +59,7 @@ public class UPMWindSpeed extends HomeItemAdapter implements HomeItem, ValueItem
 	protected static final int WIND_SPEED_MEAN_TIME = 10;
 	protected static final double WIND_SPEED_CONV_FACTOR = 3.6;
 	private static Logger logger = Logger.getLogger(UPMWindSpeed.class.getName());
-	protected LoggerComponent m_WindSpeedLogger = new LoggerComponent(this);
+	protected ExtendedLoggerComponent m_WindSpeedLogger = new ExtendedLoggerComponent(this);
 	protected int m_LogInterval = 10;
 
 	// Public attributes
@@ -127,7 +127,7 @@ public class UPMWindSpeed extends HomeItemAdapter implements HomeItem, ValueItem
 	public void activate() {
 		// Activate the logger component
 		m_WindSpeedLogger.setInterval(Integer.toString(m_LogInterval));
-		m_WindSpeedLogger.activate();
+		m_WindSpeedLogger.activate(server);
 	}
 
 	/**

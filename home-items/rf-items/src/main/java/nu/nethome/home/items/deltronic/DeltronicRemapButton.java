@@ -37,7 +37,7 @@ public class DeltronicRemapButton extends RemapButton implements HomeItem {
     private final static String MODEL = ("<?xml version = \"1.0\"?> \n"
 
             + "<HomeItem Class=\"DeltronicRemapButton\" Category=\"Controls\" >"
-            + "  <Attribute Name=\"State\" 	Type=\"String\" Get=\"getState\" Default=\"true\" />"
+            + "  <Attribute Name=\"State\" 	Type=\"String\" Get=\"getState\" Init=\"setState\" Default=\"true\" />"
             + "  <Attribute Name=\"Button\" 	Type=\"String\" Get=\"getButton\" 	Set=\"setButton\" />"
             + "  <Attribute Name=\"Address\" Type=\"String\" Get=\"getAddress\" 	Set=\"setAddress\" />"
             + "  <Attribute Name=\"OnCommand\" Type=\"Command\" Get=\"getOnCommand\" 	Set=\"setOnCommand\" />"

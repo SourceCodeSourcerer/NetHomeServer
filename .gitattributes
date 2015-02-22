@@ -3,3 +3,4 @@
 
 # Handle shell scripts
 *.sh text eol=lf
+nethome test eol=lf

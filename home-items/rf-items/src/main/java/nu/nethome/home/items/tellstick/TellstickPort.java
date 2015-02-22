@@ -44,9 +44,11 @@ public class TellstickPort {
     private static final int COMPRESSED_MESSAGE_START_BIT_POSITION = 6;
     private static final int TELLSTICK_US_PER_UNIT = 10;
     private static final int TELLSTICK_MAX_PULSE_VALUE = 255;
+    public static final String ERROR_MESSAGE = "ERROR";
     private static Logger logger = Logger.getLogger(TellstickPort.class.getName());
 
     private volatile String firmwareVersion = "";
+    private boolean isClosed = false;
 
     /**
      * Client callback interface used to receive messages from Tellstick
@@ -236,6 +238,9 @@ public class TellstickPort {
     }
 
     public void sendCommand(int[] pulseSequence, int repeats) throws IOException {
+        if (isClosed) {
+            throw new IOException("Port is closed");
+        }
         byte[] byteMessage;
         if (pulseSequence.length - 1 <= TELLSTICK_BUFFER_LENGTH) {
             byteMessage = buildSendCommand((byte) repeats, pulseSequence);
@@ -373,12 +378,16 @@ public class TellstickPort {
 
     public void stop() throws IOException {
         if (portDevice != null) {
+            isClosed = true;
             portDevice.deactivate();
         }
     }
 
     public void deviceEvent() {
         try {
+            if (isClosed) {
+                return;
+            }
             String event = portDevice.readLine().trim();
             if (event.startsWith("+V") && event.length() > 2) {
                 firmwareVersion = event.substring(2).trim();
@@ -388,6 +397,10 @@ public class TellstickPort {
             }
         } catch (IOException e) {
             logger.log(Level.WARNING, "failed to read from Tellstick serial port: ", e);
+            isClosed = true;
+            if (callbackInterface != null) {
+                callbackInterface.received(ERROR_MESSAGE);
+            }
         }
     }
 

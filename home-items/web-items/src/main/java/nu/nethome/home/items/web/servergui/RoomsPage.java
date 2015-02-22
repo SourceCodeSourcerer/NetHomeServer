@@ -146,6 +146,10 @@ public class RoomsPage extends PortletPage {
         }
         if (foundLocationItem == null) {
             foundLocationItem = server.createInstance("Location", "DefaultLocation");
+            int counter = 0;
+            while(foundLocationItem == null && counter < 100) {
+                foundLocationItem = server.createInstance("Location", "DefaultLocation" + counter);
+            }
             defaultLocationIdentity.setDefaultPage(foundLocationItem.getAttributeValue("ID"));
             addAllRooms(foundLocationItem, server);
         }

@@ -30,6 +30,7 @@ package nu.nethome.home.items.web.servergui;
 
 import nu.nethome.home.impl.InternalEvent;
 import nu.nethome.home.item.*;
+import nu.nethome.home.items.web.servergui.attributes.*;
 import nu.nethome.home.system.DirectoryEntry;
 import nu.nethome.home.system.Event;
 import nu.nethome.home.system.HomeService;
@@ -59,21 +60,25 @@ public class EditItemPage extends PortletPage {
     protected HomeService server;
     protected String bridgeBrokerId;
     protected String pageName = "edit";
-    protected Map<String, AttributeTypePrinterInterface> attributeHandlers = new HashMap<String, AttributeTypePrinterInterface>();
+    protected Map<String, AttributeTypePrinterInterface> attributeHandlers = new HashMap<>();
     private SelectClassPage selectClassPage;
     private CreationEventCache creationEventCache;
+    private EditPermission editPermission;
 
-    public EditItemPage(String mLocalURL, HomeService server, String mediaDirectory, CreationEventCache creationEvents) {
+    public EditItemPage(String mLocalURL, HomeService server, String mediaDirectory, CreationEventCache creationEvents, EditPermission allowEdit) {
         super(mLocalURL);
         this.server = server;
         this.creationEventCache = creationEvents;
         bridgeBrokerId = findServerInstanceId();
         initiateAttributePlugins(mediaDirectory);
         selectClassPage = new SelectClassPage(mLocalURL, server, mediaDirectory, creationEvents);
+        this.editPermission = allowEdit;
     }
 
     private void initiateAttributePlugins(String mediaDirectory) {
         addAttributePlugin(new StringAttributePrinter());
+        addAttributePlugin(new TextAttributePrinter());
+        addAttributePlugin(new BooleanAttributePrinter());
         addAttributePlugin(new StringListAttributePrinter());
         addAttributePlugin(new CommandAttributePrinter(this.server));
         addAttributePlugin(new OptionsAttributePrinter(this.server));
@@ -82,6 +87,7 @@ public class EditItemPage extends PortletPage {
         addAttributePlugin(new ItemsAttributePrinter(this.server));
         addAttributePlugin(new StringsAttributePrinter(this.server));
         addAttributePlugin(new MediaFileAttributePrinter(mediaDirectory));
+        addAttributePlugin(new DurationAttributePrinter());
     }
 
     private void addAttributePlugin(AttributeTypePrinterInterface attributePlugin) {
@@ -103,7 +109,7 @@ public class EditItemPage extends PortletPage {
 
     @Override
     public List<String> getJavaScriptFileNames() {
-        List<String> scripts = new ArrayList<String>();
+        List<String> scripts = new ArrayList<>();
         scripts.add("web/home/js/jquery-1.4.3.min.js");
         scripts.add("web/home/edititempage.js");
         scripts.addAll(selectClassPage.getJavaScriptFileNames());
@@ -166,7 +172,7 @@ public class EditItemPage extends PortletPage {
     }
 
     private void printItemEditPage(PrintWriter p, EditItemArguments pageArguments, HomeItemProxy item) throws ServletException, IOException {
-        List<HomeItemError> homeItemErrors = new ArrayList<HomeItemError>();
+        List<HomeItemError> homeItemErrors = new ArrayList<>();
         printItemEditColumnStart(p);
         HomeItemModel model = item.getModel();
         String name = item.getAttributeValue("Name");
@@ -204,7 +210,9 @@ public class EditItemPage extends PortletPage {
         p.println("</div>");
 
         // Print the Delete and Rename buttons
-        printDeleteRenameSection(p, name);
+        if (editPermission.isEditPermitted()) {
+            printDeleteRenameSection(p, name);
+        }
 
         // Print page end
         printColumnEnd(p);
@@ -680,18 +688,20 @@ public class EditItemPage extends PortletPage {
                 p.println("</td></tr>");
             }
         }
-        // Print Attribute Footer
         p.println("</table>");
         p.println("<br>");
+        // Print Attribute Footer
         p.println("<div class=\"footer\">");
         p.print("<input class=\"ibutton\" type=\"submit\" name=\"save_type\" value=\""
                 + CANCEL_BUTTON_TEXT + "\"> ");
-        if (returnPage != null) {
+        if (editPermission.isEditPermitted()) {
+            if (returnPage != null) {
+                p.println("<input class=\"ibutton\" type=\"submit\" name=\"save_type\" value=\""
+                        + SAVE_BUTTON_TEXT + "\"> ");
+            }
             p.println("<input class=\"ibutton\" type=\"submit\" name=\"save_type\" value=\""
-                    + SAVE_BUTTON_TEXT + "\"> ");
+                    + APPLY_BUTTON_TEXT + "\"> ");
         }
-        p.println("<input class=\"ibutton\" type=\"submit\" name=\"save_type\" value=\""
-                + APPLY_BUTTON_TEXT + "\"> ");
         p.println("</div>");
         p.println("</form>");
     }
@@ -710,6 +720,11 @@ public class EditItemPage extends PortletPage {
     private void printWritableAttributeValue(PrintWriter p, Attribute attribute, int counter) {
         AttributeTypePrinterInterface printer = getAttributeTypePrinter(attribute.getType());
         printer.printAttributeValue(p, attribute, counter);
+    }
+
+    private String formatReadOnlyAttributeValue(Attribute attribute) {
+        AttributeTypePrinterInterface printer = getAttributeTypePrinter(attribute.getType());
+        return printer.attributeToPrintValue(attribute.getValue());
     }
 
     protected void printAttribute(PrintWriter p, String prettyName,
@@ -737,7 +752,7 @@ public class EditItemPage extends PortletPage {
                 String unit = attribute.getValue().length() > 0 ? (" " + attribute.getUnit()) : "";
                 p.println("<tr>");
                 p.println("  <td class=\"attributename\">" + attribute.getName() + ": "
-                        + "</td> <td class=\"attributenameandvalue\">" + attribute.getValue() + unit + "</td>");
+                        + "</td> <td class=\"attributenameandvalue\">" + formatReadOnlyAttributeValue(attribute) + unit + "</td>");
                 p.println("</tr>");
             }
         }

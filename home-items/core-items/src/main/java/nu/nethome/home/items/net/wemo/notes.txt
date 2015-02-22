@@ -1,0 +1,1 @@
+wsimport -keep -d D:\src\GitHub\NetHomeServer\home-items\core-items\src\main\java -p nu.nethome.home.items.net.wemo.soap -Xno-addressing-databinding BasicService.wsdl

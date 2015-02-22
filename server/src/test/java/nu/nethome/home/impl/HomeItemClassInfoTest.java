@@ -19,10 +19,13 @@
 
 package nu.nethome.home.impl;
 
+import nu.nethome.home.item.AutoCreationInfo;
 import nu.nethome.home.item.HomeItemAdapter;
 import nu.nethome.home.item.HomeItemInfo;
 import nu.nethome.home.item.HomeItemType;
+import nu.nethome.home.system.Event;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -32,6 +35,9 @@ import static org.hamcrest.core.Is.is;
  * Created by Stefan 2013-12-25
  */
 public class HomeItemClassInfoTest {
+
+
+    private HomeItemClassInfo creationInfoItem;
 
     class NoAnnotation extends HomeItemAdapter{
         @Override
@@ -56,16 +62,29 @@ public class HomeItemClassInfoTest {
         }
     }
 
+    @HomeItemType(value = "Controls", creationInfo = TestAutoCreationInfo.class)
+    class CreationInfoItem extends HomeItemAdapter{
+        @Override
+        public String getModel() {
+            return null;
+        }
+    }
+
     HomeItemInfo noAnno;
     HomeItemInfo portsItem;
     HomeItemInfo eventsItem;
+    InternalEvent event;
 
     @Before
     public void setUp() throws Exception {
         noAnno = new HomeItemClassInfo(NoAnnotation.class);
         portsItem = new HomeItemClassInfo(PortsItem.class);
         eventsItem = new HomeItemClassInfo(EventsItem.class);
+        creationInfoItem = new HomeItemClassInfo(CreationInfoItem.class);
+        event = new InternalEvent("Foo_Message", "Fie");
     }
+
+    // No Annotation
 
     @Test
     public void noAnnotationHasClassName() {
@@ -83,6 +102,18 @@ public class HomeItemClassInfoTest {
     }
 
     @Test
+    public void noAnnotationCannotBeCreatedByEvent() {
+        assertThat(noAnno.canBeCreatedBy(event), is(false));
+    }
+
+    @Test
+    public void noAnnotationGivesEmptyCreationInfo() {
+        assertThat(noAnno.getCreationIdentification(event), is(""));
+    }
+
+    // With category annotation "Ports"
+
+    @Test
     public void withAnnotationHasClassName() {
         assertThat(portsItem.getClassName(), is("PortsItem"));
     }
@@ -98,8 +129,97 @@ public class HomeItemClassInfoTest {
     }
 
     @Test
+    public void withOnlyCategoryAnnotationCannotBeCreatedByEvent() {
+        assertThat(portsItem.canBeCreatedBy(event), is(false));
+    }
+
+    @Test
+    public void withOnlyCategoryAnnotationGivesEmptyCreationInfo() {
+        assertThat(portsItem.getCreationIdentification(event), is(""));
+    }
+
+
+    // With category and events annotation
+
+    @Test
+    public void withEventsAnnotationGivesSpecifiedCategory() {
+        assertThat(eventsItem.getCategory(), is("Controls"));
+    }
+
+    @Test
     public void canReadEventsFromAnnotation() {
         assertThat(eventsItem.getCreationEventTypes().length, is(1));
         assertThat(eventsItem.getCreationEventTypes()[0], is("NexaL_Message"));
+    }
+
+    @Test
+    public void withEventsAnnotationKnowsIfCanBeCreatedByEvent() {
+        assertThat(eventsItem.canBeCreatedBy(event), is(false));
+        InternalEvent correctEvent = new InternalEvent("NexaL_Message", "Fie");
+        assertThat(eventsItem.canBeCreatedBy(correctEvent), is(true));
+    }
+
+    @Test
+    public void withEventsAnnotationGivesGenericCreationId() {
+        InternalEvent event = new InternalEvent("NexaL_Message", "");
+        event.setAttribute("Foo", "FooValue");
+        event.setAttribute("Fie", "FieValue");
+        assertThat(eventsItem.getCreationIdentification(event), is("NexaL:Fie=FieValue,Foo=FooValue"));
+    }
+
+    @Test
+    public void withEventsAnnotationGivesGenericCreationIdIgnoringStandardAttributes() {
+        InternalEvent event = new InternalEvent("NexaL_Message", "");
+        event.setAttribute("Foo", "FooValue");
+        event.setAttribute("Fie", "FieValue");
+        event.setAttribute("UPM.SequenceNumber", "XXX");
+        event.setAttribute("Direction", "YYY");
+        assertThat(eventsItem.getCreationIdentification(event), is("NexaL:Fie=FieValue,Foo=FooValue"));
+    }
+
+    // With CreationInfo annotation
+
+    static class TestAutoCreationInfo implements AutoCreationInfo {
+        static final String [] EVENTS = {"Foo_Message"};
+        @Override
+        public String[] getCreationEvents() {
+            return EVENTS;
+        }
+
+        @Override
+        public boolean canBeCreatedBy(Event e) {
+            return e.getAttribute("CanCreate").equals("true");
+        }
+
+        @Override
+        public String getCreationIdentification(Event e) {
+            return e.getAttribute("CanCreate");
+        }
+    }
+
+
+    @Test
+    public void withCreationInfoAnnotationGivesSpecifiedCategory() {
+        assertThat(creationInfoItem.getCategory(), is("Controls"));
+    }
+
+    @Test
+    public void canReadEventsFromCreationInfo() {
+        assertThat(creationInfoItem.getCreationEventTypes().length, is(1));
+        assertThat(creationInfoItem.getCreationEventTypes()[0], is("Foo_Message"));
+    }
+
+    @Test
+    public void withCreationInfoKnowsIfCanBeCreatedByEvent() {
+        InternalEvent correctEvent = new InternalEvent("NexaL_Message", "Fie");
+        correctEvent.setAttribute("CanCreate", "true");
+        assertThat(creationInfoItem.canBeCreatedBy(event), is(false));
+        assertThat(creationInfoItem.canBeCreatedBy(correctEvent), is(true));
+    }
+
+    @Test
+    public void withCreationInfoCanGiveCreationIdInfo() {
+        event.setAttribute("CanCreate", "Foo");
+        assertThat(creationInfoItem.getCreationIdentification(event), is("Foo"));
     }
 }

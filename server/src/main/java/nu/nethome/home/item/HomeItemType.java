@@ -22,11 +22,9 @@ package nu.nethome.home.item;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-/**
- * Created by Stefan 2013-12-25
- */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface HomeItemType {
     String value();
     String creationEvents() default "";
+    Class<? extends AutoCreationInfo> creationInfo() default AutoCreationInfo.class;
 }

@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -25,6 +26,7 @@ public class FooGadgetPulseTest {
 
     @Before
     public void setUp() throws Exception {
+        Locale.setDefault(Locale.GERMAN);
         Calendar calendar = Calendar.getInstance();
         calendar.set(2014, Calendar.MAY, 25, 23, 30);
         now = calendar.getTime();

@@ -67,8 +67,7 @@ public class AudioProtocolParser extends HomeItemAdapter implements HomeItem, Pr
             + "  <Attribute Name=\"FlankLength\" Type=\"StringList\" Get=\"getFlankLength\" 	Set=\"setFlankLength\" >"
             + "    <item>1</item><item>2</item><item>3</item><item>4</item><item>5</item></Attribute>"
             + "  <Attribute Name=\"FlankHoldoff\" Type=\"String\" Get=\"getFlankHoldoff\" 	Set=\"setFlankHoldoff\" />"
-            + "  <Attribute Name=\"UseFilter\" Type=\"StringList\" Get=\"getUseFilter\" 	Set=\"setUseFilter\" >"
-            + "    <item>true</item><item>false</item></Attribute>"
+            + "  <Attribute Name=\"UseFilter\" Type=\"Boolean\" Get=\"getUseFilter\" 	Set=\"setUseFilter\" />"
             + "  <Attribute Name=\"PulseWidthModification\" Type=\"String\" Get=\"getPulseWidthModification\" 	Set=\"setPulseWidthModification\" />"
             + "  <Attribute Name=\"MaxRepeats\" Type=\"String\" Get=\"getMaxRepeats\" 	Set=\"setMaxRepeats\" />"
             + "  <Attribute Name=\"Received\" Type=\"String\" Get=\"getReceived\"  />"
@@ -222,7 +221,7 @@ public class AudioProtocolParser extends HomeItemAdapter implements HomeItem, Pr
     public void updateDecoderActivation() {
 
         // Find the selected protocol decoders and add the names to a map
-        HashMap<String, Boolean> parsers = new HashMap<String, Boolean>();
+        HashMap<String, Boolean> parsers = new HashMap<>();
         StringTokenizer parser = new StringTokenizer(decoderNames, ",", false);
         String token;
         while (parser.hasMoreTokens()) {

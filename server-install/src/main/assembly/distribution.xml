@@ -50,7 +50,14 @@
                 <include>README-install</include>
                 <include>nhs_daemon_template</include>
                 <include>nhs_template</include>
+                <include>nethome</include>
             </includes>
+        </fileSet>
+        <!-- Installation scripts -->
+        <fileSet>
+            <outputDirectory>/install</outputDirectory>
+            <directory>${basedir}/src/main/scripts/install</directory>
+            <filtered>false</filtered>
         </fileSet>
         <!-- rxtx library files for MAC -->
         <fileSet>
@@ -98,11 +105,16 @@
             <outputDirectory>/os</outputDirectory>
             <destName>librxtxSerial_raspian.so</destName>
         </file>
-        <!-- demo configuration file -->
+        <!-- demo configuration files -->
         <file>
             <source>${basedir}/src/main/resources/demo.xml</source>
             <outputDirectory>/lib</outputDirectory>
             <destName>demo.xml</destName>
+        </file>
+        <file>
+            <source>${basedir}/src/main/resources/demo_rpi.xml</source>
+            <outputDirectory>/lib</outputDirectory>
+            <destName>demo_rpi.xml</destName>
         </file>
         <!-- license file -->
         <file>

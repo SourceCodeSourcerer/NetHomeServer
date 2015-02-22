@@ -22,6 +22,7 @@ package nu.nethome.home.start;
 import nu.nethome.home.impl.HomeItemFactory;
 import nu.nethome.home.item.HomeItem;
 import nu.nethome.home.item.HomeItemInfo;
+import nu.nethome.home.items.net.ArpScanner;
 import nu.nethome.home.items.tellstick.Tellstick;
 
 import java.util.*;
@@ -85,6 +86,10 @@ public class StaticHomeItemFactory implements HomeItemFactory {
 
     private static final HomeItemClassInfo CLASSES_INFO[] = {
             // core-items
+            new HomeItemClassInfo("XmppClient", nu.nethome.home.items.net.XmppClient.class),
+            new HomeItemClassInfo("Message", nu.nethome.home.items.net.Message.class),
+            new HomeItemClassInfo("MessageInteractor", nu.nethome.home.items.net.MessageInteractor.class),
+            new HomeItemClassInfo("LampMessageInteractor", nu.nethome.home.items.net.LampMessageInteractor.class),
             new HomeItemClassInfo("TCPListener", nu.nethome.home.items.net.TCPListener.class),
             new HomeItemClassInfo("TCPCommandPort", nu.nethome.home.items.net.TCPCommandPort.class),
             new HomeItemClassInfo("UDPCommandPort", nu.nethome.home.items.net.UDPCommandPort.class),
@@ -95,10 +100,14 @@ public class StaticHomeItemFactory implements HomeItemFactory {
             new HomeItemClassInfo("AudioProtocolParser", nu.nethome.home.items.audio.AudioProtocolParser.class),
             new HomeItemClassInfo("AudioProtocolTransmitter", nu.nethome.home.items.audio.AudioProtocolTransmitter.class),
             new HomeItemClassInfo("DayLiteTimer", nu.nethome.home.items.timer.DayLiteTimer.class),
+            new HomeItemClassInfo("LampRepeater", nu.nethome.home.items.timer.LampRepeater.class),
             new HomeItemClassInfo("GateKeeper", nu.nethome.home.items.net.GateKeeper.class),
             new HomeItemClassInfo("MBMThermometer", nu.nethome.home.items.misc.MBMThermometer.class),
             new HomeItemClassInfo("ValueTrigger", nu.nethome.home.items.misc.ValueTrigger.class),
             new HomeItemClassInfo("Scene", nu.nethome.home.items.misc.Scene.class),
+            new HomeItemClassInfo("ArpScanner", ArpScanner.class),
+            new HomeItemClassInfo("MacDevice", nu.nethome.home.items.net.MacDevice.class),
+            new HomeItemClassInfo("MacDeviceGroup", nu.nethome.home.items.net.MacDeviceGroup.class),
             new HomeItemClassInfo("LmSensorsThermometer", nu.nethome.home.items.misc.LmSensorsThermometer.class),
             new HomeItemClassInfo("LmSensorsFan", nu.nethome.home.items.misc.LmSensorsFan.class),
             new HomeItemClassInfo("SatelliteCommander", nu.nethome.home.items.satellite.SatelliteCommander.class),
@@ -106,6 +115,8 @@ public class StaticHomeItemFactory implements HomeItemFactory {
             new HomeItemClassInfo("TrayBarIcon", nu.nethome.home.items.gui.TrayBarIcon.class),
             new HomeItemClassInfo("TeamCityBuildMonitor", nu.nethome.home.items.net.TeamCityBuildMonitor.class),
             new HomeItemClassInfo("DebugManager", nu.nethome.home.items.misc.DebugManager.class),
+            new HomeItemClassInfo("WemoInsightSwitch", nu.nethome.home.items.net.wemo.WemoInsightSwitch.class),
+            new HomeItemClassInfo("UPnPScanner", nu.nethome.home.items.net.wemo.UPnPScanner.class),
 
             // rf-items
             new HomeItemClassInfo("UPMThermometer", nu.nethome.home.items.upm.UPMThermometer.class),

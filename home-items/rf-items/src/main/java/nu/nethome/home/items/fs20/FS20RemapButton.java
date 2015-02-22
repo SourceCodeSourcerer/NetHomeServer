@@ -41,7 +41,7 @@ public class FS20RemapButton extends RemapButton implements HomeItem {
 	private static final String MODEL = ("<?xml version = \"1.0\"?> \n"
 
 			+ "<HomeItem Class=\"FS20RemapButton\" Category=\"Controls\" >"
-            + "  <Attribute Name=\"State\" 	Type=\"String\" Get=\"getState\" Default=\"true\" />"
+            + "  <Attribute Name=\"State\" 	Type=\"String\" Get=\"getState\" Init=\"setState\" Default=\"true\" />"
             + "  <Attribute Name=\"HouseCode\" 	Type=\"String\" Get=\"getHouseCode\" 	Set=\"setHouseCode\" />"
             + "  <Attribute Name=\"DeviceCode\" Type=\"String\" Get=\"getDeviceCode\" 	Set=\"setDeviceCode\" />"
             + "  <Attribute Name=\"FHZ1000PcPort\" 	Type=\"String\" Get=\"getFHZ1000PcPort\" 		Set=\"setFHZ1000PcPort\" />"

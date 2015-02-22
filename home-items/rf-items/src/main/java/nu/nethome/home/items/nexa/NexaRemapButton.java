@@ -36,7 +36,7 @@ public class NexaRemapButton extends RemapButton implements HomeItem {
 
     private static final String MODEL = ("<?xml version = \"1.0\"?> \n"
             + "<HomeItem Class=\"NexaRemapButton\" Category=\"Controls\" >"
-            + "  <Attribute Name=\"State\" 	Type=\"String\" Get=\"getState\" Default=\"true\" />"
+            + "  <Attribute Name=\"State\" 	Type=\"String\" Get=\"getState\" Init=\"setState\" Default=\"true\" />"
             + "  <Attribute Name=\"HouseCode\" 	Type=\"StringList\" Get=\"getHouseCode\" 	Set=\"setHouseCode\" >"
             + "     <item>A</item> <item>B</item> <item>C</item> <item>D</item> <item>E</item> <item>F</item> <item>G</item> <item>H</item> </Attribute>"
             + "  <Attribute Name=\"Button\" Type=\"StringList\" Get=\"getButton\" 	Set=\"setButton\" >"

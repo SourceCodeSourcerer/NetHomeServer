@@ -41,8 +41,15 @@ public interface AttributeTypePrinterInterface {
 	/**
 	 * @return the name of the attribute type this instance handles  
 	 */
-	public String getTypeName();
-	
+	String getTypeName();
+
+    /**
+     * Returns a string ready for printing of the value as html
+     * @param value
+     * @return value
+     */
+    String attributeToPrintValue(String value);
+
 	/**
 	 * Prints the value part of an editable attribute on the supplied PrintWriter. The value should be contained 
 	 * in a &LTtd&GT ... &LT/td&GT" section.
@@ -52,7 +59,7 @@ public interface AttributeTypePrinterInterface {
 	 * @param attributeNumber the number of the attribute, this is a helper to name the attribute uniquely
 	 * @return true if the attribute was rendered, false if rendering failed 
 	 */
-	public boolean printAttributeValue(PrintWriter p, Attribute attribute, int attributeNumber);
+	boolean printAttributeValue(PrintWriter p, Attribute attribute, int attributeNumber);
 	
 	/**
 	 * Updates the attribute value in the HomeItem based on the value extracted from the supplied HTTP-request
@@ -63,7 +70,7 @@ public interface AttributeTypePrinterInterface {
 	 * @param isInitiation true if this is part of the HomeItem initiation/creation
 	 * @param attributeNumber the number of the attribute, this is a helper to name the attribute uniquely
 	 */
-	public void updateAttributeValue(HomeItemProxy item, Attribute attribute,
+	void updateAttributeValue(HomeItemProxy item, Attribute attribute,
                                      HttpServletRequest req, boolean isInitiation, int attributeNumber)  throws IllegalValueException;
 	
 }

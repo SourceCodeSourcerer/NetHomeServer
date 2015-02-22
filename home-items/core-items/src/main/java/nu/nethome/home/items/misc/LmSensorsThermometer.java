@@ -49,7 +49,7 @@ public class LmSensorsThermometer extends HomeItemAdapter implements HomeItem, V
 			+ "</HomeItem> "); 
 
 	private static Logger logger = Logger.getLogger(LmSensorsThermometer.class.getName());
-	public LoggerComponent m_TempLogger = new LoggerComponent(this);
+	public ExtendedLoggerComponent m_TempLogger = new ExtendedLoggerComponent(this);
 	protected String m_ExecName = "sensors";
 
 	// Public attributes
@@ -70,7 +70,7 @@ public class LmSensorsThermometer extends HomeItemAdapter implements HomeItem, V
 	 * @see ssg.home.HomeItem#activate()
 	 */
 	public void activate() {
-		m_TempLogger.activate();
+		m_TempLogger.activate(server);
 	}
 
 	/**

@@ -40,7 +40,7 @@ public class NexaLCAdvancedRemapButton extends NexaLCRemapButton implements Home
 
     private static final String m_Model = ("<?xml version = \"1.0\"?> \n"
             + "<HomeItem Class=\"NexaLCAdvancedRemapButton\" Category=\"Controls\" >"
-            + "  <Attribute Name=\"State\" 	Type=\"String\" Get=\"getState\" Default=\"true\" />"
+            + "  <Attribute Name=\"State\" 	Type=\"String\" Get=\"getState\" Init=\"setState\" Default=\"true\" />"
             + "  <Attribute Name=\"Address\" 	Type=\"String\" Get=\"getAddress\" 	Set=\"setAddress\" />"
             + "  <Attribute Name=\"Button\" Type=\"String\" Get=\"getButton\" 	Set=\"setButton\" />"
             + "  <Attribute Name=\"PressOn\" Type=\"Command\" Get=\"getPressOnCommand\" 	Set=\"setPressOnCommand\" />"

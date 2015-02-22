@@ -50,6 +50,7 @@ public class HueBridge extends HomeItemAdapter {
             + "  <Action Name=\"registerUser\" Method=\"registerUser\" />"
             + "  <Action Name=\"reconnect\" Method=\"reconnect\" />"
             + "</HomeItem> ");
+    public static final String ZGP_SWITCH_TYPE = "ZGPSwitch";
 
     private static Logger logger = Logger.getLogger(HueBridge.class.getName());
 
@@ -127,6 +128,9 @@ public class HueBridge extends HomeItemAdapter {
         } else if (event.getAttribute(Event.EVENT_TYPE_ATTRIBUTE).equals("ReportItems") ||
                 (event.getAttribute(Event.EVENT_TYPE_ATTRIBUTE).equals("MinuteEvent") && refreshCounter++ > refreshInterval)) {
             reportAllLampsState();
+            if (event.getAttribute(Event.EVENT_TYPE_ATTRIBUTE).equals("ReportItems")) {
+                reportKnownSensors();
+            }
             return true;
         }
         return false;
@@ -166,6 +170,30 @@ public class HueBridge extends HomeItemAdapter {
             logger.log(Level.INFO, "Command failed in HueBridge", e);
         }
     }
+
+    private void reportKnownSensors() {
+        try {
+            List<Sensor> sensors = hueBridge.listSensors(userName);
+            for (Sensor sensor : sensors) {
+                if (sensor.getType().equals(ZGP_SWITCH_TYPE)) {
+                    Event event = server.createEvent("Hue_Sensor_Message", "");
+                    event.setAttribute("Direction", "In");
+                    event.setAttribute("Hue.Id", sensor.getId());
+                    event.setAttribute("Hue.Name", sensor.getName());
+                    event.setAttribute("Hue.Model", sensor.getModelid());
+                    event.setAttribute("Hue.Type", sensor.getType());
+                    event.setAttribute("Hue.Manufacturername", sensor.getManufacturername());
+                    server.send(event);
+                }
+            }
+        } catch (IOException e) {
+            this.state = "Disconnected";
+            logger.log(Level.INFO, "Failed to contact HueBridge", e);
+        } catch (HueProcessingException e) {
+            logger.log(Level.INFO, "Command failed in HueBridge", e);
+        }
+    }
+
 
     private void turnLampOff(String lampId) {
         setLightState(lampId, new LightState());

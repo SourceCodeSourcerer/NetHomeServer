@@ -61,7 +61,6 @@ public class HomeManagerStarter {
     public final void go(String[] args, HomeItemFactory... additionalFactories) {
         HomeServer server = new HomeServer();
         server.setName("Home Server");
-
         String logFileName = System.getProperty("user.home");
 
         // Check arguments - if no arguments, load the demo configuration
@@ -74,6 +73,20 @@ public class HomeManagerStarter {
             }
             if (args[i].startsWith("-l")) {
                 logFileName = args[i].substring(2);
+                /**
+                 * For backwards compatibility we only set the log directory in the server if it is explicitly
+                 * specified. Otherwise it would break functionality for older installations were all log files
+                 * from thermometers and so on are stored in the current directory of the application.
+                 */
+                server.setLogDirectory(logFileName);
+            }
+            if (args[i].startsWith("-d") && args[i].length() > 2) {
+                try {
+                    int startupDelay = Integer.parseInt(args[i].substring(2)) * 1000;
+                    Thread.sleep(startupDelay);
+                } catch (NumberFormatException | InterruptedException e) {
+                    // Ignore
+                }
             }
             i++;
         }

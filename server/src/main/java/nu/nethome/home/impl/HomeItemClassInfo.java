@@ -19,9 +19,15 @@
 
 package nu.nethome.home.impl;
 
+import nu.nethome.home.item.AutoCreationInfo;
 import nu.nethome.home.item.HomeItem;
 import nu.nethome.home.item.HomeItemInfo;
 import nu.nethome.home.item.HomeItemType;
+import nu.nethome.home.system.Event;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Holds static HomeITem class info
@@ -29,9 +35,31 @@ import nu.nethome.home.item.HomeItemType;
 public class HomeItemClassInfo implements HomeItemInfo {
 
     private Class<? extends HomeItem> itemClass;
+    private HomeItemType type;
+    AutoCreationInfo creationInfo;
 
     public HomeItemClassInfo(Class<? extends HomeItem> itemClass) {
         this.itemClass = itemClass;
+        type = itemClass.getAnnotation(HomeItemType.class);
+        if (!hasCreationInfo(type)) {
+            creationInfo = new NoCreationInfo();
+        } else if (hasCreationEventsSpecified(type)){
+            creationInfo = new GenericAutoCreationInfo(type.creationEvents());
+        } else {
+            try {
+                creationInfo = type.creationInfo().newInstance();
+            } catch (InstantiationException|IllegalAccessException e) {
+                creationInfo = new NoCreationInfo();
+            }
+        }
+    }
+
+    private boolean hasCreationEventsSpecified(HomeItemType type) {
+        return !type.creationEvents().isEmpty();
+    }
+
+    private boolean hasCreationInfo(HomeItemType type) {
+        return type != null && (!type.creationEvents().isEmpty() || type.creationInfo() != AutoCreationInfo.class);
     }
 
     @Override
@@ -41,22 +69,22 @@ public class HomeItemClassInfo implements HomeItemInfo {
 
     @Override
     public String getCategory() {
-        HomeItemType type = itemClass.getAnnotation(HomeItemType.class);
-        if (type != null) {
-            return type.value();
-        } else {
-            return "Unknown";
-        }
+        return (type != null) ? type.value() : "Unknown";
     }
 
     @Override
     public String[] getCreationEventTypes() {
-        HomeItemType type = itemClass.getAnnotation(HomeItemType.class);
-        if (type != null && !type.creationEvents().isEmpty()) {
-            return type.creationEvents().split(",");
-        } else {
-            return new String[0];
-        }
+        return creationInfo.getCreationEvents();
+    }
+
+    @Override
+    public Boolean canBeCreatedBy(Event event) {
+        return creationInfo.canBeCreatedBy(event);
+    }
+
+    @Override
+    public String getCreationIdentification(Event event) {
+        return creationInfo.getCreationIdentification(event);
     }
 
     @Override
@@ -74,5 +102,93 @@ public class HomeItemClassInfo implements HomeItemInfo {
     @Override
     public int hashCode() {
         return itemClass.getSimpleName().hashCode();
+    }
+
+    private static class NoCreationInfo implements AutoCreationInfo {
+
+        @Override
+        public String[] getCreationEvents() {
+            return new String[0];
+        }
+
+        @Override
+        public boolean canBeCreatedBy(Event e) {
+            return false;
+        }
+
+        @Override
+        public String getCreationIdentification(Event e) {
+            return "";
+        }
+    }
+
+    private static class GenericAutoCreationInfo implements AutoCreationInfo {
+        private static String ignoredAttributeNames[] = {"Type", "UPM.SequenceNumber", "Direction", "Value", "UPM.Primary",
+                "UPM.Secondary", "UPM.LowBattery", "Hue.Brightness", "Hue.Command", "Oregon.Temp", "Oregon.Moisture"};
+        private static Set<String> ignoredAttributes = new HashSet<String>(Arrays.asList(ignoredAttributeNames));
+        private String[] eventList;
+
+        public GenericAutoCreationInfo(String events) {
+            eventList = events.split(",");
+        }
+
+        @Override
+        public String[] getCreationEvents() {
+            return eventList;
+        }
+
+        @Override
+        public boolean canBeCreatedBy(Event e) {
+            String eventName = e.getAttribute(Event.EVENT_TYPE_ATTRIBUTE);
+            for (String s : eventList) {
+                if (s.equals(eventName)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        @Override
+        public String getCreationIdentification(Event e) {
+            return extractContent(e);
+        }
+
+        private String extractContent(Event event) {
+            String divider="";
+            StringBuilder result = new StringBuilder();
+            result.append(stripProtocolSuffix(event.getAttribute("Type")));
+            result.append(":");
+            for (String attributeName : event.getAttributeNames()) {
+                String value = event.getAttribute(attributeName);
+                if (!isAttributeIgnored(attributeName, value)) {
+                    result.append(divider);
+                    result.append(stripNamePrefix(attributeName));
+                    result.append("=");
+                    result.append(value);
+                    divider = ",";
+                }
+            }
+            return result.toString();
+        }
+
+        private String stripProtocolSuffix(String type) {
+            int index = type.indexOf("_");
+            if (index > 0 && index < type.length() - 1) {
+                return type.substring(0, index);
+            }
+            return type;
+        }
+
+        private String stripNamePrefix(String attributeName) {
+            int index = attributeName.indexOf(".");
+            if (index > 0 && index < attributeName.length() - 1) {
+                return attributeName.substring(index + 1, attributeName.length());
+            }
+            return attributeName;
+        }
+
+        private boolean isAttributeIgnored(String attributeName, String value) {
+            return ignoredAttributes.contains(attributeName) || value.length() == 0;
+        }
     }
 }

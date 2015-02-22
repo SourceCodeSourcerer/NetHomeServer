@@ -60,7 +60,7 @@ public class FooGadgetLegacy extends HomeItemAdapter implements HomeItem, ValueI
 
     public static final String ENERGY_FORMAT = "%.2f";
     protected Logger logger = Logger.getLogger(FooGadgetLegacy.class.getName());
-    private LoggerComponent energyLoggerComponent = new LoggerComponent(this);
+    private ExtendedLoggerComponent energyLoggerComponent = new ExtendedLoggerComponent(this);
     protected Date latestUpdateOrCreation = getCurrentTime();
     private Date latestValueSampleTime = getCurrentTime();
     private long latestValueSamplePulses;
@@ -93,7 +93,7 @@ public class FooGadgetLegacy extends HomeItemAdapter implements HomeItem, ValueI
 
     @Override
     public void activate() {
-        energyLoggerComponent.activate();
+        energyLoggerComponent.activate(server);
     }
 
     @Override

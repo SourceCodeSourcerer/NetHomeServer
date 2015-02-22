@@ -38,6 +38,7 @@ public class GraphPage extends PortletPage {
 
     public static final int HOURS_24_IN_MS = 24 * 60 * 60 * 1000;
     public static final int DAYS_IN_WEEK = 7;
+    public static final String LOG_REST_URL = "/rest/items/%s/log?start=%s&stop=%s";
 
     private class GraphPageArguments extends HomeGUIArguments {
 
@@ -147,7 +148,7 @@ public class GraphPage extends PortletPage {
         Date endOfDay = new Date(cal.getTime().getTime() + HOURS_24_IN_MS * (DAYS_IN_WEEK - 1));
         String graphTitle = String.format("%s, Week starting %2$tA %2$tF", item.getAttributeValue(HomeItemProxy.NAME_ATTRIBUTE), startOfWeek);
         printParameter(p, "graph_title", graphTitle);
-        printParameter(p, "jsonurl", String.format("/rest/logs/%s?start=%s&stop=%s",
+        printParameter(p, "jsonurl", String.format(LOG_REST_URL,
                 item.getAttributeValue(HomeItemProxy.ID_ATTRIBUTE),
                 logDateFormat.format(startOfWeek),
                 logDateFormat.format(endOfDay)));
@@ -222,7 +223,7 @@ public class GraphPage extends PortletPage {
         Date previousMonth = cal.getTime();
         String graphTitle = String.format("%s, %2$tB %2$tY", item.getAttributeValue(HomeItemProxy.NAME_ATTRIBUTE), currentTime);
         printParameter(p, "graph_title", graphTitle);
-        printParameter(p, "jsonurl", String.format("/rest/logs/%s?start=%s&stop=%s",
+        printParameter(p, "jsonurl", String.format(LOG_REST_URL,
                 item.getAttributeValue(HomeItemProxy.ID_ATTRIBUTE),
                 logDateFormat.format(startOfMonth),
                 logDateFormat.format(endOfMonth)));
@@ -252,7 +253,7 @@ public class GraphPage extends PortletPage {
         Date endOfDay = cal.getTime();
         String graphTitle = String.format("%s %2$tA %2$tF", item.getAttributeValue(HomeItemProxy.NAME_ATTRIBUTE), currentTime);
         printParameter(p, "graph_title", graphTitle);
-        printParameter(p, "jsonurl", String.format("/rest/logs/%s?start=%s&stop=%s",
+        printParameter(p, "jsonurl", String.format(LOG_REST_URL,
                 item.getAttributeValue(HomeItemProxy.ID_ATTRIBUTE),
                 logDateFormat.format(startOfDay),
                 logDateFormat.format(endOfDay)));

@@ -19,6 +19,8 @@
 
 package nu.nethome.home.item;
 
+import nu.nethome.home.system.Event;
+
 /**
  * Static information known of a HomeItem type without creating an instance
  */
@@ -29,4 +31,8 @@ public interface HomeItemInfo {
     String getCategory();
 
     String[] getCreationEventTypes();
+
+    Boolean canBeCreatedBy(Event event);
+
+    String getCreationIdentification(Event event);
 }

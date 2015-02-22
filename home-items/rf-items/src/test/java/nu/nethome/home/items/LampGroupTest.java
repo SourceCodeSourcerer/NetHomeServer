@@ -25,6 +25,7 @@ import nu.nethome.home.item.HomeItemProxy;
 import nu.nethome.home.system.HomeService;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -128,6 +129,7 @@ public class LampGroupTest {
         assertThat(lampGroup.getState(), is("On"));
     }
 
+    @Ignore
     @Test
     public void pausesBetweenOff() throws ExecutionFailure {
         lampGroup.setDelay("100");

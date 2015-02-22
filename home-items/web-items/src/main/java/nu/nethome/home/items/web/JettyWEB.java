@@ -22,8 +22,10 @@ package nu.nethome.home.items.web;
 import nu.nethome.home.item.HomeItem;
 import nu.nethome.home.item.HomeItemAdapter;
 import nu.nethome.home.item.HomeItemType;
+import nu.nethome.home.items.web.rest.HomeServices;
 import nu.nethome.home.system.HomeService;
 import nu.nethome.util.plugin.Plugin;
+import org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher;
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.handler.ContextHandlerCollection;
 import org.mortbay.jetty.servlet.Context;
@@ -126,10 +128,13 @@ public class JettyWEB extends HomeItemAdapter implements HomeItem, HomeWebServer
             applicationsContext.addServlet(new ServletHolder(resourceHandler), resourceHandler.getPathSpecification());
 
             // Create a graph Servlet
-            applicationsContext.addServlet(new ServletHolder(new GraphServlet()), "/Graph");
+            applicationsContext.addServlet(new ServletHolder(new GraphServlet(server)), "/Graph");
 
-            // Create a rest Servlet
-            applicationsContext.addServlet(new ServletHolder(new RestServlet(server)), "/rest/*");
+            // Create rest Servlet
+            HomeServices.setServer(server);
+            ServletHolder servletHolder = new ServletHolder(new HttpServletDispatcher());
+            servletHolder.setInitParameter("javax.ws.rs.Application", "nu.nethome.home.items.web.rest.HomeServices");
+            applicationsContext.addServlet(servletHolder, "/rest/*");
 
             // Add all externally registered servlets
             for (Registration externalServlet : externalServlets) {

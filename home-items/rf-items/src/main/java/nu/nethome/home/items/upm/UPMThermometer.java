@@ -53,7 +53,7 @@ public class UPMThermometer extends HomeItemAdapter implements HomeItem, ValueIt
             + "</HomeItem> ");
 
     private static Logger logger = Logger.getLogger(UPMThermometer.class.getName());
-    private LoggerComponent tempLoggerComponent = new LoggerComponent(this);
+    private ExtendedLoggerComponent tempLoggerComponent = new ExtendedLoggerComponent(this);
     private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("HH:mm:ss yyyy.MM.dd ");
 
     // Public attributes
@@ -110,7 +110,7 @@ public class UPMThermometer extends HomeItemAdapter implements HomeItem, ValueIt
     public void activate(HomeService server) {
         super.activate(server);
         // Activate the logger component
-        tempLoggerComponent.activate();
+        tempLoggerComponent.activate(server);
     }
 
     /**

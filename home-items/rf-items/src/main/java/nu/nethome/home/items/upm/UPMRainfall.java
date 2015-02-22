@@ -53,7 +53,7 @@ public class UPMRainfall extends HomeItemAdapter implements HomeItem, ValueItem 
 	private static Logger logger = Logger.getLogger(UPMRainfall.class.getName());
 	protected static Calendar m_FirstInDayTimeStamp;
 	protected static double m_MidnightRainFall = 0;
-	protected LoggerComponent m_RainfallLogger = new LoggerComponent(this);
+	protected ExtendedLoggerComponent m_RainfallLogger = new ExtendedLoggerComponent(this);
 
 	// Public attributes
 	protected double m_Rainfall = 0;
@@ -115,7 +115,7 @@ public class UPMRainfall extends HomeItemAdapter implements HomeItem, ValueItem 
 	 */
 	public void activate() {
 		// Activate the logger component
-		m_RainfallLogger.activate();
+		m_RainfallLogger.activate(server);
 	}
 
 	/**

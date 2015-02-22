@@ -109,6 +109,11 @@ public interface HomeService {
     ServiceState getState();
 
     /**
+     * Get the global configuration of the server
+     */
+    ServiceConfiguration getConfiguration();
+
+    /**
      * Stop and exit the server
      */
     void stopServer();

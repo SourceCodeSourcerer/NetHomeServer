@@ -32,7 +32,7 @@ import java.util.*;
  * Date: 2012-05-29
  * Time: 20:27
  */
-public class TstHomeService implements HomeService {
+public class TstHomeService implements HomeService, ServiceConfiguration {
 
     public List<HomeItem> items = new LinkedList<HomeItem>();
     protected Map<String, TstHomeItemProxy> m_Instances = new HashMap<String, TstHomeItemProxy>();
@@ -90,6 +90,11 @@ public class TstHomeService implements HomeService {
         return null;
     }
 
+    @Override
+    public ServiceConfiguration getConfiguration() {
+        return this;
+    }
+
     public void stopServer() {
     }
 
@@ -101,5 +106,10 @@ public class TstHomeService implements HomeService {
     @Override
     public void unregisterFinalEventListener(FinalEventListener listener) {
 
+    }
+
+    @Override
+    public String getLogDirectory() {
+        return "";
     }
 }

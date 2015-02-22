@@ -27,25 +27,32 @@ public class CreationEventCache {
     }
 
     public synchronized void newEvent(Event event, boolean wasHandled) {
-        if (isCollecting() && isCreationEvent(event)) {
-            String content = ItemEvent.extractContent(event);
-            boolean updated = false;
-            for (ItemEvent itemEvent : itemEvents) {
-                if (itemEvent.getContent().equals(content)) {
-                    itemEvent.updateEvent(event, wasHandled);
-                    updated = true;
-                    break;
-                }
-            }
-            if (!updated) {
-                itemEvents.add(new ItemEvent(event, wasHandled));
+        if (isCollecting() && isInbound(event)) {
+            List<HomeItemInfo> itemsCreatableByEvent = getItemsCreatableByEvent(event);
+            if (itemsCreatableByEvent.size() > 0) {
+                cacheCreationEvent(event, wasHandled, itemsCreatableByEvent);
             }
         } else {
-            clearIfNeeded();
+            clearOldCacheEntriesIfNeeded();
         }
     }
 
-    private synchronized void clearIfNeeded() {
+    private void cacheCreationEvent(Event event, boolean wasHandled, List<HomeItemInfo> itemsCreatableByEvent) {
+        String eventIdentity = itemsCreatableByEvent.get(0).getCreationIdentification(event);
+        boolean updated = false;
+        for (ItemEvent itemEvent : itemEvents) {
+            if (itemEvent.getContent().equals(eventIdentity)) {
+                itemEvent.updateEvent(event, wasHandled);
+                updated = true;
+                break;
+            }
+        }
+        if (!updated) {
+            itemEvents.add(new ItemEvent(event, eventIdentity, wasHandled));
+        }
+    }
+
+    private synchronized void clearOldCacheEntriesIfNeeded() {
         if ((System.currentTimeMillis() > latestCollectionTime.getTime() + clearTimeout) &&
                 itemEvents.size() > 0) {
             itemEvents.clear();
@@ -71,16 +78,17 @@ public class CreationEventCache {
     }
 
     public List<HomeItemInfo> getItemsCreatableByEvent(Event event) {
-        List<HomeItemInfo> result = this.itemsFromEvents.get(event.getAttribute(Event.EVENT_TYPE_ATTRIBUTE));
-        if (result != null) {
-            return Collections.unmodifiableList(result);
-        } else {
-            return Collections.emptyList();
+        List<HomeItemInfo> itemInfos = this.itemsFromEvents.get(event.getAttribute(Event.EVENT_TYPE_ATTRIBUTE));
+        if (itemInfos != null) {
+            List<HomeItemInfo> result = new ArrayList<>();
+            for (HomeItemInfo info : itemInfos) {
+                if (info.canBeCreatedBy(event)) {
+                    result.add(info);
+                }
+            }
+            return result;
         }
-    }
-
-    private boolean isCreationEvent(Event event) {
-        return isInbound(event) && getItemsCreatableByEvent(event).size() > 0;
+        return Collections.emptyList();
     }
 
     private boolean isInbound(Event event) {

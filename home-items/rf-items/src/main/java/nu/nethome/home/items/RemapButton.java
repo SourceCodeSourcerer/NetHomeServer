@@ -169,6 +169,10 @@ public abstract class RemapButton extends HomeItemAdapter {
         return isEnabled ? "Enabled" : "Disabled";
     }
 
+    public void setState(String state) {
+        isEnabled = state.equalsIgnoreCase("Enabled");
+    }
+
     public void enable() {
         isEnabled = true;
     }
