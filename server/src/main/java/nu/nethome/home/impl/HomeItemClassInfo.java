@@ -30,7 +30,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Holds static HomeITem class info
+ * Holds static HomeItem class info
  */
 public class HomeItemClassInfo implements HomeItemInfo {
 

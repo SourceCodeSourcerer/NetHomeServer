@@ -15,17 +15,20 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * This code by: Peter Lagerhem <peter@lagerhem.com> - 2015
+ *
  */
 
-package nu.nethome.home.item;
+package nu.nethome.home.item.annotation;
 
+import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
-public @interface HomeItemType {
-    String value();
-    String creationEvents() default "";
-    boolean noinherit() default true; 
-    Class<? extends AutoCreationInfo> creationInfo() default AutoCreationInfo.class;
+@Target({ElementType.METHOD})
+public @interface HomeItemAction {
+    String name() default "";
 }
