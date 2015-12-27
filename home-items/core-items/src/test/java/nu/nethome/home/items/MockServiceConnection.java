@@ -38,7 +38,12 @@ public class MockServiceConnection implements HomeService {
 
     protected Map<String, MockHomeItemProxy> m_Instances = new HashMap<String, MockHomeItemProxy>();
     public List<HomeItem> m_Items = new LinkedList<HomeItem>();
-
+    
+    @Override
+    public boolean executePython(String pythonCode) {
+        return true;
+    }
+    
     public static class MockEvent implements Event {
 
         private Map<String, String> attributes = new TreeMap<String, String>();
@@ -66,6 +71,10 @@ public class MockServiceConnection implements HomeService {
 
         public int[] getAttributeArr(String name) {
             return new int[0];  //To change body of implemented methods use File | Settings | File Templates.
+        }
+
+        public boolean isType(String typeName) {
+            return getAttribute(EVENT_TYPE_ATTRIBUTE).equals(typeName);
         }
 
         public void setAttribute(String name, String value) {

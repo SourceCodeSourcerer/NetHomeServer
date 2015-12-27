@@ -21,7 +21,7 @@ public class InsightState {
             throw new WemoException("Wrong number of parameters in WemoInsight state");
         }
         state = Integer.parseInt(states[0]);
-        lastChange = Long.parseLong(states[1]);
+        lastChange = Long.parseLong(states[1]); // ???
         onForSeconds = Long.parseLong(states[2]);
         onTodaySeconds = Long.parseLong(states[3]);
         onTotalSeconds = Long.parseLong(states[4]);
@@ -48,11 +48,19 @@ public class InsightState {
         return lastChange;
     }
 
-    public long getOnForSeconds() {
+    /**
+     *
+     * @return Last/current on time in seconds
+     */
+    public long getLastOnTime() {
         return onForSeconds;
     }
 
-    public long getOnTodaySeconds() {
+    /**
+     *
+     * @return On time today in seconds
+     */
+    public long getOnTimeToday() {
         return onTodaySeconds;
     }
 

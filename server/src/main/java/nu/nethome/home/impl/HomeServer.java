@@ -20,6 +20,8 @@
 package nu.nethome.home.impl;
 
 import nu.nethome.home.item.*;
+import nu.nethome.home.items.UPnPScanner;
+import nu.nethome.home.items.UsbScanner;
 import nu.nethome.home.system.*;
 import nu.nethome.util.plugin.PluginProvider;
 
@@ -54,6 +56,7 @@ public class HomeServer implements HomeItem, HomeService, ServiceState, ServiceC
                 + "  <Attribute Name=\"FileName\" Type=\"String\" Get=\"getFileName\" Set=\"setFileName\" />"
                 + "  <Attribute Name=\"UpgradeCommand\" Type=\"String\" Get=\"getUpgradeCommand\" Set=\"setUpgradeCommand\" />"
                 + "  <Attribute Name=\"LogFile\" Type=\"String\" Get=\"getLogFile\" 	Set=\"setLogFile\" />"
+                + "  <Attribute Name=\"PythonScriptFile\" Type=\"String\" Get=\"getPythonFile\" 	Set=\"setPythonFile\" />"
                 + "  <Attribute Name=\"UpTime\" Type=\"String\" Get=\"getUpTime\" />"
                 + "  <Attribute Name=\"MaxDistributionTime\" Type=\"String\" Get=\"getMaxDistributionTime\" Unit=\"ms\" />"
                 + "  <Attribute Name=\"AverageDistributionTime\" Type=\"String\" Get=\"getAverageDistributionTime\"  Unit=\"ms\" />"
@@ -108,12 +111,14 @@ public class HomeServer implements HomeItem, HomeService, ServiceState, ServiceC
     private int minuteCounter;
     private int minutesBetweenItemSave = 60;
     private String logDirectory = "";
+    private Python python;
 
     public HomeServer() {
         eventQueue = new LinkedBlockingQueue<Event>(MAX_QUEUE_SIZE);
         logRecords = new LinkedBlockingDeque<LogRecord>(LOG_RECORD_CAPACITY);
         setupLogger();
         eventCountlogger.activate(this);
+        python = new Python(this);
     }
 
     private void setupLogger() {
@@ -161,7 +166,8 @@ public class HomeServer implements HomeItem, HomeService, ServiceState, ServiceC
 
     private boolean isLogRecordInBlacklist(LogRecord record) {
         return record.getMessage().startsWith("Prefs file removed in background") ||
-            record.getMessage().startsWith("Could not open/create prefs root node");
+                record.getMessage().startsWith("Could not open/create prefs root node") ||
+                record.getMessage().startsWith("SAAJ0009");
     }
 
     public String clearLog() {
@@ -329,6 +335,20 @@ public class HomeServer implements HomeItem, HomeService, ServiceState, ServiceC
         }
     }
 
+    public boolean executePython(String pythonCode) {
+        try {
+            if (python.executePython(pythonCode)) {
+                return true;
+            } else {
+                logger.warning("Python function not found:" + pythonCode);
+                return false;
+            }
+        } catch (IOException ex) {
+            logger.warning("Error when calling script function:" + ex.toString());
+            return false;
+        }
+    }
+
     private void handleEventDistributionFaliure(Event event) {
         if (statistics.isItemCurrentlyProcessingEvent()) {
             logger.severe("Event queue full. Current Item processing is \"" + statistics.getCurrentItemName() + "\"  since " + getCurrentItemProcessingTime() + " ms");
@@ -356,7 +376,8 @@ public class HomeServer implements HomeItem, HomeService, ServiceState, ServiceC
                         itemName = home.getName();
                         logger.finest("Distributing event to " + itemName);
                         statistics.startItemDistribution(itemName);
-                        eventIsHandled |= home.receiveEvent(event);
+                        boolean handled = home.receiveEvent(event);
+                        eventIsHandled |= handled;
                     } catch (Exception e) {
                         logger.log(Level.WARNING, "Failed to distribute event to \"" + itemName + "\" (" + event.toString() + ") ", e);
                     }
@@ -433,9 +454,13 @@ public class HomeServer implements HomeItem, HomeService, ServiceState, ServiceC
      */
     public void loadItems() {
         String currentFileName = getFileName();
-        List<HomeItem> sortedItems = homeItemLoader.loadItems(getFileName(), factory, this);
+        List<HomeItem> loadedItems = homeItemLoader.loadItems(getFileName(), factory, this);
 
-        for (HomeItem item : sortedItems) {
+        addSingletonItems(loadedItems);
+
+        sortOnStartOrder(loadedItems);
+
+        for (HomeItem item : loadedItems) {
             if (item.getItemId() > maxID) {
                 maxID = item.getItemId();
             }
@@ -443,7 +468,7 @@ public class HomeServer implements HomeItem, HomeService, ServiceState, ServiceC
         maxID += 1;
 
         // Loop through all created Items, and register them
-        for (HomeItem item : sortedItems) {
+        for (HomeItem item : loadedItems) {
 
             // This is a backward compatibility check. If the Item has no valid ID, assign one
             if (item.getItemId() == 0) {
@@ -461,9 +486,9 @@ public class HomeServer implements HomeItem, HomeService, ServiceState, ServiceC
         }
 
         // Now loop through all Items again in start order and activate them
-        int itemCount = sortedItems.size();
+        int itemCount = loadedItems.size();
         int activatedItemCount = 0;
-        for (HomeItem item : sortedItems) {
+        for (HomeItem item : loadedItems) {
             if (!item.getName().startsWith("#") && (item.getItemId() != 0)) {
                 try {
                     item.activate(this);
@@ -475,6 +500,47 @@ public class HomeServer implements HomeItem, HomeService, ServiceState, ServiceC
         }
         HomeServer.logger.info("Activated " + Integer.toString(activatedItemCount) + " of " + Integer.toString(itemCount) + " Items");
         setFileName(currentFileName);
+    }
+
+    private void addSingletonItems(List<HomeItem> loadedItems) {
+        boolean hasUpnpScanner = false;
+        boolean hasUsbScanner = false;
+        for (HomeItem loadedItem : loadedItems) {
+            if (loadedItem instanceof UPnPScanner) {
+                hasUpnpScanner = true;
+            }
+            if (loadedItem instanceof UsbScanner) {
+                hasUsbScanner = true;
+            }
+        }
+        if (!hasUpnpScanner) {
+            UPnPScanner uPnPScanner = new UPnPScanner();
+            uPnPScanner.setName("UPnP_Scanner");
+            loadedItems.add(uPnPScanner);
+        }
+        if (!hasUsbScanner) {
+            UsbScanner usbScanner = new UsbScanner();
+            usbScanner.setName("USB_Scanner");
+            loadedItems.add(usbScanner);
+        }
+    }
+
+    private void sortOnStartOrder(List<HomeItem> sortedItems) {
+        Collections.sort(sortedItems, new Comparator<HomeItem>() {
+            public int compare(HomeItem o1, HomeItem o2) {
+                try {
+                    HomeItemModel m1 = StaticHomeItemModel.getModel(o1);
+                    HomeItemModel m2 = StaticHomeItemModel.getModel(o2);
+                    if (m1.getStartOrder() == m2.getStartOrder()) {
+                        return o1.getName().compareTo(o2.getName());
+                    }
+                    return m1.getStartOrder() > m2.getStartOrder() ? 1 : -1;
+                } catch (ModelException e) {
+                    // This should not happen...
+                    return 0;
+                }
+            }
+        });
     }
 
     public void saveItems() {
@@ -697,5 +763,13 @@ public class HomeServer implements HomeItem, HomeService, ServiceState, ServiceC
         if (!this.logDirectory.isEmpty() && !this.logDirectory.endsWith(File.pathSeparator)) {
             this.logDirectory += File.pathSeparator;
         }
+    }
+
+    public String getPythonFile() {
+        return python.getScriptSourceFileName();
+    }
+
+    public void setPythonFile(String scriptFile) {
+        python.setScriptSourceFileName(scriptFile);
     }
 }

@@ -13,6 +13,7 @@
         <NethomeVersion>2.1-SNAPSHOT</NethomeVersion>
         <utils.version>1.1-SNAPSHOT</utils.version>
         <coders.version>1.2-SNAPSHOT</coders.version>
+        <zwave.version>1.0-SNAPSHOT</zwave.version>
     </properties>
     <scm>
         <connection>scm:git:git://github.com/NetHome/NetHomeServer</connection>
@@ -83,6 +84,11 @@
                 <groupId>nu.nethome</groupId>
                 <artifactId>coders</artifactId>
                 <version>${coders.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>nu.nethome.zwave</groupId>
+                <artifactId>zwave</artifactId>
+                <version>${zwave.version}</version>
             </dependency>
             <dependency>
                 <groupId>nu.nethome</groupId>

@@ -39,10 +39,11 @@ public class HueLamp extends HomeItemAdapter implements HomeItem {
     private int colorTemperature = 0;
     private String color = "";
     private boolean isOn;
-    private int dimLevel1 = 0;
-    private int dimLevel2 = 33;
-    private int dimLevel3 = 66;
-    private int dimLevel4 = 100;
+    private String dimLevel1 = "0";
+    private String dimLevel2 = "33";
+    private String dimLevel3 = "66";
+    private String dimLevel4 = "100";
+    private int learnPosition = 0;
 
 
     private static final String MODEL = ("<?xml version = \"1.0\"?> \n"
@@ -68,6 +69,10 @@ public class HueLamp extends HomeItemAdapter implements HomeItem {
             + "  <Action Name=\"dim2\" 	Method=\"dim2\" />"
             + "  <Action Name=\"dim3\" 	Method=\"dim3\" />"
             + "  <Action Name=\"dim4\" 	Method=\"dim4\" />"
+            + "  <Action Name=\"LearnDim1\" 	Method=\"learnDim1\" />"
+            + "  <Action Name=\"LearnDim2\" 	Method=\"learnDim2\" />"
+            + "  <Action Name=\"LearnDim3\" 	Method=\"learnDim3\" />"
+            + "  <Action Name=\"LearnDim4\" 	Method=\"learnDim4\" />"
             + "</HomeItem> ");
 
     private String lampModel = "";
@@ -102,6 +107,35 @@ public class HueLamp extends HomeItemAdapter implements HomeItem {
         lampModel = event.getAttribute("Hue.Model");
         lampType = event.getAttribute("Hue.Type");
         lampVersion = event.getAttribute("Hue.Version");
+        if (learnPosition != 0) {
+            String color = getColorFromEvent(event);
+            switch (learnPosition) {
+                case 1:
+                    setDimLevel1(color);
+                    break;
+                case 2:
+                    setDimLevel2(color);
+                    break;
+                case 3:
+                    setDimLevel3(color);
+                    break;
+                case 4:
+                    setDimLevel4(color);
+                    break;
+            }
+            learnPosition = 0;
+        }
+    }
+
+    private String getColorFromEvent(Event event) {
+        int brightness = hueTopercent(event.getAttributeInt("Hue.Brightness"));
+        if (event.hasAttribute("Hue.Hue")) {
+        int hue = event.getAttributeInt("Hue.Hue");
+        int saturation = event.getAttributeInt("Hue.Saturation");
+        return String.format("%d,%d,%d", brightness, hue, saturation);
+        } else {
+            return Integer.toString(brightness);
+        }
     }
 
     @Override
@@ -111,14 +145,14 @@ public class HueLamp extends HomeItemAdapter implements HomeItem {
         return true;
     }
 
-    protected void sendOnCommand(int brightness, int hue, int saturation) {
+    protected void sendOnCommand(int brightness, int temperature, int hue, int saturation) {
         Event ev = createEvent();
         currentBrightness = brightness;
         ev.setAttribute("Hue.Command", "On");
         ev.setAttribute("Hue.Brightness", percentToHue(brightness));
-        if (colorTemperature != 0) {
-            ev.setAttribute("Hue.Temperature", colorTemperature);
-        } else {
+        if (temperature != 0) {
+            ev.setAttribute("Hue.Temperature", temperature);
+        } else if (saturation > 0 ) {
             ev.setAttribute("Hue.Saturation", saturation);
             ev.setAttribute("Hue.Hue", hue);
         }
@@ -128,6 +162,10 @@ public class HueLamp extends HomeItemAdapter implements HomeItem {
 
     private int percentToHue(int brightness) {
         return (brightness * 254) / 100;
+    }
+
+    private int hueTopercent(int brightness) {
+        return (brightness * 100) / 254;
     }
 
     protected void sendOffCommand() {
@@ -145,7 +183,7 @@ public class HueLamp extends HomeItemAdapter implements HomeItem {
     }
 
     public void on() {
-        sendOnCommand(onBrightness, hue, saturation);
+        sendOnCommand(onBrightness, colorTemperature, hue, saturation);
         isOn = true;
     }
 
@@ -195,11 +233,15 @@ public class HueLamp extends HomeItemAdapter implements HomeItem {
     public void setColor(String color) {
         String[] colourParts = color.split(",");
         if (colourParts.length == 2) {
-            hue = Integer.parseInt(colourParts[0]);
-            saturation = Integer.parseInt(colourParts[1]);
+            hue = Integer.parseInt(colourParts[0].trim());
+            saturation = Integer.parseInt(colourParts[1].trim());
             colorTemperature = 0;
-        } else if (color.length() > 0) {
+        } else if (colourParts.length == 1 && !color.isEmpty()) {
             colorTemperature = Integer.parseInt(color);
+        } else if (color.isEmpty()) {
+            colorTemperature = 0;
+            hue = 0;
+            saturation = 0;
         }
         this.color = color;
     }
@@ -237,63 +279,74 @@ public class HueLamp extends HomeItemAdapter implements HomeItem {
     }
 
     public void dim1() {
-        sendOnCommand(dimLevel1, hue, saturation);
+        sendOnCommand(dimLevel1);
+    }
+
+    private void sendOnCommand(String dimAndColor) {
+        int dimLevel;
+        int colorTemperature = this.colorTemperature;
+        int hue = this.hue;
+        int saturation = this.saturation;
+
+        String[] colourParts = dimAndColor.split(",");
+        if (colourParts.length == 3) {
+            dimLevel = Integer.parseInt(colourParts[0].trim());
+            hue = Integer.parseInt(colourParts[1].trim());
+            saturation = Integer.parseInt(colourParts[2].trim());
+            colorTemperature = 0;
+        } else if (colourParts.length == 2) {
+            dimLevel = Integer.parseInt(colourParts[0].trim());
+            colorTemperature = Integer.parseInt(colourParts[1].trim());
+        } else if (colourParts.length == 1  && !dimAndColor.isEmpty()) {
+            dimLevel = Integer.parseInt(colourParts[0].trim());
+        } else  {
+            dimLevel = 0;
+        }
+        sendOnCommand(dimLevel, colorTemperature, hue, saturation);
     }
 
     public void dim2() {
-        sendOnCommand(dimLevel2, hue, saturation);
+        sendOnCommand(dimLevel2);
     }
 
     public void dim3() {
-        sendOnCommand(dimLevel3, hue, saturation);
+        sendOnCommand(dimLevel3);
     }
 
     public void dim4() {
-        sendOnCommand(dimLevel4, hue, saturation);
+        sendOnCommand(dimLevel4);
     }
 
     public String getDimLevel1() {
-        return Integer.toString(dimLevel1);
+        return dimLevel1;
     }
 
-    public void setDimLevel1(String mDimLevel1) {
-        int newDimLevel = Integer.parseInt(mDimLevel1);
-        if ((newDimLevel >= 0) && (newDimLevel <= 100)) {
-            dimLevel1 = newDimLevel;
-        }
+    public void setDimLevel1(String dimLevel1) {
+        this.dimLevel1 = dimLevel1;
     }
 
     public String getDimLevel2() {
-        return Integer.toString(dimLevel2);
+        return dimLevel2;
     }
 
-    public void setDimLevel2(String mDimLevel2) {
-        int newDimLevel = Integer.parseInt(mDimLevel2);
-        if ((newDimLevel >= 0) && (newDimLevel <= 100)) {
-            dimLevel2 = newDimLevel;
-        }
+    public void setDimLevel2(String dimLevel2) {
+        this.dimLevel2 = dimLevel2;
     }
 
     public String getDimLevel3() {
-        return Integer.toString(dimLevel3);
+        return dimLevel3;
     }
 
-    public void setDimLevel3(String mDimLevel3) {
-        int newDimLevel = Integer.parseInt(mDimLevel3);
-        if ((newDimLevel >= 0) && (newDimLevel <= 100)) {
-            dimLevel3 = newDimLevel;
-        }
+    public void setDimLevel3(String dimLevel3) {
+        this.dimLevel3 = dimLevel3;
     }
 
     public String getDimLevel4() {
-        return Integer.toString(dimLevel4);
+        return dimLevel4;
     }
 
-    public void setDimLevel4(String mDimLevel4) {
-        int newDimLevel = Integer.parseInt(mDimLevel4);
-        if ((newDimLevel >= 0) && (newDimLevel <= 100)) {
-            dimLevel4 = newDimLevel;
-        }
+    public void setDimLevel4(String dimLevel4) {
+        this.dimLevel4 = dimLevel4;
     }
 
     public void bright() {
@@ -301,7 +354,7 @@ public class HueLamp extends HomeItemAdapter implements HomeItem {
         if (currentBrightness > 100) {
             currentBrightness = 100;
         }
-        sendOnCommand(currentBrightness, hue, saturation);
+        sendOnCommand(currentBrightness, colorTemperature, hue, saturation);
     }
 
     public void dim() {
@@ -309,10 +362,36 @@ public class HueLamp extends HomeItemAdapter implements HomeItem {
         if (currentBrightness < 0) {
             currentBrightness = 0;
         }
-        sendOnCommand(currentBrightness, hue, saturation);
+        sendOnCommand(currentBrightness, colorTemperature, hue, saturation);
     }
 
     public String getCurrentBrightness() {
         return Integer.toString(currentBrightness);
+    }
+
+    public void learnDim1() {
+        learnPosition = 1;
+        requestLampStatusUpdate();
+    }
+
+    public void learnDim2() {
+        learnPosition = 2;
+        requestLampStatusUpdate();
+    }
+
+    public void learnDim3() {
+        learnPosition = 3;
+        requestLampStatusUpdate();
+    }
+
+    public void learnDim4() {
+        learnPosition = 4;
+        requestLampStatusUpdate();
+    }
+
+    private void requestLampStatusUpdate() {
+        Event event = server.createEvent("ReportHueLamp", "");
+        event.setAttribute("Hue.Lamp", lampId);
+        server.send(event);
     }
 }

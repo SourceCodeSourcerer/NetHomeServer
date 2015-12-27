@@ -14,7 +14,8 @@ public class WemoInsightSwitchClientTest {
         WemoInsightSwitchClient wemoSwitch = new WemoInsightSwitchClient("http://192.168.1.16:49153");
         //WemoInsightSwitchClient wemoSwitch = new WemoInsightSwitchClient("http://127.0.0.1:49000");
 //        InsightState insightParameters = wemoSwitch.getInsightParameters();
-//        wemoSwitch.setOnState(true);
+//         wemoSwitch.setOnState(true);
+//        boolean onState = wemoSwitch.getOnState();
 //        Thread.sleep(1000);
 //        wemoSwitch.setOnState(false);
     }

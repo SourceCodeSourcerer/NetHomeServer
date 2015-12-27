@@ -11,11 +11,11 @@ This will copy the NetHomeServer files to appropriate locations in the file syst
 and install it as a daemon running as the user nethome.
 To stop the server you type:
 
-sudo /etc/init.d/nethome stop
+sudo nethome stop
 
 And to start it again you type:
 
-sudo /etc/init.d/nethome start
+sudo nethome start
 
 The installation files are moved to the following locations:
 
@@ -33,14 +33,8 @@ sudo ./upgrade.sh
 
 This will preserve the current configuration and just upgrade the server files to the current version.
 
-There is also a complete download/upgrade script which will download the latest nightly build of OpenNetHome and
+There is also a complete download/upgrade feature which will download the latest nightly build of OpenNetHome and
 upgrade the current installation. This script will also save a backup of each downloaded release, so you can
-downgrade to an earlier release if you have problems after an upgrade. This script should be copied to your home
-catalog and run from there when you want to upgrade your installation to the latest nightly build.
+downgrade to an earlier release if you have problems after an upgrade. To do an upgrade you type:
 
-example:
-
-cp upgrade_nethome_nightly.sh /home/pi/
-cd /home/pi
-chmod +x upgrade_nethome_nightly.sh
-sudo ./upgrade_nethome_nightly.sh
+sudo nethome upgrade-nightly

@@ -104,6 +104,9 @@ public class CommandLineExecutor {
         if (command.equalsIgnoreCase("rename")) {
             return performRename(it);
         }
+        if (command.equalsIgnoreCase("python")) {
+            return executePython(it);
+        }
         // Ok, it must be one of the commands which require an instance, get the instance
         if (!it.hasNext()) {
             return "error,2,No Instance specified";
@@ -230,6 +233,24 @@ public class CommandLineExecutor {
             return "error,11,Could not execute command: " + commandLine;
         }
         return "ok";
+    }
+    
+    String executePython(Iterator<String> it) {
+        if (!it.hasNext()) {
+            return "error,16,Missing function name";
+        }
+        
+        String commandLine = it.next();
+        while (it.hasNext())
+        {
+            commandLine = commandLine.concat(",").concat(it.next());
+        }
+
+        if (server.executePython(commandLine))
+        {
+            return "ok";
+        }
+        return "error,17,Could not execute function: " + commandLine;
     }
 
     String performCreate(Iterator<String> it) {

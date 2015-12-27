@@ -23,6 +23,7 @@ update-rc.d /etc/init.d/nethome	remove
 /etc/init.d/nethome stop
 echo "Removing installed files"
 rm /etc/init.d/nethome
+rm /usr/sbin/nethome
 rm -Rf $INSTALLATION_ROOT
 cp $CONFIGURATION_ROOT/config.xml /home/pi/old_config.xml
 rm -Rf $CONFIGURATION_ROOT

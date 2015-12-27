@@ -19,6 +19,7 @@
 
 package nu.nethome.home.impl;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -43,20 +44,14 @@ public class CommandLineParser {
     }
 
     public static List<String> parseLine(String searchText) {
-        List<String> result = new LinkedList<String>();
-
-        boolean returnTokens = false;
-        StringTokenizer parser = new StringTokenizer(
-                searchText,
-                delimiter,
-                returnTokens
-        );
-
-        String token = null;
-        while (parser.hasMoreTokens()) {
-            token = parser.nextToken(delimiter);
-            token = unQuote(token);
-            result.add(token);
+        List<String> result = new ArrayList<>();
+        if (!searchText.isEmpty()) {
+            for (String token : searchText.split(",")) {
+                result.add(unQuote(token));
+            }
+        }
+        if (searchText.endsWith(",")) {
+            result.add("");
         }
         return result;
     }
@@ -70,6 +65,7 @@ public class CommandLineParser {
         result = result.replace("%0D", "\r");
         result = result.replace("%0A", "\n");
         result = result.replace("%25", "%");
+        result = result.replace("%00", "");
         return result;
     }
 

@@ -23,9 +23,7 @@ import java.util.ArrayDeque;
 import java.util.Date;
 import java.util.Queue;
 
-/**
- * Created by Stefan 2013-11-21
- */
+
 public class SendQueue {
 
     public static final int MAX_MESSAGE_QUEUE_TIME = 5000;

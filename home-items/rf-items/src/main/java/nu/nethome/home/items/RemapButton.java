@@ -117,7 +117,7 @@ public abstract class RemapButton extends HomeItemAdapter {
         }
         String result = commandExecutor.executeCommandLine(commandString);
         if (!result.startsWith("ok")) {
-            logger.warning(result);
+            logger.warning(name + " could not execute command: '" + commandString + "' (" + result +")");
         }
     }
 

@@ -60,6 +60,8 @@ cp $INSTALLATION_ROOT/os/librxtxSerial_raspian.so $INSTALLATION_ROOT/lib/librxtx
 cp $SRCPATH/rpi_daemon_start.sh $INSTALLATION_ROOT/rpi_daemon_start.sh
 chmod +x $INSTALLATION_ROOT/rpi_daemon_start.sh
 chmod -w $INSTALLATION_ROOT/lib
+cp $SRCPATH/upgrade_nethome_nightly.sh /home/nethome/
+chmod +x /home/nethome/upgrade_nethome_nightly.sh
 
 # Configuration
 mkdir $CONFIGURATION_ROOT
@@ -79,6 +81,7 @@ chown -R $NH_USER $PID_ROOT
 cp $SRCPATH/nethome /etc/init.d
 chmod +x /etc/init.d/nethome
 update-rc.d nethome	defaults
+ln /etc/init.d/nethome /usr/sbin/nethome
 
 echo "Configuring serial port drivers" 1>&2
 chmod +x $SRCDRIVERS/install.sh

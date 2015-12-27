@@ -236,6 +236,10 @@ li.close img {
 	background:url(link32.png) no-repeat center;
 }
 
+.itemlocation li.icon.actuator {
+    background:url(coggwheels32.png) no-repeat center;
+}
+
 .phomeitem a:hover {
  text-decoration:underline;
 }

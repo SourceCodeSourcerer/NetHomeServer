@@ -8,6 +8,9 @@ fi
 
 NOWTIME=$(date +"%Y_%m_%d_%H_%M")
 FILENAME=build$NOWTIME.zip
+SRCPATH=$(dirname $(readlink -f $0))
+
+cd $SRCPATH
 
 if [ ! -d "nethomebackup" ]; then
   mkdir nethomebackup

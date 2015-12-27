@@ -3,8 +3,25 @@
 	<HomeItem Class="Room" >
 		<Attribute Name="ID">33</Attribute>
 		<Attribute Name="Name">Bed Room</Attribute>
-		<Attribute Name="Items">43,56,40,39</Attribute>
+		<Attribute Name="Items">56,39,43,59</Attribute>
 		<Attribute Name="Position">Left</Attribute>
+	</HomeItem>
+	<HomeItem Class="NexaLCLamp" >
+		<Attribute Name="ID">56</Attribute>
+		<Attribute Name="Name">Bedroom Lamp</Attribute>
+		<Attribute Name="State">Off</Attribute>
+		<Attribute Name="Address">938457</Attribute>
+		<Attribute Name="Button">1</Attribute>
+		<Attribute Name="TransmissionRepeats"></Attribute>
+	</HomeItem>
+	<HomeItem Class="Plan" >
+		<Attribute Name="ID">54</Attribute>
+		<Attribute Name="Name">CreatedPlan</Attribute>
+		<Attribute Name="Items">44,34,56,35,32,40,39,36,37,43,55</Attribute>
+		<Attribute Name="ImageFile">media/home.jpg</Attribute>
+		<Attribute Name="ItemLocations">43#-8#87,44#715#363,32#56#465,56#257#78,55#457#32,35#608#445,36#708#241,34#549#435,37#768#242</Attribute>
+		<Attribute Name="UpdateInterval">2</Attribute>
+		<Attribute Name="ClickAction">Popup</Attribute>
 	</HomeItem>
 	<HomeItem Class="Location" >
 		<Attribute Name="ID">48</Attribute>
@@ -15,23 +32,25 @@
 		<Attribute Name="ID">5</Attribute>
 		<Attribute Name="Name">Event Broker</Attribute>
 		<Attribute Name="Version">Unknown</Attribute>
-		<Attribute Name="SentEventCount">25</Attribute>
+		<Attribute Name="SentEventCount">20</Attribute>
+		<Attribute Name="EventsPerMinute">0</Attribute>
 		<Attribute Name="FileName">default.xml</Attribute>
 		<Attribute Name="UpgradeCommand">c:\upgrade.bat</Attribute>
-		<Attribute Name="UpTime">25 minutes</Attribute>
-		<Attribute Name="MaxDistributionTime">0,21</Attribute>
-		<Attribute Name="AverageDistributionTime">0,12</Attribute>
-		<Attribute Name="MaxItemTime">0,01</Attribute>
-		<Attribute Name="MaxItemName">RFTransmitter</Attribute>
+		<Attribute Name="LogFile"></Attribute>
+		<Attribute Name="UpTime">2 minutes</Attribute>
+		<Attribute Name="MaxDistributionTime">173,08</Attribute>
+		<Attribute Name="AverageDistributionTime">39,55</Attribute>
+		<Attribute Name="MaxItemTime">81,43</Attribute>
+		<Attribute Name="MaxItemName">UPnP_Scanner</Attribute>
 		<Attribute Name="AlarmCount">0</Attribute>
-		<Attribute Name="TotalLogRows">3</Attribute>
+		<Attribute Name="TotalLogRows">4</Attribute>
 	</HomeItem>
 	<HomeItem Class="UPMThermometer" >
 		<Attribute Name="ID">36</Attribute>
 		<Attribute Name="Name">Freezer Temperature</Attribute>
 		<Attribute Name="Temperature"></Attribute>
 		<Attribute Name="BatteryLevel">100</Attribute>
-		<Attribute Name="TimeSinceUpdate">1538</Attribute>
+		<Attribute Name="TimeSinceUpdate">124</Attribute>
 		<Attribute Name="HouseCode">2</Attribute>
 		<Attribute Name="DeviceCode">2</Attribute>
 		<Attribute Name="LogFile">freezer.log</Attribute>
@@ -44,7 +63,7 @@
 		<Attribute Name="Name">Fridge Temperature</Attribute>
 		<Attribute Name="Temperature"></Attribute>
 		<Attribute Name="BatteryLevel">100</Attribute>
-		<Attribute Name="TimeSinceUpdate">1538</Attribute>
+		<Attribute Name="TimeSinceUpdate">124</Attribute>
 		<Attribute Name="HouseCode">2</Attribute>
 		<Attribute Name="DeviceCode">3</Attribute>
 		<Attribute Name="LogFile">fridge.log</Attribute>
@@ -58,6 +77,15 @@
 		<Attribute Name="Items">50</Attribute>
 		<Attribute Name="Position">Right</Attribute>
 	</HomeItem>
+	<HomeItem Class="Plan" >
+		<Attribute Name="ID">55</Attribute>
+		<Attribute Name="Name">HomeOutwards</Attribute>
+		<Attribute Name="Items">44,35,54,34</Attribute>
+		<Attribute Name="ImageFile">media/home_back.jpg</Attribute>
+		<Attribute Name="ItemLocations">44#67#27,35#391#165,54#358#23,34#486#41</Attribute>
+		<Attribute Name="UpdateInterval">2</Attribute>
+		<Attribute Name="ClickAction">Popup</Attribute>
+	</HomeItem>
 	<HomeItem Class="Room" >
 		<Attribute Name="ID">38</Attribute>
 		<Attribute Name="Name">Kitchen</Attribute>
@@ -70,10 +98,14 @@
 		<Attribute Name="State">Off</Attribute>
 		<Attribute Name="Address">123456</Attribute>
 		<Attribute Name="Button">1</Attribute>
+		<Attribute Name="OnDimLevel"></Attribute>
+		<Attribute Name="Level">0</Attribute>
 		<Attribute Name="DimLevel1">25</Attribute>
 		<Attribute Name="DimLevel2">50</Attribute>
 		<Attribute Name="DimLevel3">75</Attribute>
 		<Attribute Name="DimLevel4">100</Attribute>
+		<Attribute Name="DimStep">10</Attribute>
+		<Attribute Name="TransmissionRepeats"></Attribute>
 	</HomeItem>
 	<HomeItem Class="Room" >
 		<Attribute Name="ID">31</Attribute>
@@ -98,7 +130,7 @@
 		<Attribute Name="Name">Outside Temp</Attribute>
 		<Attribute Name="Temperature"></Attribute>
 		<Attribute Name="BatteryLevel">100</Attribute>
-		<Attribute Name="TimeSinceUpdate">1538</Attribute>
+		<Attribute Name="TimeSinceUpdate">124</Attribute>
 		<Attribute Name="HouseCode">2</Attribute>
 		<Attribute Name="DeviceCode">4</Attribute>
 		<Attribute Name="LogFile"></Attribute>
@@ -120,6 +152,12 @@
 		<Attribute Name="Status">Active</Attribute>
 		<Attribute Name="StatusMessage">Ok</Attribute>
 	</HomeItem>
+	<HomeItem Class="UPnPScanner" >
+		<Attribute Name="ID">57</Attribute>
+		<Attribute Name="Name">UPnP_Scanner</Attribute>
+		<Attribute Name="ScanReplies">6</Attribute>
+		<Attribute Name="AutoScanInterval">60</Attribute>
+	</HomeItem>
 	<HomeItem Class="HomeGUI" >
 		<Attribute Name="ID">42</Attribute>
 		<Attribute Name="Name">WEB-GUI</Attribute>
@@ -129,14 +167,7 @@
 		<Attribute Name="RightBanner"></Attribute>
 		<Attribute Name="PlanPage">54</Attribute>
 		<Attribute Name="Location">48</Attribute>
-	</HomeItem>
-	<HomeItem Class="UPMWindDirection" >
-		<Attribute Name="ID">40</Attribute>
-		<Attribute Name="Name">Wind Direction</Attribute>
-		<Attribute Name="WindDirection">0,0</Attribute>
-		<Attribute Name="BatteryStatus">Ok</Attribute>
-		<Attribute Name="LogFile">winddirection.log</Attribute>
-		<Attribute Name="LastUpdate"></Attribute>
+		<Attribute Name="AllowEdit">Yes</Attribute>
 	</HomeItem>
 	<HomeItem Class="UPMWindSpeed" >
 		<Attribute Name="ID">39</Attribute>
@@ -155,6 +186,11 @@
 		<Attribute Name="HouseCode">11111124</Attribute>
 		<Attribute Name="DeviceCode">1112</Attribute>
 		<Attribute Name="FHZ1000PcPort"></Attribute>
+		<Attribute Name="OnDimLevel"></Attribute>
+		<Attribute Name="DimLevel1">25</Attribute>
+		<Attribute Name="DimLevel2">50</Attribute>
+		<Attribute Name="DimLevel3">75</Attribute>
+		<Attribute Name="DimLevel4">100</Attribute>
 	</HomeItem>
 	<HomeItem Class="WeekTimer" >
 		<Attribute Name="ID">35</Attribute>
@@ -168,28 +204,16 @@
 		<Attribute Name="ID">22</Attribute>
 		<Attribute Name="Name">JettyWEB</Attribute>
 		<Attribute Name="Port">8020</Attribute>
+		<Attribute Name="MediaDirectory">../media</Attribute>
 	</HomeItem>
-	<HomeItem Class="Plan" >
-		<Attribute Name="ID">54</Attribute>
-		<Attribute Name="Name">CreatedPlan</Attribute>
-		<Attribute Name="Items">44,34,56,35,32,40,39,36,37,43,55</Attribute>
-		<Attribute Name="ImageFile">media/home.jpg</Attribute>
-		<Attribute Name="ItemLocations">43#-8#87,44#715#363,32#56#465,56#257#78,55#457#32,35#608#445,36#708#241,34#549#435,37#768#242</Attribute>
-		<Attribute Name="UpdateInterval">2</Attribute>
-	</HomeItem>
-	<HomeItem Class="Plan" >
-		<Attribute Name="ID">55</Attribute>
-		<Attribute Name="Name">HomeOutwards</Attribute>
-		<Attribute Name="Items">44,35,54,34</Attribute>
-		<Attribute Name="ImageFile">media/home_back.jpg</Attribute>
-		<Attribute Name="ItemLocations">44#67#27,35#391#165,54#358#23,34#486#41</Attribute>
-		<Attribute Name="UpdateInterval">2</Attribute>
-	</HomeItem>
-	<HomeItem Class="NexaLCLamp" >
-		<Attribute Name="ID">56</Attribute>
-		<Attribute Name="Name">Bedroom Lamp</Attribute>
-		<Attribute Name="State">Off</Attribute>
-		<Attribute Name="Address">938457</Attribute>
-		<Attribute Name="Button">1</Attribute>
+	<HomeItem Class="RollerTrolBlind" >
+		<Attribute Name="ID">59</Attribute>
+		<Attribute Name="Name">Bedroom Blind</Attribute>
+		<Attribute Name="State">Up</Attribute>
+		<Attribute Name="RemoteId">1234</Attribute>
+		<Attribute Name="Channel">1</Attribute>
+		<Attribute Name="TravelTime"></Attribute>
+		<Attribute Name="Position1"></Attribute>
+		<Attribute Name="Position2"></Attribute>
 	</HomeItem>
 </HomeItems>

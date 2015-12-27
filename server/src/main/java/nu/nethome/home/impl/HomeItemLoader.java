@@ -38,7 +38,7 @@ public interface HomeItemLoader {
 
     /**
      * Load HomeItems from the specified source. The HomeItems are created and their
-     * state is loaded by applying the sep-methods for all attributes
+     * state is loaded by applying the set-methods for all attributes
      */
     List<HomeItem> loadItems(String fileName, HomeItemFactory factory, HomeServer homeServer);
 }

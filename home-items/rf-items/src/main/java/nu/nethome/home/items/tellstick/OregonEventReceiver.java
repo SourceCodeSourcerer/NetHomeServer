@@ -46,11 +46,20 @@ public class OregonEventReceiver extends TellstickEventReceiverAdaptor {
             offset = -offset;
         }
         decoder.decodeMessage(nybbles);
+
+        nybbles[1] = Byte.parseByte(event.getModel().substring(2, 3), 16);
+        nybbles[2] = Byte.parseByte(event.getModel().substring(3, 4), 16);
+        nybbles[3] = Byte.parseByte(event.getModel().substring(4, 5), 16);
+        nybbles[4] = Byte.parseByte(event.getModel().substring(5, 6), 16);
+        for (int i = 0; i < event.getDataString().length(); i++) {
+            nybbles[i + 4 + offset] = Byte.parseByte(event.getDataString().substring(i, i + 1), 16);
+        }
+        decoder.decodeMessage(nybbles);
     }
 
     @Override
     public String getEventType() {
-        return "protocol:oregon;model:0x1A2D";
+        return "protocol:oregon";
     }
 
     @Override

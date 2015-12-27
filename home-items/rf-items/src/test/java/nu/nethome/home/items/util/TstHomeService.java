@@ -112,4 +112,9 @@ public class TstHomeService implements HomeService, ServiceConfiguration {
     public String getLogDirectory() {
         return "";
     }
+    
+    @Override
+    public boolean executePython(String pythonCode) {
+        return true;
+    }
 }

@@ -135,6 +135,8 @@ public class JettyWEB extends HomeItemAdapter implements HomeItem, HomeWebServer
             ServletHolder servletHolder = new ServletHolder(new HttpServletDispatcher());
             servletHolder.setInitParameter("javax.ws.rs.Application", "nu.nethome.home.items.web.rest.HomeServices");
             applicationsContext.addServlet(servletHolder, "/rest/*");
+            // applicationsContext.addFilter()
+            // http://stackoverflow.com/questions/14390577/how-to-add-servlet-filter-with-embedded-jetty
 
             // Add all externally registered servlets
             for (Registration externalServlet : externalServlets) {

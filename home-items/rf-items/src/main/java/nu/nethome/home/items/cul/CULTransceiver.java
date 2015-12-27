@@ -88,6 +88,7 @@ public class CULTransceiver extends HomeItemAdapter implements HomeItem, Protoco
         m_ProtocolDecoders.add(new WavemanDecoder());
         m_ProtocolDecoders.add(new RisingSunDecoder());
         m_ProtocolDecoders.add(new NexaFireDecoder());
+        m_ProtocolDecoders.add(new RollerTrolDecoder());
         m_ProtocolDecoders.add(new RawDecoder());
 
         for (ProtocolDecoder decoder : m_ProtocolDecoders.getAllDecoders()) {
@@ -103,9 +104,6 @@ public class CULTransceiver extends HomeItemAdapter implements HomeItem, Protoco
         factory = new EncoderFactory(Encoders.getAllTypes());
     }
 
-    /* (non-Javadoc)
-      * @see ssg.home.HomeItem#receiveEvent(ssg.home.Event)
-      */
     public boolean receiveEvent(Event event) {
         if (!event.getAttribute("Direction").equals("Out") || !culPort.isOpen()) {
             return false;

@@ -144,7 +144,7 @@ public class TCPCommandPort extends HomeItemAdapter implements HomeItem, Runnabl
 
 	}
 
-	private static final int MAX_QUEUE_SIZE = 10;
+	private static final int MAX_QUEUE_SIZE = 20;
 	
 	private final String m_Model = ("<?xml version = \"1.0\"?> \n"
 			+ "<HomeItem Class=\"TCPCommandPort\" Category=\"Ports\" >"
@@ -165,7 +165,7 @@ public class TCPCommandPort extends HomeItemAdapter implements HomeItem, Runnabl
 	private static final String QUIT_EVENT = "CommanderQuitEvent";
 	private static Logger logger = Logger.getLogger(TCPCommandPort.class.getName());
 	protected Thread listenThread;
-	protected boolean isRunning = false;
+	protected volatile boolean isRunning = false;
 	protected ServerSocket serverSocket = null;
 	protected SimpleDateFormat formatter = new SimpleDateFormat ("yyyy.MM.dd HH:mm:ss;");
 	protected List<Session> sessions = Collections.synchronizedList(new LinkedList<Session>());
@@ -183,9 +183,14 @@ public class TCPCommandPort extends HomeItemAdapter implements HomeItem, Runnabl
 		return m_Model;
 	}
 
-	/* (non-Javadoc)
-	 * @see ssg.home.HomeItem#receiveEvent(ssg.home.Event)
-	 */
+    @Override
+    protected boolean isActivated() {
+        return isRunning;
+    }
+
+    /* (non-Javadoc)
+         * @see ssg.home.HomeItem#receiveEvent(ssg.home.Event)
+         */
 	public boolean receiveEvent(Event event) {
         if (!isActivated()) {
             return false;
@@ -221,7 +226,6 @@ public class TCPCommandPort extends HomeItemAdapter implements HomeItem, Runnabl
 
 	public void activate(HomeService service) {
         super.activate(service);
-		isRunning = true;
 		listenThread = new Thread(this, "TCPListenThread");
 		listenThread.start();
 		eventThread = new Thread("CommandPortEventDistributor") {
@@ -248,8 +252,9 @@ public class TCPCommandPort extends HomeItemAdapter implements HomeItem, Runnabl
 		
 		// Stop the event distribution thread by sending the quit event
 		Event quitEvent = server.createEvent(QUIT_EVENT, "");
-		receiveEvent(quitEvent);
-		
+        eventQueue.clear();
+        eventQueue.offer(quitEvent);
+
 		// Stop all open sessions
 		LinkedList<Session> temp = new LinkedList<Session>(sessions);
 		for (Session s : temp) {
@@ -275,7 +280,8 @@ public class TCPCommandPort extends HomeItemAdapter implements HomeItem, Runnabl
 
 	public void run() {
 		try {
-			serverSocket = new ServerSocket(listenPort);
+            isRunning = true;
+            serverSocket = new ServerSocket(listenPort);
 			while (isRunning) {
 				try {
 					// Wait for a new connection

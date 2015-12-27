@@ -19,7 +19,6 @@
 
 package nu.nethome.home.items.hue;
 
-import org.hamcrest.CoreMatchers;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
@@ -134,6 +133,44 @@ public class PhilipsHueBridgeTest {
         assertThat(result.getType(), is("Extended color light"));
     }
 
+    private static String LAMP_LUX_REST_RESPONSE = "{\n" +
+            "    \"state\": {\n" +
+            "        \"on\": true,\n" +
+            "        \"bri\": 127,\n" +
+            "        \"alert\": \"none\",\n" +
+            "        \"reachable\": true\n" +
+            "    },\n" +
+            "    \"type\": \"Dimmable light\",\n" +
+            "    \"name\": \"Lux Lamp 1\",\n" +
+            "    \"modelid\": \"LWB004\",\n" +
+            "    \"swversion\": \"66011639\",\n" +
+            "    \"pointsymbol\": {\n" +
+            "        \"1\": \"none\",\n" +
+            "        \"2\": \"none\",\n" +
+            "        \"3\": \"none\",\n" +
+            "        \"4\": \"none\",\n" +
+            "        \"5\": \"none\",\n" +
+            "        \"6\": \"none\",\n" +
+            "        \"7\": \"none\",\n" +
+            "        \"8\": \"none\"\n" +
+            "    }\n" +
+            "}";
+
+    @Test
+    public void canGetHueLuxLamp() throws Exception {
+        when(restClient.get(anyString(), anyString(), any(JSONObject.class))).thenReturn(new JSONData(LAMP_LUX_REST_RESPONSE));
+        Light result = api.getLight(USER_NAME, "2");
+        verify(restClient, times(1)).get(eq("http://1.1.1.1"), eq("/api/test/lights/2"), any(JSONObject.class));
+        assertThat(result.getState().isOn(), is(true));
+        assertThat(result.getState().getBrightness(), is(127));
+        assertThat(result.getState().getHue(), is(0));
+        assertThat(result.getState().getSaturation(), is(0));
+        assertThat(result.getModelid(), is("LWB004"));
+        assertThat(result.getName(), is("Lux Lamp 1"));
+        assertThat(result.getSwversion(), is("66011639"));
+        assertThat(result.getType(), is("Dimmable light"));
+    }
+
     private static String LAMP_LIST_REST_RESPONSE = "{\n" +
             "    \"1\": {\n" +
             "        \"name\": \"Bedroom\"\n" +
@@ -225,7 +262,7 @@ public class PhilipsHueBridgeTest {
     @Test
     public void canRegisterUser() throws Exception {
         when(restClient.post(anyString(), anyString(), any(JSONObject.class))).thenReturn(new JSONData(REGISTER_USER_OK));
-        String result = api.registerUser("Test", "abcdefghijklmnop");
+        String result = api.registerUser("Test");
         verify(restClient, times(1)).post(eq("http://1.1.1.1"), eq("/api"), any(JSONObject.class));
         assertThat(result, is("1234567890"));
     }

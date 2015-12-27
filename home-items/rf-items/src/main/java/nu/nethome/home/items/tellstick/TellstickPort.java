@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2005-2013, Stefan Strömberg <stefangs@nethome.nu>
+ * Copyright (C) 2005-2015, Stefan Strömberg <stefangs@nethome.nu>
  *
  * This file is part of OpenNetHome  (http://www.nethome.nu)
  *
@@ -20,6 +20,7 @@
 package nu.nethome.home.items.tellstick;
 
 import gnu.io.*;
+import nu.nethome.coders.RollerTrol;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -77,7 +78,7 @@ public class TellstickPort {
             if ((System.getProperty("os.name").toUpperCase().indexOf("LINUX") != -1) &&
                     (System.getProperty("gnu.io.rxtx.SerialPorts") == null)) {
                 System.setProperty("gnu.io.rxtx.SerialPorts", "/dev/ttyS0:/dev/ttyS1:/dev/ttyS2:" + "" +
-                        "/dev/ttyUSB0:/dev/ttyUSB1:/dev/ttyUSB2:" +
+                        "/dev/ttyUSB0:/dev/ttyUSB1:/dev/ttyUSB2:/dev/ttyUSB3:/dev/ttyUSB4:" +
                         "/dev/ttyACM0:/dev/ttyACM1:/dev/ttyACM2");
             }
 
@@ -252,7 +253,7 @@ public class TellstickPort {
 
     private byte[] buildSendCommand(byte repeat, int[] rawMessage) {
         byte[] byteMessage = new byte[rawMessage.length - 1 + HEADER_LENGTH + TRAILER_LENGTH];
-        byte repeatSpace = (byte) (rawMessage[rawMessage.length - 1] / US_PER_MS);
+        byte repeatSpace = calculateRepeatValue(rawMessage);
         byteMessage[0] = 'R';
         byteMessage[1] = (byte) repeat;
         byteMessage[2] = 'P';
@@ -278,8 +279,9 @@ public class TellstickPort {
     }
 
     private byte[] buildExtendedSendCommand(byte repeat, int[] rawMessage) {
-        byte repeatSpacePulse = (byte) (rawMessage[rawMessage.length - 1] / US_PER_MS);
-        int messageToProcess[] = Arrays.copyOfRange(rawMessage, 0, rawMessage.length - 1);
+        int adjustedMessage[] = protocolSpecificAdjustments(rawMessage);
+        byte repeatSpacePulse = calculateRepeatValue(adjustedMessage);
+        int messageToProcess[] = Arrays.copyOfRange(adjustedMessage, 0, adjustedMessage.length - 1);
         reduceTo4PulseLengthValues(messageToProcess);
         Integer pulseLengthValues[] = distinctPulseLengthValues(messageToProcess);
         int messageLength = calculateCompressedMessageLength(messageToProcess);
@@ -299,6 +301,39 @@ public class TellstickPort {
         writeCompressedPulseLengths(messageToProcess, pulseLengthValues, byteMessage, resultMessageIndex);
         byteMessage[byteMessage.length - 1] = '+';
         return byteMessage;
+    }
+
+    private byte calculateRepeatValue(int[] adjustedMessage) {
+        byte repeat = (byte) (adjustedMessage[adjustedMessage.length - 1] / US_PER_MS);
+        return repeat > 0 ? repeat : 1;
+    }
+
+    private int[] protocolSpecificAdjustments(int[] messageToProcess) {
+        if (messageToProcess[0] == RollerTrol.LONG_PREAMBLE_MARK.length()) {
+            return rollerTrolAdjustment(messageToProcess);
+        } else {
+            return messageToProcess;
+        }
+    }
+
+    private int[] rollerTrolAdjustment(int[] messageToProcess) {
+        int [] newMessage = new int[messageToProcess.length + 8];
+        newMessage[0] = 2450;
+        newMessage[1] = 10;
+        newMessage[2] = 2450;
+        newMessage[3] = 2450;
+        newMessage[4] = 600;
+        newMessage[5] = 10;
+        newMessage[6] = 600;
+        newMessage[7] = 10;
+        newMessage[8] = 300;
+        newMessage[9] = 300;
+        for (int i = 0; i < messageToProcess.length - 4; i++) {
+            newMessage[i + 10] = messageToProcess[i + 4];
+        }
+        newMessage[messageToProcess.length + 6] = 600;
+        newMessage[messageToProcess.length + 7] = 300;
+        return newMessage;
     }
 
     private void writeCompressedPulseLengths(int[] messageToProcess, Integer[] pulseLengthValues, byte[] byteMessage, int resultMessageIndex) {

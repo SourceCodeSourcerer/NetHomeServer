@@ -29,14 +29,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  *
  */
 public class PhilipsHueBridge {
 
+    private static Logger logger = Logger.getLogger(PhilipsHueBridge.class.getName());
     public static final String WWW_MEETHUE_COM_API = "https://www.meethue.com";
     public static final String HUE_NUPNP = "/api/nupnp";
+
 
     private String url = "http://192.168.1.174";
     private String id = "";
@@ -68,9 +71,9 @@ public class PhilipsHueBridge {
             if (state.isOn()) {
                 stateParameter.put("on", true);
                 stateParameter.put("bri", state.getBrightness());
-                if (state.getColorTemperature() > 0) {
+                if (state.hasColorTemperature()) {
                     stateParameter.put("ct", state.getColorTemperature());
-                } else {
+                } else if (state.hasHueSat()){
                     stateParameter.put("hue", state.getHue());
                     stateParameter.put("sat", state.getSaturation());
                 }
@@ -79,6 +82,7 @@ public class PhilipsHueBridge {
             }
             String resource = String.format("/api/%s/lights/%s/state", user, lamp);
             JSONData result = client.put(url, resource, stateParameter);
+            logger.fine(result.toString());
             checkForErrorResponse(result);
         } catch (JSONException e) {
             throw new HueProcessingException(e);
@@ -104,6 +108,7 @@ public class PhilipsHueBridge {
         try {
             String resource = String.format("/api/%s/lights/%s", user, lamp);
             JSONData result = client.get(url, resource, null);
+            logger.fine(result.toString());
             checkForErrorResponse(result);
             return new Light(result.getObject());
         } catch (JSONException e) {
@@ -123,6 +128,7 @@ public class PhilipsHueBridge {
         try {
             String resource = String.format("/api/%s/lights", user);
             JSONData result = client.get(url, resource, null);
+            logger.fine(result.toString());
             checkForErrorResponse(result);
             List<LightId> list = new ArrayList<LightId>();
             for (String lampId : getFieldNames(result.getObject())) {
@@ -146,6 +152,7 @@ public class PhilipsHueBridge {
         try {
             String resource = String.format("/api/%s/sensors", user);
             JSONData result = client.get(url, resource, null);
+            logger.fine(result.toString());
             checkForErrorResponse(result);
             JSONObject sensors = result.getObject();
             List<Sensor> list = new ArrayList<>();
@@ -164,19 +171,16 @@ public class PhilipsHueBridge {
      * Register a new user to the bridge. The button on the bridge must have been pressed within 30 seconds
      * for this operation to succeed.
      *
+     *
      * @param deviceType Name of device, should for example be app name
-     * @param user       Username to register. May be left blank
      * @return The name of the registered user
      * @throws IOException            If communication fails
      * @throws HueProcessingException If the command cannot be executed
      */
-    public String registerUser(String deviceType, String user) throws HueProcessingException, IOException {
+    public String registerUser(String deviceType) throws HueProcessingException, IOException {
         try {
             JSONObject parameter = new JSONObject();
             parameter.put("devicetype", deviceType);
-            if (user != null && user.length() > 0) {
-                parameter.put("username", user);
-            }
             JSONData result = client.post(url, "/api", parameter);
             checkForErrorResponse(result);
             JSONObject resultObject = result.getArray().getJSONObject(0);

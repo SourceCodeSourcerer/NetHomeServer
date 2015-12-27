@@ -62,6 +62,13 @@ public interface Event {
     int[] getAttributeArr(String name);
 
     /**
+     * Is the event of the specified type
+     * @param typeName
+     * @return true id the type is the same
+     */
+    boolean isType(String typeName);
+
+    /**
      * Set an attribute value in the Event
      *
      * @param name  name of the attribute

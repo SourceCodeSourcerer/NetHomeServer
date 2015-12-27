@@ -38,7 +38,7 @@ import java.util.logging.Logger;
 * @author Stefan
 */
 @Plugin
-@HomeItemType(value = "Controls", creationEvents = RisingSunLamp.RISING_SUN_PROTOCOL_NAME)
+@HomeItemType(value = "Lamps", creationEvents = RisingSunLamp.RISING_SUN_PROTOCOL_NAME)
 public class RisingSunLamp extends NexaLamp implements HomeItem {
 
     private static final String MODEL = ("<?xml version = \"1.0\"?> \n"

@@ -1,9 +1,10 @@
-package nu.nethome.home.items.net.wemo;
+package nu.nethome.home.items;
 
 import nu.nethome.home.item.HomeItem;
 import nu.nethome.home.item.HomeItemAdapter;
 import nu.nethome.home.item.HomeItemType;
 import nu.nethome.home.system.Event;
+import nu.nethome.home.system.HomeService;
 import nu.nethome.util.plugin.Plugin;
 import org.cybergarage.upnp.ControlPoint;
 import org.cybergarage.upnp.Device;
@@ -18,18 +19,24 @@ public class UPnPScanner extends HomeItemAdapter implements HomeItem {
     private static final String MODEL = ("<?xml version = \"1.0\"?> \n"
             + "<HomeItem Class=\"UPnPScanner\" Category=\"Ports\" >"
             + "  <Attribute Name=\"ScanReplies\" Type=\"String\" Get=\"getScanReplies\" Default=\"true\" />"
+            + "  <Attribute Name=\"AutoScanInterval\" Type=\"String\" Get=\"getScanInterval\" Set=\"setScanInterval\" />"
             + "  <Action Name=\"scan\" 	Method=\"scan\" />"
             + "</HomeItem> ");
 
     public static final String UPN_P_CREATION_MESSAGE = "UPnP_Creation_Message";
+    public static final String UPN_P_SCAN_MESSAGE = "UPnP_Scan";
     public static final String DEVICE_TYPE = "DeviceType";
     public static final String LOCATION = "Location";
     public static final String SERIAL_NUMBER = "SerialNumber";
     public static final String FRIENDLY_NAME = "FriendlyName";
+    public static final String MODEL_NAME = "ModelName";
+    public static final String UDN = "UDN";
 
     private static Logger logger = Logger.getLogger(UPnPScanner.class.getName());
     private final ControlPoint controlPoint = new ControlPoint();
     private int replies = 0;
+    private int scanInterval = 60;
+    private int minutesUntilNextScan = 1;
 
     @Override
     public String getModel() {
@@ -38,9 +45,19 @@ public class UPnPScanner extends HomeItemAdapter implements HomeItem {
 
     @Override
     public boolean receiveEvent(Event event) {
-        if (event.getAttribute(Event.EVENT_TYPE_ATTRIBUTE).equals("ReportItems")) {
+        if (event.isType("ReportItems") || event.isType(UPN_P_SCAN_MESSAGE) || isTimeForAutoScan(event)) {
             scan();
             return true;
+        }
+        return false;
+    }
+
+    private boolean isTimeForAutoScan(Event event) {
+        if (event.isType(HomeService.MINUTE_EVENT_TYPE)) {
+            if (--minutesUntilNextScan <= 0) {
+                minutesUntilNextScan = scanInterval;
+                return true;
+            }
         }
         return false;
     }
@@ -58,7 +75,6 @@ public class UPnPScanner extends HomeItemAdapter implements HomeItem {
                 public void deviceRemoved(Device device) {
                 }
             });
-            controlPoint.search();
         } else {
             logger.warning("Could not start UPnP scanner");
         }
@@ -74,9 +90,11 @@ public class UPnPScanner extends HomeItemAdapter implements HomeItem {
         replies++;
         Event deviceEvent = server.createEvent(UPN_P_CREATION_MESSAGE, "");
         deviceEvent.setAttribute(DEVICE_TYPE, device.getDeviceType());
+        deviceEvent.setAttribute(MODEL_NAME, device.getModelName());
         deviceEvent.setAttribute(LOCATION, device.getLocation());
         deviceEvent.setAttribute(SERIAL_NUMBER, device.getSerialNumber());
         deviceEvent.setAttribute(FRIENDLY_NAME, device.getFriendlyName());
+        deviceEvent.setAttribute(UDN, device.getUDN());
         deviceEvent.setAttribute("Direction", "In");
         server.send(deviceEvent);
     }
@@ -92,5 +110,14 @@ public class UPnPScanner extends HomeItemAdapter implements HomeItem {
         }
         controlPoint.search();
         return "";
+    }
+
+    public String getScanInterval() {
+        return Integer.toString(scanInterval);
+    }
+
+    public void setScanInterval(String scanInterval) {
+        this.scanInterval = Integer.parseInt(scanInterval);
+        minutesUntilNextScan = this.scanInterval;
     }
 }

@@ -41,6 +41,6 @@ public class TellstickEventTest {
         assertThat(event.getModel(), is("temperaturehumidity"));
         assertThat(event.getProtocol(), is("mandolyn"));
         assertThat(event.getSignalClass(), is("sensor"));
-        assertThat(event.getEventType(), is("protocol:mandolyn;model:temperaturehumidity"));
+        assertThat(event.getEventProtocolModel(), is("protocol:mandolyn;model:temperaturehumidity"));
     }
 }

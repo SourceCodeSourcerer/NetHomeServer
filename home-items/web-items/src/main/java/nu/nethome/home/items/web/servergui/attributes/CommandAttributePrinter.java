@@ -106,6 +106,7 @@ public class CommandAttributePrinter implements AttributeTypePrinterInterface {
         p.println("  <option value=\"set,[item name],[item attribute],[attribute value]\">Set</option>");
         p.println("  <option value=\"exec,[shell command line]\">Exec</option>");
         p.println("  <option value=\"event,[event name],[attribute name],[attribute value]\">Event</option>");
+        p.println("  <option value=\"python,[function name]\">Python</option>");
         p.println("  </optgroup>");
         p.println("  </select>");
     }

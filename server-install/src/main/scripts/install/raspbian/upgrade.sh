@@ -37,6 +37,15 @@ rm -f $INSTALLATION_ROOT/lib/librxtxSerial.so
 cp $INSTALLATION_ROOT/os/librxtxSerial_raspian.so $INSTALLATION_ROOT/lib/librxtxSerial.so
 chmod -w $INSTALLATION_ROOT/lib
 
+# Added upgrade tasks
+cp -f $SRCPATH/nethome /etc/init.d
+ln -f /etc/init.d/nethome /usr/sbin/nethome
+if [ -f /home/nethome/upgrade_nethome_nightly.sh ]; then
+  mv -f /home/nethome/upgrade_nethome_nightly.sh /home/nethome/upgrade_nethome_nightly_old.sh
+fi
+cp $SRCPATH/upgrade_nethome_nightly.sh /home/nethome/upgrade_nethome_nightly.sh
+chmod +x /home/nethome/upgrade_nethome_nightly.sh
+
 # Start the server
 echo "Restarting server" 1>&2
 /etc/init.d/nethome start

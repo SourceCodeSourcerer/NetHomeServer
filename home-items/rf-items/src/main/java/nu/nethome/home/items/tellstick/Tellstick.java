@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2005-2013, Stefan Strömberg <stefangs@nethome.nu>
+ * Copyright (C) 2005-2015, Stefan Strömberg <stefangs@nethome.nu>
  *
  * This file is part of OpenNetHome  (http://www.nethome.nu)
  *
@@ -83,6 +83,7 @@ public class Tellstick extends HomeItemAdapter implements HomeItem, ProtocolDeco
         addEventReceiver(new NexaEventReceiver(this));
         addEventReceiver(new OregonEventReceiver(this));
         addEventReceiver(new FineOffsetEventReceiver(this));
+        addEventReceiver(new RollerTrolEventReceiver(this));
     }
 
     private void addEventReceiver(TellstickEventReceiver eventReceiver) {
@@ -178,6 +179,10 @@ public class Tellstick extends HomeItemAdapter implements HomeItem, ProtocolDeco
 
     @Override
     public void activate() {
+        createTellstickPort();
+    }
+
+    void createTellstickPort() {
         try {
             tellstick = new TellstickPort(portName, new TellstickPort.Client() {
                 @Override
@@ -243,10 +248,18 @@ public class Tellstick extends HomeItemAdapter implements HomeItem, ProtocolDeco
     private void handleReceivedMessage(String message) {
         sendQueue.flush();
         TellstickEvent event = new TellstickEvent(message);
-        TellstickEventReceiver handler = eventReceivers.get(event.getEventType());
+        TellstickEventReceiver handler = getHandlerForEvent(event);
         if (handler != null) {
             handler.processEvent(event);
         }
+    }
+
+    private TellstickEventReceiver getHandlerForEvent(TellstickEvent event) {
+        TellstickEventReceiver tellstickEventReceiver = eventReceivers.get(event.getEventProtocolModel());
+        if (tellstickEventReceiver == null) {
+            tellstickEventReceiver = eventReceivers.get(event.getEventProtocol());
+        }
+        return tellstickEventReceiver;
     }
 
     private void handleAck(String message) {

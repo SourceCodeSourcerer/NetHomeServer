@@ -105,6 +105,11 @@ public class InternalEvent implements Event {
         return arr;
     }
 
+    @Override
+    public boolean isType(String typeName) {
+        return getAttribute(EVENT_TYPE_ATTRIBUTE).equals(typeName);
+    }
+
     public void setAttribute(String name, int[] value) {
         StringBuilder buildAttribute = new StringBuilder();
         for (int valueItem : value) {

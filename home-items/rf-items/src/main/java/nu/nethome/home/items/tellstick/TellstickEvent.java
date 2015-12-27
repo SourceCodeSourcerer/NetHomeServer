@@ -25,7 +25,6 @@ public class TellstickEvent {
     private String model = "";
     private String protocol = "";
     private String signalClass = "";
-    private String eventType;
 
     public TellstickEvent(String message) {
         String eventData = message.substring(2);
@@ -44,7 +43,6 @@ public class TellstickEvent {
                 dataString = fields[1];
             }
         }
-        eventType = String.format("protocol:%s;model:%s", protocol, model);
     }
 
     public long getData() {
@@ -67,7 +65,11 @@ public class TellstickEvent {
         return signalClass;
     }
 
-    public String getEventType() {
-        return eventType;
+    public String getEventProtocolModel() {
+        return String.format("protocol:%s;model:%s", protocol, model);
+    }
+
+    public String getEventProtocol() {
+        return String.format("protocol:%s", protocol, model);
     }
 }

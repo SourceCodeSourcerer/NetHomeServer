@@ -14,6 +14,7 @@
     <url>http://maven.apache.org</url>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <additionalparam>-Xdoclint:none</additionalparam>
     </properties>
     <build>
         <plugins>
@@ -75,6 +76,11 @@
         <dependency>
             <groupId>nu.nethome</groupId>
             <artifactId>coders</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>nu.nethome.zwave</groupId>
+            <artifactId>zwave</artifactId>
             <scope>runtime</scope>
         </dependency>
         <dependency>

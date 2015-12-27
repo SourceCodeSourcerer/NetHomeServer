@@ -76,7 +76,7 @@ public interface HomeItemProxy {
     /**
      * Calls the specified action in the HomeItem. If the HomeItem does not have an action with the specified name
      * the operation has no effect.
-     * @param actionName
+     * @param actionName name of action to call
      * @return the value from the action
      * @throws ExecutionFailure
      */

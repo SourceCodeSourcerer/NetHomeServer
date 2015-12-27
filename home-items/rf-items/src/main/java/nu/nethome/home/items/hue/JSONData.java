@@ -59,4 +59,13 @@ public class JSONData {
         }
         return array;
     }
+
+    @Override
+    public String toString() {
+        if (isObject()) {
+            return object.toString(3);
+        } else {
+            return array.toString(3);
+        }
+    }
 }

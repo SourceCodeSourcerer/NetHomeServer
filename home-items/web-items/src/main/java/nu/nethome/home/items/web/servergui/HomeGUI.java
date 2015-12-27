@@ -572,6 +572,9 @@ public class HomeGUI extends HttpServlet implements FinalEventListener, HomeItem
         if (itemType.equals("Infrastructure")) {
             return small ? "infra16.png" : "infra.png";
         }
+        if (itemType.equals("Actuators")) {
+            return small ? "coggwheels16.png" : "coggwheels.png";
+        }
         return small ? "item16.png" : "item.png";
     }
 

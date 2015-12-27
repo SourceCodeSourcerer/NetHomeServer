@@ -99,24 +99,7 @@ public class HomeItemFileLoader implements HomeItemLoader {
     }
 
     public final List<HomeItem> loadItems(String fileName, HomeItemFactory factory, HomeServer homeServer) {
-
-        // Create a collection where the Items get sorted on start order
-        TreeSet<HomeItem> sortedItems = new TreeSet<HomeItem>(new Comparator<HomeItem>() {
-            public int compare(HomeItem o1, HomeItem o2) {
-                try {
-                    HomeItemModel m1 = StaticHomeItemModel.getModel(o1);
-                    HomeItemModel m2 = StaticHomeItemModel.getModel(o2);
-                    if (m1.getStartOrder() == m2.getStartOrder()) {
-                        return o1.getName().compareTo(o2.getName());
-                    }
-                    return m1.getStartOrder() > m2.getStartOrder() ? 1 : -1;
-                } catch (ModelException e) {
-                    // This should not happen...
-                    return 0;
-                }
-            }
-        });
-
+        List<HomeItem> loadedItems = new ArrayList<HomeItem>();
         try {
             logger.info("Loading Items from " + fileName);
             DOMParser parser = new DOMParser();
@@ -133,7 +116,7 @@ public class HomeItemFileLoader implements HomeItemLoader {
 
                     // Create the HomeItem from the attribute values
                     try {
-                        sortedItems.add(createItemFromNode(elements.item(loopIndex), factory, homeServer));
+                        loadedItems.add(createItemFromNode(elements.item(loopIndex), factory, homeServer));
                     } catch (Exception e) {
                         logger.warning("Failed to load Item nr" + Integer.toString(loopIndex) + "from file. " + e.getMessage());
                     }
@@ -144,7 +127,7 @@ public class HomeItemFileLoader implements HomeItemLoader {
         } catch (IOException e) {
             logger.warning("Due to an IOException, the parser could not load " + fileName);
         }
-        return new LinkedList<HomeItem>(sortedItems);
+        return loadedItems;
     }
 
     private HomeItem createItemFromNode(Node itemNode, HomeItemFactory factory, HomeServer homeServer) throws Exception {

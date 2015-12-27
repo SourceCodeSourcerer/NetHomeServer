@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2005-2014, Stefan Strömberg <stefangs@nethome.nu>
+ * Copyright (C) 2005-2015, Stefan Strömberg <stefangs@nethome.nu>
  *
  * This file is part of OpenNetHome  (http://www.nethome.nu)
  *
@@ -22,7 +22,9 @@ package nu.nethome.home.start;
 import nu.nethome.home.impl.HomeItemFactory;
 import nu.nethome.home.item.HomeItem;
 import nu.nethome.home.item.HomeItemInfo;
+import nu.nethome.home.items.UPnPScanner;
 import nu.nethome.home.items.net.ArpScanner;
+import nu.nethome.home.items.rollertrol.RollerTrolBlindGSeries;
 import nu.nethome.home.items.tellstick.Tellstick;
 
 import java.util.*;
@@ -116,7 +118,10 @@ public class StaticHomeItemFactory implements HomeItemFactory {
             new HomeItemClassInfo("TeamCityBuildMonitor", nu.nethome.home.items.net.TeamCityBuildMonitor.class),
             new HomeItemClassInfo("DebugManager", nu.nethome.home.items.misc.DebugManager.class),
             new HomeItemClassInfo("WemoInsightSwitch", nu.nethome.home.items.net.wemo.WemoInsightSwitch.class),
-            new HomeItemClassInfo("UPnPScanner", nu.nethome.home.items.net.wemo.UPnPScanner.class),
+            new HomeItemClassInfo("WemoSwitch", nu.nethome.home.items.net.wemo.WemoSwitch.class),
+            new HomeItemClassInfo("WemoBridge", nu.nethome.home.items.net.wemo.WemoBridge.class),
+            new HomeItemClassInfo("WemoLamp", nu.nethome.home.items.net.wemo.WemoLamp.class),
+            new HomeItemClassInfo("UPnPScanner", UPnPScanner.class),
 
             // rf-items
             new HomeItemClassInfo("UPMThermometer", nu.nethome.home.items.upm.UPMThermometer.class),
@@ -127,6 +132,7 @@ public class StaticHomeItemFactory implements HomeItemFactory {
             new HomeItemClassInfo("UPMSoilMoisture", nu.nethome.home.items.upm.UPMSoilMoisture.class),
             new HomeItemClassInfo("OregonThermometer", nu.nethome.home.items.oregon.OregonThermometer.class),
             new HomeItemClassInfo("OregonHygrometer", nu.nethome.home.items.oregon.OregonHygrometer.class),
+            new HomeItemClassInfo("OregonWind", nu.nethome.home.items.oregon.OregonWind.class),
             new HomeItemClassInfo("FineOffsetThermometer", nu.nethome.home.items.fineoffset.FineOffsetThermometer.class),
             new HomeItemClassInfo("FineOffsetHygrometer", nu.nethome.home.items.fineoffset.FineOffsetHygrometer.class),
             new HomeItemClassInfo("FineOffsetRainGauge", nu.nethome.home.items.fineoffset.FineOffsetRainGauge.class),
@@ -150,6 +156,7 @@ public class StaticHomeItemFactory implements HomeItemFactory {
             new HomeItemClassInfo("FS20Lamp", nu.nethome.home.items.fs20.FS20Lamp.class),
             new HomeItemClassInfo("RisingSunLamp", nu.nethome.home.items.risingsun.RisingSunLamp.class),
             new HomeItemClassInfo("CULTransceiver", nu.nethome.home.items.cul.CULTransceiver.class),
+            new HomeItemClassInfo("JeeLink", nu.nethome.home.items.jeelink.JeeLink.class),
             new HomeItemClassInfo("GenericProntoCommander", nu.nethome.home.items.pronto.GenericProntoCommander.class),
             new HomeItemClassInfo("ZhejiangLamp", nu.nethome.home.items.zhejiang.ZhejiangLamp.class),
             new HomeItemClassInfo("RFBitBangerTransmitter", nu.nethome.home.items.rfbitbanger.RFBitBangerTransmitter.class),
@@ -158,10 +165,16 @@ public class StaticHomeItemFactory implements HomeItemFactory {
             new HomeItemClassInfo("Tellstick", Tellstick.class),
             new HomeItemClassInfo("HueBridge", nu.nethome.home.items.hue.HueBridge.class),
             new HomeItemClassInfo("HueLamp", nu.nethome.home.items.hue.HueLamp.class),
-
+            new HomeItemClassInfo("RollerTrolBlind", nu.nethome.home.items.rollertrol.RollerTrolBlind.class),
+            new HomeItemClassInfo("RollerTrolBlindGSeries", RollerTrolBlindGSeries.class),
+            new HomeItemClassInfo("ZWaveController", nu.nethome.home.items.zwave.ZWaveController.class),
+            new HomeItemClassInfo("ZWaveRemapButton", nu.nethome.home.items.zwave.ZWaveRemapButton.class),
+            new HomeItemClassInfo("ZWaveNodeExplorer", nu.nethome.home.items.zwave.ZWaveNodeExplorer.class),
+            new HomeItemClassInfo("ZWaveCommandPort", nu.nethome.home.items.zwave.ZWaveCommandPort.class),
 
             // web-items
             new HomeItemClassInfo("Room", nu.nethome.home.items.infra.Room.class),
+            new HomeItemClassInfo("Box", nu.nethome.home.items.infra.Box.class),
             new HomeItemClassInfo("Location", nu.nethome.home.items.infra.Location.class),
             new HomeItemClassInfo("Plan", nu.nethome.home.items.infra.Plan.class),
             new HomeItemClassInfo("HomeGUI", nu.nethome.home.items.web.servergui.HomeGUI.class),

@@ -396,6 +396,9 @@ public class PlanPage implements HomePageInterface {
         if (itemType.equals("Infrastructure")) {
             return "house";
         }
+        if (itemType.equals("Actuators")) {
+            return "actuator";
+        }
         return "item.png";
     }
 }
