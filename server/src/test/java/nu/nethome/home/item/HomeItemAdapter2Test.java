@@ -548,7 +548,7 @@ public class HomeItemAdapter2Test {
         String result = instance.getModel();
         System.out.println(result);
         assertTrue(result.contains("<Attribute Name=\"SampleAttribute\" Type=\"String\""));
-        assertTrue(result.contains("<Attribute Name=\"OnCommand\" Type=\"Command\"/>"));
-        assertTrue(result.contains("<Attribute Name=\"OffCommand\" Type=\"Command\"/>"));
+        assertFalse(result.contains("<Attribute Name=\"OnCommand\" Type=\"Command\"/>"));
+        assertFalse(result.contains("<Attribute Name=\"OffCommand\" Type=\"Command\"/>"));
     }
 }
