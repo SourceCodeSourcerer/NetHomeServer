@@ -118,7 +118,7 @@ public class HomeItemFileLoader implements HomeItemLoader {
                     try {
                         loadedItems.add(createItemFromNode(elements.item(loopIndex), factory, homeServer));
                     } catch (Exception e) {
-                        logger.warning("Failed to load Item nr" + Integer.toString(loopIndex) + "from file. " + e.getMessage());
+                        logger.warning("Failed to load Item nr" + Integer.toString(loopIndex) + " from file. " + e.getMessage());
                     }
                 }
             }

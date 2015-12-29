@@ -30,13 +30,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLDecoder;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 public class LogReader {
 
@@ -54,6 +59,10 @@ public class LogReader {
 
     public List<Object[]> getLog(String startTimeString, String stopTimeString, HomeItemProxy item) throws IOException {
         List<Object[]> result = new ArrayList<Object[]>();
+        
+        //startTimeString = "20151228000100";
+        //stopTimeString = "20151228235900";
+                
         Date startTime = parseParameterDate(startTimeString);
         Date stopTime =  parseParameterDate(stopTimeString);
 
@@ -68,7 +77,50 @@ public class LogReader {
             fileName = item.getAttributeValue("LogFile");
         }
         if (fileName != null) fileName = fromURL(fileName);
+        
+        final String startTimeAsString = new SimpleDateFormat("yyyy.MM.dd").format(startTime);
+        final String stopTimeAsString = new SimpleDateFormat("yyyy.MM.dd").format(stopTime);
+        //System.out.println("Start: " + startTimeAsString);
+        //System.out.println("Stop : " + stopTimeAsString);
+/* */
+        Long startTimeMs = startTime.getTime();
+        Long stopTimeMs = stopTime.getTime();
+        try (Stream<String> stream = Files.lines(Paths.get(getFullFileName(fileName)))) {
+            stream
+            .filter(line -> { 
+                    //System.out.println(line);
+                    //System.out.println(startTimeAsString);
+                    return line.contains(startTimeAsString) || line.contains(stopTimeAsString);
+                }
+            )
+            .map(String::trim)
+            .forEach(line -> {
+                // Adapt the time format
+                String minuteTime = line.substring(0, 16).replace('.', '-');
+                // System.out.println("This is time: " + minuteTime);
+                // Parse the time stamp
 
+                try {
+                    final Date min = fileDateFormat.parse(minuteTime);
+                    //System.out.println(min.getTime() + " > " + startTimeMs);
+                    //System.out.println(min.getTime() + " < " + stopTimeMs);
+                    // Check if value is within time window
+                    if ((min.getTime() > startTimeMs) &&
+                            (min.getTime() < stopTimeMs)) {
+
+                        // Parse the value
+                        double value = Double.parseDouble((line.substring(20)).replace(',', '.'));
+                        // Add the entry
+                        Object[] row = {dateFormat.format(min), value};
+                        result.add(row);
+                    }
+                } catch (ParseException ex) {
+                    Logger.getLogger(LogReader.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            });
+        }
+/*        
         try {
             // Open the data file
             FileReader reader = new FileReader(getFullFileName(fileName));
@@ -135,6 +187,7 @@ public class LogReader {
         } catch (FileNotFoundException f) {
             System.out.println(f.toString());
         }
+        */
         return result;
     }
 

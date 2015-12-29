@@ -760,8 +760,8 @@ public class HomeServer implements HomeItem, HomeService, ServiceState, ServiceC
 
     public void setLogDirectory(String logFileDirectory) {
         this.logDirectory = logFileDirectory;
-        if (!this.logDirectory.isEmpty() && !this.logDirectory.endsWith(File.pathSeparator)) {
-            this.logDirectory += File.pathSeparator;
+        if (!this.logDirectory.isEmpty() && !this.logDirectory.endsWith(File.separator)) {
+            this.logDirectory += File.separator;
         }
     }
 
