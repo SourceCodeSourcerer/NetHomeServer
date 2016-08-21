@@ -70,6 +70,6 @@ public class TellstickEvent {
     }
 
     public String getEventProtocol() {
-        return String.format("protocol:%s", protocol, model);
+        return String.format("protocol:%s", protocol);
     }
 }

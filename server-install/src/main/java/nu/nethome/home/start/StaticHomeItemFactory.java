@@ -19,6 +19,13 @@
 
 package nu.nethome.home.start;
 
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.TreeMap;
+import java.util.logging.Logger;
+
 import nu.nethome.home.impl.HomeItemFactory;
 import nu.nethome.home.item.HomeItem;
 import nu.nethome.home.item.HomeItemInfo;
@@ -29,9 +36,6 @@ import nu.nethome.home.items.net.MqttClient;
 import nu.nethome.home.items.rollertrol.RollerTrolBlindGSeries;
 import nu.nethome.home.items.tellstick.Tellstick;
 import nu.nethome.home.items.web.proxy.HomeCloudConnection;
-
-import java.util.*;
-import java.util.logging.Logger;
 
 /**
  * A repository of all installed HomeItem classes in the system. Can list all supported classes
@@ -140,6 +144,7 @@ public class StaticHomeItemFactory implements HomeItemFactory {
             new HomeItemClassInfo("OregonThermometer", nu.nethome.home.items.oregon.OregonThermometer.class),
             new HomeItemClassInfo("OregonHygrometer", nu.nethome.home.items.oregon.OregonHygrometer.class),
             new HomeItemClassInfo("OregonWind", nu.nethome.home.items.oregon.OregonWind.class),
+            new HomeItemClassInfo("OregonRainGauge", nu.nethome.home.items.oregon.OregonRainGauge.class),
             new HomeItemClassInfo("FineOffsetThermometer", nu.nethome.home.items.fineoffset.FineOffsetThermometer.class),
             new HomeItemClassInfo("FineOffsetHygrometer", nu.nethome.home.items.fineoffset.FineOffsetHygrometer.class),
             new HomeItemClassInfo("FineOffsetRainGauge", nu.nethome.home.items.fineoffset.FineOffsetRainGauge.class),
