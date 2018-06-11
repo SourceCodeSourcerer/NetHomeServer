@@ -39,7 +39,10 @@ import java.util.List;
 import java.util.logging.Logger;
 
 /**
- * CULTransceiver ...
+ * JeeLink Classic is a Arduino compatible programmable radio transmitter/receiver sold by
+ * JeeLabs/Digital Smarties. OpenNetHome has a custom firmware that turns the JeeLink into a
+ * generic 433MHz remote control sender. See details about installing JeeLink here:
+ * http://opennethome.org/hardware/hardwareinstall-jeelink
  *
  * @author Stefan
  */

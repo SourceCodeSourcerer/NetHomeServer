@@ -15,15 +15,15 @@ cd $SRCPATH
 if [ ! -d "nethomebackup" ]; then
   mkdir nethomebackup
 fi
-if [ ! -d "nethomebackup" -o -e "nethomebackup/nethomeservernightly.zip" -o -d "nethomebackup/nethomeservernightly" ]; then
+if [ ! -d "nethomebackup" -o -e "nethomebackup/$1" -o -d "nethomebackup/nethomeservernightly" ]; then
    echo "Could not create 'nethomebackup' directory or directory not clean" 1>&2
    exit 1
 fi
 cd nethomebackup
 echo "Downloading latest OpenNetHome nightly build" 1>&2
-wget http://wiki.nethome.nu/lib/exe/fetch.php/nethomeservernightly.zip
+wget http://wiki.nethome.nu/lib/exe/fetch.php/$1
 echo "Unpacking release" 1>&2
-unzip nethomeservernightly.zip >/dev/null
+unzip $1 >/dev/null
 if [ ! -d "nethomeservernightly" ]; then
    echo "Could not download release, cancelling" 1>&2
    cd ..
@@ -38,6 +38,6 @@ else
   nethomeservernightly/install/raspbian/install.sh
 fi
 rm -r nethomeservernightly
-mv nethomeservernightly.zip $FILENAME
+mv $1 $FILENAME
 chmod a+w $FILENAME
 cd ..

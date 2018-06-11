@@ -146,11 +146,17 @@ case "$1" in
 		;;
 	esac
 	;;
+  upgrade)
+    /home/nethome/upgrade_nethome.sh nethomeserverrelease.zip&
+    ;;
   upgrade-nightly)
-    /home/nethome/upgrade_nethome_nightly.sh&
+    /home/nethome/upgrade_nethome.sh nethomeservernightly.zip&
+    ;;
+  upgrade-staging)
+    /home/nethome/upgrade_nethome.sh nethomeserverstaging.zip&
     ;;
   *)
-	echo "Usage: nethome {start|stop|status|restart|force-reload|upgrade-nightly}" >&2
+	echo "Usage: nethome {start|stop|status|restart|force-reload|upgrade|upgrade-nightly}" >&2
 	exit 3
 	;;
 esac

@@ -29,6 +29,7 @@
 package nu.nethome.home.items.web.servergui;
 
 import nu.nethome.home.impl.InternalEvent;
+import nu.nethome.home.impl.ModelAttribute;
 import nu.nethome.home.item.*;
 import nu.nethome.home.items.web.servergui.attributes.*;
 import nu.nethome.home.system.DirectoryEntry;
@@ -180,6 +181,7 @@ public class EditItemPage extends PortletPage {
         printItemHeading(p, name, model);
 
         List<Attribute> attributes = item.getAttributeValues();
+        attributes.add(new IDAttribute(item.getAttributeValue("ID")));
 
         if (countReadonlyAttributes(attributes) > 0) {
             printReadOnlyAttributes(p, attributes.iterator());
@@ -864,6 +866,54 @@ public class EditItemPage extends PortletPage {
 
     private HomeUrlBuilder url(String parameter, String value) {
         return new HomeUrlBuilder(localURL).addParameter(parameter, value);
+    }
+
+    private static class IDAttribute implements Attribute {
+        final String value;
+
+        public IDAttribute(String value) {
+            this.value = value;
+        }
+
+        @Override
+        public String getName() {
+            return "ID";
+        }
+
+        @Override
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public List<String> getValueList() {
+            return null;
+        }
+
+        @Override
+        public String getType() {
+            return "String";
+        }
+
+        @Override
+        public String getUnit() {
+            return "";
+        }
+
+        @Override
+        public boolean isReadOnly() {
+            return true;
+        }
+
+        @Override
+        public boolean isCanInit() {
+            return false;
+        }
+
+        @Override
+        public boolean isWriteOnly() {
+            return false;
+        }
     }
 
 }

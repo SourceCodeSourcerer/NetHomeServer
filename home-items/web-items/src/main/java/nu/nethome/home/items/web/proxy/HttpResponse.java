@@ -2,39 +2,66 @@ package nu.nethome.home.items.web.proxy;
 
 import org.json.JSONObject;
 
-import java.util.ArrayList;
+import java.net.HttpURLConnection;
 import java.util.Arrays;
 
 public class HttpResponse {
-    public final String systemId;
+    private static final HttpResponse EMPTY = new HttpResponse();
     public final String body;
     public final String[] headers;
     public final String challenge;
     public final String sessionToken;
+    private final int responseCode;
 
-    public HttpResponse(String systemId, String body, String[] headers, String challenge) {
-        this(systemId, body, headers, challenge, "");
+    public HttpResponse(String body, String[] headers, String challenge) {
+        this(body, headers, challenge, null, HttpURLConnection.HTTP_OK);
     }
 
-    public HttpResponse(String systemId, String body, String[] headers, String challenge, String sessionToken) {
-        this.systemId = systemId;
+    public HttpResponse(String body, String[] headers, String challenge, String sessionToken, int responseCode) {
         this.body = body;
         this.headers = headers;
         this.challenge = challenge;
         this.sessionToken = sessionToken;
+        this.responseCode = responseCode;
     }
 
-    //public HttpResponse(JSONObject json) {
-    //    body = json.getString("body");
-    //}
+    private HttpResponse() {
+        this.body = "";
+        this.headers = new String[0];
+        this.challenge = "";
+        this.sessionToken = null;
+        this.responseCode = HttpURLConnection.HTTP_OK;
+    }
 
     public JSONObject toJson() {
         final JSONObject jsonObject = new JSONObject();
-        jsonObject.put("system", systemId);
         jsonObject.put("body", body);
         jsonObject.put("headers", Arrays.asList(headers));
         jsonObject.put("challenge", challenge);
-        jsonObject.put("sessionToken", sessionToken);
+        jsonObject.put("responseCode", responseCode);
+        if (sessionToken != null) {
+            jsonObject.put("sessionToken", sessionToken);
+        }
         return jsonObject;
+    }
+
+    public static HttpResponse empty() {
+        return EMPTY;
+    }
+
+    public static HttpResponse challenge(String challenge) {
+        return new HttpResponse("", new String[0], challenge, null, HttpURLConnection.HTTP_OK);
+    }
+
+    public static HttpResponse loginFailed(String challenge) {
+        return new HttpResponse("", new String[0], challenge, "", HttpURLConnection.HTTP_OK);
+    }
+
+    public static HttpResponse loginSucceeded(String challenge, String sessionId) {
+        return new HttpResponse("", new String[0], challenge, sessionId, HttpURLConnection.HTTP_OK);
+    }
+
+    public static HttpResponse unauthorized() {
+        return new HttpResponse("", new String[0], "", "", HttpURLConnection.HTTP_UNAUTHORIZED);
     }
 }

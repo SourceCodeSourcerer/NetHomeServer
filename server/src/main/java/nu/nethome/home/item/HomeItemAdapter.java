@@ -80,4 +80,28 @@ public abstract class HomeItemAdapter implements HomeItem {
     protected boolean isActivated() {
         return server != null;
     }
+
+    protected int setIntAttribute(String value, int min, int max) throws IllegalValueException {
+        try {
+            final int i = Integer.parseInt(value);
+            if (i < min || i > max) {
+                throw new IllegalValueException("Illegal Value", value);
+            }
+            return i;
+        } catch (NumberFormatException e) {
+            throw new IllegalValueException("Illegal number format", value);
+        }
+    }
+
+    protected String getIntAttribute(int value) {
+        return Integer.toString(value);
+    }
+
+    protected String getBooleanAttribute(boolean value) {
+        return value ? "True" : "False";
+    }
+
+    protected boolean setBooleanAttribute(String value) {
+        return value.equalsIgnoreCase("true") || value.equalsIgnoreCase("on") || value.equalsIgnoreCase("yes");
+    }
 }

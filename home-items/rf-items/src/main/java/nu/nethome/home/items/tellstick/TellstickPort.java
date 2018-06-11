@@ -76,13 +76,13 @@ public class TellstickPort {
         }
 
         public SerialDevice(String m_ComPort) throws IOException {
-            // In order for RxTx to recognize CUL as a serial port on Linux, we have
+            // In order for RxTx to recognize all serial ports on Linux, we have
             // to add this system property. We make it possible to override by checking if the
             // property has already been set.
             if ((System.getProperty("os.name").toUpperCase().indexOf("LINUX") != -1) &&
                     (System.getProperty("gnu.io.rxtx.SerialPorts") == null)) {
                 System.setProperty("gnu.io.rxtx.SerialPorts", "/dev/ttyS0:/dev/ttyS1:/dev/ttyS2:" + "" +
-                        "/dev/ttyUSB0:/dev/ttyUSB1:/dev/ttyUSB2:/dev/ttyUSB3:/dev/ttyUSB4:" +
+                        "/dev/ttyUSB0:/dev/ttyUSB1:/dev/ttyUSB2:/dev/ttyUSB3:/dev/ttyUSB4:/dev/ttyUSB5:" +
                         "/dev/ttyACM0:/dev/ttyACM1:/dev/ttyACM2");
             }
 

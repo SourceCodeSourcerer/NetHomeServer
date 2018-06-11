@@ -90,6 +90,7 @@ public class PlanPage implements HomePageInterface {
                 new AddItemEditControl(),
                 new RemoveItemEditControl(),
                 new BackgroundEditControl(),
+                new CssEditControl(),
                 new ClickActionEditControl());
     }
 
@@ -106,9 +107,12 @@ public class PlanPage implements HomePageInterface {
             viewedPlan.removeItem(arguments.getName());
         } else if (arguments.isAction("background")) {
             viewedPlan.setImageFile(arguments.getName());
+        } else if (arguments.isAction("css")) {
+            viewedPlan.setCustomCSS(arguments.getName());
         } else if (arguments.isAction("click")) {
             viewedPlan.setClickAction(arguments.getName());
         }
+        printPlanCustomCss(p, viewedPlan);
         printPlanUpdateScript(p, viewedPlan, arguments.isEditMode());
         printPlanPageStart(p, viewedPlan);
         printPlanItems(server, p, viewedPlan, arguments);
@@ -123,7 +127,7 @@ public class PlanPage implements HomePageInterface {
                 "<img src=\"web/home/info16.png\" />&nbsp;Drag and drop to move Items on the page" +
                 "</div>");
         p.println("<div class=\"draggable ui-draggable\" style=\"top:250px;left:41px;\">\n" +
-                "<img src=\"web/home/info16.png\" />&nbsp;To add a new background image, go to <a href=\"" +
+                "<img src=\"web/home/info16.png\" />&nbsp;To add a new background image or css file, go to <a href=\"" +
                 localURL + "?page=settings&subpage=media" + "\">Settings->Media</a>" +
                 "</div>");
     }
@@ -132,6 +136,13 @@ public class PlanPage implements HomePageInterface {
         int updateInterval = viewedPlan.getUpdateIntervalInt() * 1000;
         if (!editMode && (updateInterval > 0)) {
             p.println("<script>window.setInterval(getItemValues," + updateInterval + ");</script>");
+        }
+    }
+
+    private void printPlanCustomCss(PrintWriter p, Plan viewedPlan) {
+        String cssFile = viewedPlan.getCustomCSS();
+        if (!cssFile.isEmpty()) {
+            p.printf("<link rel=\"stylesheet\" type=\"text/css\" href=\"%s\">\n", cssFile);
         }
     }
 
@@ -258,7 +269,7 @@ public class PlanPage implements HomePageInterface {
         if (iconClass.equals("poppable") || iconClass.equals("draggable")) {
             p.println("    <ul class=\"itemlocation\">");
         } else {
-            p.println("    <ul class=\"itemlocation\" onclick=\"callItemAction('" + item.getAttributeValue("ID") + "', '" + model.getDefaultAction() + "');\" href=\"javascript:void(0)\">");
+            p.println("    <ul id=\"ID" + itemId + "\" class=\"itemlocation\" onclick=\"callItemAction('" + item.getAttributeValue("ID") + "', '" + model.getDefaultAction() + "');\" href=\"javascript:void(0)\">");
         }
         p.println("        <li class=\"" + locationClass + "\" " + arrowIconAttributes + "/>");
         p.println("        <li class=\"itemvalue\"  " + getUnitAttribute(model) + " data-item=\"" + itemId + "\">" + itemText + "</li>");
@@ -417,7 +428,7 @@ public class PlanPage implements HomePageInterface {
             result += "<form action=\"" + localURL + "?page=" + getPageNameURL() + subpageArgument + "&mode=edit\" method=\"POST\">";
             result += "<input type=\"hidden\" name=\"a\" value=\"add\">";
             result += "  <select   onchange=\"this.form.submit()\" name=\"name\">";
-            result += "  <option value=\"\">Add Item to plan</option>";
+            result += "  <option value=\"\">Add Item</option>";
             Map<String, CategorizedItemList> categories = CategorizedItemList.categorizeItems(server);
             for (String category : HomeItemModel.HOME_ITEM_CATEGORIES) {
                 if (categories.containsKey(category)) {
@@ -447,7 +458,7 @@ public class PlanPage implements HomePageInterface {
             result += "<form action=\"" + localURL + "?page=" + getPageNameURL() + subpageArgument + "&mode=edit\" method=\"POST\">";
             result += "<input type=\"hidden\" name=\"a\" value=\"remove\">";
             result += "  <select   onchange=\"this.form.submit()\" name=\"name\">";
-            result += "  <option value=\"\">Remove Item from plan</option>";
+            result += "  <option value=\"\">Remove Item</option>";
             Plan viewedPlan = findPlan(server, arguments, defaultPlanIdentity);
             String[] itemIds = viewedPlan.getItems().split(",");
             for (String itemId : itemIds) {
@@ -474,7 +485,34 @@ public class PlanPage implements HomePageInterface {
             result += "<form action=\"" + localURL + "?page=" + getPageNameURL() + subpageArgument + "&mode=edit\" method=\"POST\">";
             result += "<input type=\"hidden\" name=\"a\" value=\"background\">";
             result += "  <select   onchange=\"this.form.submit()\" name=\"name\">";
-            result += "  <option value=\"\">Select background</option>";
+            result += "  <option value=\"\">Background</option>";
+            File f = new File(mediaDirectory);
+            if (f.exists() && f.isDirectory()) {
+                ArrayList<String> names = new ArrayList<>(Arrays.asList(f.list()));
+                for (String fileName : names) {
+                    result += "  <option value=\""
+                            + "media/" + fileName
+                            + "\""
+                            + ">" + fileName
+                            + "</option>";
+                }
+            }
+            result += "  </select>";
+            result += "</form>";
+            return result;
+        }
+    }
+
+    class CssEditControl implements EditControl {
+        @Override
+        public String print(HomeGUIArguments arguments, HomeService server) {
+            String subpageArgument = arguments.hasSubpage() ? "&subpage=" + arguments.getSubpage() : "";
+            String result = "";
+            result += "<form action=\"" + localURL + "?page=" + getPageNameURL() + subpageArgument + "&mode=edit\" method=\"POST\">";
+            result += "<input type=\"hidden\" name=\"a\" value=\"css\">";
+            result += "  <select   onchange=\"this.form.submit()\" name=\"name\">";
+            result += "  <option value=\"\">Custom CSS</option>";
+            result += "  <option value=\"\">[No CSS]</option>";
             File f = new File(mediaDirectory);
             if (f.exists() && f.isDirectory()) {
                 ArrayList<String> names = new ArrayList<>(Arrays.asList(f.list()));

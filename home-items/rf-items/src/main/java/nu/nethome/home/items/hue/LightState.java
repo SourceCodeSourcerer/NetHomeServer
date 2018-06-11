@@ -53,7 +53,11 @@ public class LightState {
 
     public LightState(JSONObject state) {
         isOn = state.getBoolean("on") && state.getBoolean("reachable");
-        brightness = state.getInt("bri");
+        if (state.has("bri")) {
+            brightness = state.getInt("bri");
+        } else {
+            brightness = isOn ? 100 : 0;
+        }
         if (state.has("hue")) {
             hue = state.getInt("hue");
             saturation = state.getInt("sat");

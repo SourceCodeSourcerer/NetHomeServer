@@ -1,0 +1,327 @@
+AudioProtocolParser;433MHz;Decodes RF/IR messages for DIY RF recievers. Lot of built in decoders
+AudioProtocolTransmitter;433MHz;Encodes RF/IR messages for DIY RF transmitters. Lot of built in encoders 
+CULTransceiver;433MHz;Item and firmware to use CUL HW as RF Transmitter for 433MHz remote control
+DeltronicLamp;433MHz;Control remote switches using Deltronic-protocol
+DeltronicRemapButton;433MHz;Trigger actions by a remote control using the Deltronic protocol
+FineOffsetHygrometer;433MHz;Wireless hygrometer using the FineOffset protocol
+FineOffsetRainGauge;433MHz;Wireless rain gauge using the FineOffset protocol
+FineOffsetThermometer;433MHz;Wireless thermometer using the FineOffset protocol
+FooGadgetLegacy;433MHz;Wireless power consumption meter
+FooGadgetPulse;433MHz;Wireless power consumption meter
+GenericProntoCommander;433MHz;Send recorded RF/IR commands using the Pronto format
+JeeLink;433MHz;Item and firmware to use JeeLink Classic as RF Transmitter for 433MHz remote control
+NexaLamp;433MHz;Control remote switches using Nexa-protocol
+NexaLCAdvancedRemapButton;433MHz;Trigger actions by a remote control using the Nexa Learning Code protocol
+NexaLCDimmer;433MHz;Control remote dimmers using Nexa Learning Code protocol
+NexaLCLamp;433MHz;Control remote switches using Nexa Learning Code protocol
+NexaLCRemapButton;433MHz;Trigger actions by a remote control using the Nexa Learning Code protocol
+NexaLCRemapButton4;433MHz;Trigger actions by a remote control using the Nexa Learning Code protocol
+NexaRemapButton;433MHz;Trigger actions by a remote control using the Nexa protocol
+NexaSmokeDetector;433MHz;Trigger actions from a smoke detector using the Nexa protocol
+OregonHygrometer;433MHz;Wireless hygrometer using the Oregon Scientific protocol
+OregonThermometer;433MHz;Wireless thermometer using the Oregon Scientific protocol
+OregonWind;433MHz;Wireless wind gauge using the Oregon Scientific protocol
+PrologueThermometer;433MHz;Wireless thermometer using the Prologue protocol
+ProntoDevice;433MHz;Device controlled by sending recorded RF/IR commands using the Pronto format
+ProntoLamp;433MHz;Lamp controlled by sending recorded RF/IR commands using the Pronto format
+RFBitBangerTransmitter;433MHz;Encodes RF/IR messages for DIY RF transmitters via RFBitBanger for RaspberryPi
+RisingSunLamp;433MHz;Control remote switches using RisingSun protocol
+RollerTrolBlind;433MHz;Controls RollerTroll window blinds
+RollerTrolBlindGSeries;433MHz;Controls RollerTroll window blinds
+Tellstick;433MHz;Connects to a Telldus TellstickDuo 433MHz remote control
+UPMHygrometer;433MHz;Wireless hygrometer using the UPM protocol
+UPMRainfall;433MHz;Wireless rain gauge using the UPM protocol
+UPMThermometer;433MHz;Wireless thermometer using the UPM protocol
+UPMWindDirection;433MHz;Wireless wind direction sensor using the UPM protocol
+UPMWindSpeed;433MHz;Wireless wind speed sensor using the UPM protocol
+WavemanLamp;433MHz;Control remote switches using Waveman protocol
+ZhejiangLamp;433MHz;Control remote switches using Zhejiang protocol
+FHZ1000PcPort;868MHz;Connect to RF Transmitter from the FS20 remote control system
+FS20Lamp;868MHz;Remote Switch/Dimmer using the FS20 system
+FS20RemapButton;868MHz;Trigger actions by a remote control using the FS20
+UPnPScanner;Auto Detect;Built in Item that detects devices via the Universal Plug&Play (UPnP) protocol
+UsbScanner;Auto Detect;Built in Item that detects devices connected via USB
+ArpScanner;Automation;Scans for connected network devices (Linux only)
+DayLiteTimer;Automation;Week timer with suppport for sun rise/sun set control (Use SunTimer)
+DeltronicRemapButton;Automation;Trigger actions by a remote control using the Deltronic protocol
+FS20RemapButton;Automation;Trigger actions by a remote control using the FS20
+IntervalTimer;Automation;Delay timer with repeating actions
+LampGroup;Automation;Group multiple lamps together so they can be handled together as one lamp
+LampRepeater;Automation;Repeats signals to remote controlled lamps over unreliable RF communication
+MacDevice;Automation;Trigger actions when a device appears/disappears in the network
+MacDeviceGroup;Automation;Trigger actions when a group of devices appears/disappears in the network
+MqttRemapButton;Automation;Trigger actions in Items on receiving MQTT events
+MqttValueLogger;Automation;Exposes the value of any attribute in any Item as MQTT events
+NexaLCAdvancedRemapButton;Automation;Trigger actions by a remote control using the Nexa Learning Code protocol
+NexaLCRemapButton;Automation;Trigger actions by a remote control using the Nexa Learning Code protocol
+NexaLCRemapButton4;Automation;Trigger actions by a remote control using the Nexa Learning Code protocol
+NexaRemapButton;Automation;Trigger actions by a remote control using the Nexa protocol
+NexaSmokeDetector;Automation;Trigger actions from a smoke detector using the Nexa protocol
+Scene;Automation;Trigger a number of actions simultainuasly or in a row
+SunTimer;Automation;Week timer with support for sun rise/sun set control, variables and random times
+TCPCommandPort;Automation;Control any function via commands on a TCP/IP connection
+TCPListener;Automation;Recieves TCP-Messages
+UDPCommandPort;Automation;Control any function via commands in UDP/IP messages
+UDPListener;Automation;Recieves UDP-Messages
+ValueLogger;Automation;Can log the value of any attribute in another Item and presents graphs of the value
+ValueTrigger;Automation;Monitors the value of an attribute in an Item and triggers actions based on the value
+WeekTimer;Automation;Week timer (Use SunTimer)
+ZWaveCentralSceneRemapButton;Automation;Map Z-Wave Central Scene commands to actions on other Items
+ZWaveCommandPort;Automation;Telnet command prompt for sending and receiving Z-Wave commands
+ZWaveRemapButton;Automation;Map Z-Wave commands to actions on other Items
+WemoBridge;Belkin Wemo;Connects to Belkin Wemo remote controlled light bulbs
+WemoInsightSwitch;Belkin Wemo;Belkin Wemo remote controlled switch with power usage sensor
+WemoLamp;Belkin Wemo;Belkin Wemo remote controlled light bulb (needs WemoBridge)
+WemoSwitch;Belkin Wemo;Belkin Wemo remote controlled switch
+RollerTrolBlind;Blinds;Controls RollerTroll window blinds
+RollerTrolBlindGSeries;Blinds;Controls RollerTroll window blinds
+ZWaveBlind;Blinds;Control Z-Wave window blinds
+HomeCloudConnection;Cloud;Connects OpenNetHome to a Cloud Access solution
+DeltronicLamp;Deltronic;Control remote switches using Deltronic-protocol
+DeltronicRemapButton;Deltronic;Trigger actions by a remote control using the Deltronic protocol
+AudioProtocolParser;DIY Friendly;Decodes RF/IR messages for DIY RF recievers. Lot of built in decoders
+AudioProtocolTransmitter;DIY Friendly;Encodes RF/IR messages for DIY RF transmitters. Lot of built in encoders 
+CustomLamp;DIY Friendly;Lamp Item where actions to turn on and off are configurable by user
+DebugManager;DIY Friendly;Add/remove debug logging from Items
+GenericProntoCommander;DIY Friendly;Send recorded RF/IR commands using the Pronto format
+GenericThermometer;DIY Friendly;Thermometer Item used for integration with home made thermometer sensors
+ProntoDevice;DIY Friendly;Device controlled by sending recorded RF/IR commands using the Pronto format
+ProntoLamp;DIY Friendly;Lamp controlled by sending recorded RF/IR commands using the Pronto format
+RFBitBangerTransmitter;DIY Friendly;Encodes RF/IR messages for DIY RF transmitters via RFBitBanger for RaspberryPi
+FineOffsetHygrometer;FineOffset;Wireless hygrometer using the FineOffset protocol
+FineOffsetRainGauge;FineOffset;Wireless rain gauge using the FineOffset protocol
+FineOffsetThermometer;FineOffset;Wireless thermometer using the FineOffset protocol
+NexaSmokeDetector;Fire Alarms;Trigger actions from a smoke detector using the Nexa protocol
+FooGadgetLegacy;FooGadget;Wireless power consumption meter
+FooGadgetPulse;FooGadget;Wireless power consumption meter
+FHZ1000PcPort;FS20 System;Connect to RF Transmitter from the FS20 remote control system
+FS20Lamp;FS20 System;Remote Switch/Dimmer using the FS20 system
+FS20RemapButton;FS20 System;Trigger actions by a remote control using the FS20
+H2DatabaseTCPServer;Graphs;Stores logged sensor data in a database for faster graph presentations
+HomeGUI;Graphs;The WEB interface used to configure and use OpenNetHome
+ValueLogger;Graphs;Can log the value of any attribute in another Item and presents graphs of the value
+TrayBarIcon;GUI;Display a tray bar icon for OpenNetHome Server on the desktop
+FineOffsetHygrometer;Hygrometers;Wireless hygrometer using the FineOffset protocol
+MqttHygrometer;Hygrometers;Presents hygrometer values received via MQTT
+OregonHygrometer;Hygrometers;Wireless hygrometer using the Oregon Scientific protocol
+UPMHygrometer;Hygrometers;Wireless hygrometer using the UPM protocol
+IkeaColorTemperatureLamp;IKEA Tradfri;IKEA Tradfri remote controlled lamp bulb with adjustable color temperature
+IkeaGateway;IKEA Tradfri;IKEA Tradfri remote gateway
+IkeaLamp;IKEA Tradfri;IKEA Tradfri remote controlled lamp bulb
+CustomLamp;Integration;Lamp Item where actions to turn on and off are configurable by user
+GenericThermometer;Integration;Thermometer Item used for integration with home made thermometer sensors
+HomeGUI;Integration;The WEB interface used to configure and use OpenNetHome
+MqttClient;Integration;Connects to an MQTT server and sends messages and subscribes for topics
+MqttCommandPort;Integration;Turns all Items in the server into MQTT-Topics which can be called via their actions
+TCPCommandPort;Integration;Control any function via commands on a TCP/IP connection
+TCPListener;Integration;Recieves TCP-Messages
+TCPProxy;Integration;TCP/IP Proxy that can be opened/closed
+TeamCityBuildMonitor;Integration;Monitors builds and triggers actions on failing builds
+UDPCommandPort;Integration;Control any function via commands in UDP/IP messages
+UDPListener;Integration;Recieves UDP-Messages
+ZWaveCommandPort;Integration;Telnet command prompt for sending and receiving Z-Wave commands
+MqttClient;IoT;Connects to an MQTT server and sends messages and subscribes for topics
+MqttCommandPort;IoT;Turns all Items in the server into MQTT-Topics which can be called via their actions
+MqttHygrometer;IoT;Presents hygrometer values received via MQTT
+MqttRemapButton;IoT;Trigger actions in Items on receiving MQTT events
+MqttThermometer;IoT;Presents temperature values received via MQTT
+MqttValueLogger;IoT;Exposes the value of any attribute in any Item as MQTT events
+AudioProtocolParser;IR;Decodes RF/IR messages for DIY RF recievers. Lot of built in decoders
+AudioProtocolTransmitter;IR;Encodes RF/IR messages for DIY RF transmitters. Lot of built in encoders 
+GenericProntoCommander;IR;Send recorded RF/IR commands using the Pronto format
+ProntoDevice;IR;Device controlled by sending recorded RF/IR commands using the Pronto format
+ProntoLamp;IR;Lamp controlled by sending recorded RF/IR commands using the Pronto format
+XmppClient;Jabber;Client for sending and receiving XMPP (Jabber) messages
+JeeLink;JeeLink;Item and firmware to use JeeLink Classic as RF Transmitter for 433MHz remote control
+ArpScanner;Linux;Scans for connected network devices (Linux only)
+LmSensorsThermometer;Linux;Measures mother board temperatures via the lm-module (Linux only)
+LmSensorsFan;LM-Sensors;Measures mother board fan speeds via the lm-module (Linux only)
+LmSensorsThermometer;LM-Sensors;Measures mother board temperatures via the lm-module (Linux only)
+MBMThermometer;MBM;Measures mother board temperatures via the Motherboard Monitor program
+Message;Messaging;Pre configured message to be sent, for example via MQTT
+XmppClient;Messaging;Client for sending and receiving XMPP (Jabber) messages
+Message;MQTT;Pre configured message to be sent, for example via MQTT
+MqttClient;MQTT;Connects to an MQTT server and sends messages and subscribes for topics
+MqttCommandPort;MQTT;Turns all Items in the server into MQTT-Topics which can be called via their actions
+MqttHygrometer;MQTT;Presents hygrometer values received via MQTT
+MqttRemapButton;MQTT;Trigger actions in Items on receiving MQTT events
+MqttThermometer;MQTT;Presents temperature values received via MQTT
+MqttValueLogger;MQTT;Exposes the value of any attribute in any Item as MQTT events
+GateKeeper;Network;TCP/IP Proxy that can be opened/closed
+HomeCloudConnection;Network;Connects OpenNetHome to a Cloud Access solution
+JettyWEB;Network;Built in WEB server for the WEB GUI
+MacDevice;Network;Trigger actions when a device appears/disappears in the network
+MacDeviceGroup;Network;Trigger actions when a group of devices appears/disappears in the network
+Message;Network;Pre configured message to be sent, for example via MQTT
+MqttClient;Network;Connects to an MQTT server and sends messages and subscribes for topics
+MqttCommandPort;Network;Turns all Items in the server into MQTT-Topics which can be called via their actions
+MqttHygrometer;Network;Presents hygrometer values received via MQTT
+MqttRemapButton;Network;Trigger actions in Items on receiving MQTT events
+MqttThermometer;Network;Presents temperature values received via MQTT
+MqttValueLogger;Network;Exposes the value of any attribute in any Item as MQTT events
+TCPCommandPort;Network;Control any function via commands on a TCP/IP connection
+TCPListener;Network;Recieves TCP-Messages
+TCPProxy;Network;TCP/IP Proxy that can be opened/closed
+TeamCityBuildMonitor;Network;Monitors builds and triggers actions on failing builds
+UDPCommandPort;Network;Control any function via commands in UDP/IP messages
+UDPListener;Network;Recieves UDP-Messages
+UPnPScanner;Network;Built in Item that detects devices via the Universal Plug&Play (UPnP) protocol
+NexaLamp;Nexa;Control remote switches using Nexa-protocol
+NexaLCAdvancedRemapButton;Nexa;Trigger actions by a remote control using the Nexa Learning Code protocol
+NexaLCDimmer;Nexa;Control remote dimmers using Nexa Learning Code protocol
+NexaLCLamp;Nexa;Control remote switches using Nexa Learning Code protocol
+NexaLCRemapButton;Nexa;Trigger actions by a remote control using the Nexa Learning Code protocol
+NexaLCRemapButton4;Nexa;Trigger actions by a remote control using the Nexa Learning Code protocol
+NexaRemapButton;Nexa;Trigger actions by a remote control using the Nexa protocol
+NexaSmokeDetector;Nexa;Trigger actions from a smoke detector using the Nexa protocol
+OregonHygrometer;Oregon Scientific;Wireless hygrometer using the Oregon Scientific protocol
+OregonThermometer;Oregon Scientific;Wireless thermometer using the Oregon Scientific protocol
+OregonWind;Oregon Scientific;Wireless wind gauge using the Oregon Scientific protocol
+Box;Organizing ;Organizes Items
+Location;Organizing ;Used to organize Rooms in the WEB GUI
+Room;Organizing ;Organizes Items into Rooms
+HueBridge;PHILIPS Hue;Connects to the PHILPS Hue bridge device which controls a Hue system
+HueLamp;PHILIPS Hue;PHILPS Hue remote controlled lamp bulb
+Plan;Plan Layout;Organizes Items on a graphical plan view
+FooGadgetLegacy;Power Meters;Wireless power consumption meter
+FooGadgetPulse;Power Meters;Wireless power consumption meter
+PrologueThermometer;Prologue;Wireless thermometer using the Prologue protocol
+GenericProntoCommander;Pronto;Send recorded RF/IR commands using the Pronto format
+ProntoDevice;Pronto;Device controlled by sending recorded RF/IR commands using the Pronto format
+ProntoLamp;Pronto;Lamp controlled by sending recorded RF/IR commands using the Pronto format
+FineOffsetRainGauge;Rain Gauges;Wireless rain gauge using the FineOffset protocol
+UPMRainfall;Rain Gauges;Wireless rain gauge using the UPM protocol
+FS20Lamp;Remote Dimmers;Remote Switch/Dimmer using the FS20 system
+NexaLCDimmer;Remote Dimmers;Control remote dimmers using Nexa Learning Code protocol
+ZWaveDimmer;Remote Dimmers;Controls a Z-Wave dimmer
+FineOffsetHygrometer;Remote Sensors;Wireless hygrometer using the FineOffset protocol
+FineOffsetRainGauge;Remote Sensors;Wireless rain gauge using the FineOffset protocol
+FineOffsetThermometer;Remote Sensors;Wireless thermometer using the FineOffset protocol
+FooGadgetLegacy;Remote Sensors;Wireless power consumption meter
+FooGadgetPulse;Remote Sensors;Wireless power consumption meter
+OregonHygrometer;Remote Sensors;Wireless hygrometer using the Oregon Scientific protocol
+OregonThermometer;Remote Sensors;Wireless thermometer using the Oregon Scientific protocol
+OregonWind;Remote Sensors;Wireless wind gauge using the Oregon Scientific protocol
+PrologueThermometer;Remote Sensors;Wireless thermometer using the Prologue protocol
+UPMHygrometer;Remote Sensors;Wireless hygrometer using the UPM protocol
+UPMRainfall;Remote Sensors;Wireless rain gauge using the UPM protocol
+UPMThermometer;Remote Sensors;Wireless thermometer using the UPM protocol
+UPMWindDirection;Remote Sensors;Wireless wind direction sensor using the UPM protocol
+UPMWindSpeed;Remote Sensors;Wireless wind speed sensor using the UPM protocol
+WemoInsightSwitch;Remote Sensors;Belkin Wemo remote controlled switch with power usage sensor
+ZWaveMeter;Remote Sensors;Controls a Z-Wave sensor
+ZWaveMultiLevelSensor;Remote Sensors;Controls a Z-Wave sensor
+DeltronicLamp;Remote Switches;Control remote switches using Deltronic-protocol
+DeltronicRemapButton;Remote Switches;Trigger actions by a remote control using the Deltronic protocol
+FS20Lamp;Remote Switches;Remote Switch/Dimmer using the FS20 system
+FS20RemapButton;Remote Switches;Trigger actions by a remote control using the FS20
+LampGroup;Remote Switches;Group multiple lamps together so they can be handled together as one lamp
+LampRepeater;Remote Switches;Repeats signals to remote controlled lamps over unreliable RF communication
+NexaLamp;Remote Switches;Control remote switches using Nexa-protocol
+NexaLCAdvancedRemapButton;Remote Switches;Trigger actions by a remote control using the Nexa Learning Code protocol
+NexaLCLamp;Remote Switches;Control remote switches using Nexa Learning Code protocol
+NexaLCRemapButton;Remote Switches;Trigger actions by a remote control using the Nexa Learning Code protocol
+NexaLCRemapButton4;Remote Switches;Trigger actions by a remote control using the Nexa Learning Code protocol
+NexaRemapButton;Remote Switches;Trigger actions by a remote control using the Nexa protocol
+RisingSunLamp;Remote Switches;Control remote switches using RisingSun protocol
+WavemanLamp;Remote Switches;Control remote switches using Waveman protocol
+WemoInsightSwitch;Remote Switches;Belkin Wemo remote controlled switch with power usage sensor
+WemoSwitch;Remote Switches;Belkin Wemo remote controlled switch
+ZhejiangLamp;Remote Switches;Control remote switches using Zhejiang protocol
+ZWaveLamp;Remote Switches;Controls a Z-Wave switch
+LampRepeater;Resilience;Repeats signals to remote controlled lamps over unreliable RF communication
+HomeGUI;REST Interface;The WEB interface used to configure and use OpenNetHome
+HueLamp;RF Bulbs;PHILPS Hue remote controlled lamp bulb
+IkeaColorTemperatureLamp;RF Bulbs;IKEA Tradfri remote controlled lamp bulb with adjustable color temperature
+IkeaLamp;RF Bulbs;IKEA Tradfri remote controlled lamp bulb
+WemoLamp;RF Bulbs;Belkin Wemo remote controlled light bulb (needs WemoBridge)
+AudioProtocolParser;RF Remote;Decodes RF/IR messages for DIY RF recievers. Lot of built in decoders
+AudioProtocolTransmitter;RF Remote;Encodes RF/IR messages for DIY RF transmitters. Lot of built in encoders 
+CULTransceiver;RF Remote;Item and firmware to use CUL HW as RF Transmitter for 433MHz remote control
+DeltronicLamp;RF Remote;Control remote switches using Deltronic-protocol
+FHZ1000PcPort;RF Remote;Connect to RF Transmitter from the FS20 remote control system
+HueBridge;RF Remote;Connects to the PHILPS Hue bridge device which controls a Hue system
+HueLamp;RF Remote;PHILPS Hue remote controlled lamp bulb
+IkeaColorTemperatureLamp;RF Remote;IKEA Tradfri remote controlled lamp bulb with adjustable color temperature
+IkeaGateway;RF Remote;IKEA Tradfri remote gateway
+IkeaLamp;RF Remote;IKEA Tradfri remote controlled lamp bulb
+JeeLink;RF Remote;Item and firmware to use JeeLink Classic as RF Transmitter for 433MHz remote control
+LampGroup;RF Remote;Group multiple lamps together so they can be handled together as one lamp
+NexaLamp;RF Remote;Control remote switches using Nexa-protocol
+NexaLCDimmer;RF Remote;Control remote dimmers using Nexa Learning Code protocol
+NexaLCLamp;RF Remote;Control remote switches using Nexa Learning Code protocol
+RFBitBangerTransmitter;RF Remote;Encodes RF/IR messages for DIY RF transmitters via RFBitBanger for RaspberryPi
+RisingSunLamp;RF Remote;Control remote switches using RisingSun protocol
+RollerTrolBlind;RF Remote;Controls RollerTroll window blinds
+RollerTrolBlindGSeries;RF Remote;Controls RollerTroll window blinds
+Tellstick;RF Remote;Connects to a Telldus TellstickDuo 433MHz remote control
+WavemanLamp;RF Remote;Control remote switches using Waveman protocol
+WemoBridge;RF Remote;Connects to Belkin Wemo remote controlled light bulbs
+WemoInsightSwitch;RF Remote;Belkin Wemo remote controlled switch with power usage sensor
+WemoLamp;RF Remote;Belkin Wemo remote controlled light bulb (needs WemoBridge)
+WemoSwitch;RF Remote;Belkin Wemo remote controlled switch
+ZhejiangLamp;RF Remote;Control remote switches using Zhejiang protocol
+ZWaveBlind;RF Remote;Control Z-Wave window blinds
+ZWaveController;RF Remote;Connects to a Z-Wave Controller/USB Dongle
+ZWaveDimmer;RF Remote;Controls a Z-Wave dimmer
+ZWaveLamp;RF Remote;Controls a Z-Wave switch
+RFBitBangerTransmitter;RFBitBanger;Encodes RF/IR messages for DIY RF transmitters via RFBitBanger for RaspberryPi
+RisingSunLamp;RisingSun;Control remote switches using RisingSun protocol
+RollerTrolBlind;RollerTrol;Controls RollerTroll window blinds
+RollerTrolBlindGSeries;RollerTrol;Controls RollerTroll window blinds
+LmSensorsFan;RPM Meters;Measures mother board fan speeds via the lm-module (Linux only)
+DayLiteTimer;Sunset Control;Week timer with suppport for sun rise/sun set control (Use SunTimer)
+SunTimer;Sunset Control;Week timer with support for sun rise/sun set control, variables and random times
+TeamCityBuildMonitor;TeamCity;Monitors builds and triggers actions on failing builds
+Tellstick;Telldus;Connects to a Telldus TellstickDuo 433MHz remote control
+Tellstick;Tellstick;Connects to a Telldus TellstickDuo 433MHz remote control
+FineOffsetThermometer;Thermometers;Wireless thermometer using the FineOffset protocol
+GenericThermometer;Thermometers;Thermometer Item used for integration with home made thermometer sensors
+LmSensorsThermometer;Thermometers;Measures mother board temperatures via the lm-module (Linux only)
+MBMThermometer;Thermometers;Measures mother board temperatures via the Motherboard Monitor program
+MqttThermometer;Thermometers;Presents temperature values received via MQTT
+OregonThermometer;Thermometers;Wireless thermometer using the Oregon Scientific protocol
+PrologueThermometer;Thermometers;Wireless thermometer using the Prologue protocol
+TempWEB;Thermometers;Separate WEB GUI to present thermometer values and graphs
+UPMThermometer;Thermometers;Wireless thermometer using the UPM protocol
+DayLiteTimer;Timers;Week timer with suppport for sun rise/sun set control (Use SunTimer)
+IntervalTimer;Timers;Delay timer with repeating actions
+SunTimer;Timers;Week timer with support for sun rise/sun set control, variables and random times
+WeekTimer;Timers;Week timer (Use SunTimer)
+UPMHygrometer;UPM;Wireless hygrometer using the UPM protocol
+UPMRainfall;UPM;Wireless rain gauge using the UPM protocol
+UPMThermometer;UPM;Wireless thermometer using the UPM protocol
+UPMWindDirection;UPM;Wireless wind direction sensor using the UPM protocol
+UPMWindSpeed;UPM;Wireless wind speed sensor using the UPM protocol
+WavemanLamp;Waveman;Control remote switches using Waveman protocol
+ActionButton;WEB GUI;Allows you to make customized buttons in WEB GUI
+Box;WEB GUI;Organizes Items
+H2DatabaseTCPServer;WEB GUI;Stores logged sensor data in a database for faster graph presentations
+HomeGUI;WEB GUI;The WEB interface used to configure and use OpenNetHome
+JettyWEB;WEB GUI;Built in WEB server for the WEB GUI
+Location;WEB GUI;Used to organize Rooms in the WEB GUI
+Plan;WEB GUI;Organizes Items on a graphical plan view
+Room;WEB GUI;Organizes Items into Rooms
+TempWEB;WEB GUI;Separate WEB GUI to present thermometer values and graphs
+OregonWind;Wind Gauges;Wireless wind gauge using the Oregon Scientific protocol
+UPMWindDirection;Wind Gauges;Wireless wind direction sensor using the UPM protocol
+UPMWindSpeed;Wind Gauges;Wireless wind speed sensor using the UPM protocol
+MBMThermometer;Windows;Measures mother board temperatures via the Motherboard Monitor program
+XmppClient;XMPP;Client for sending and receiving XMPP (Jabber) messages
+ZhejiangLamp;Zhejiang;Control remote switches using Zhejiang protocol
+HueBridge;Zigbee;Connects to the PHILPS Hue bridge device which controls a Hue system
+HueLamp;Zigbee;PHILPS Hue remote controlled lamp bulb
+IkeaColorTemperatureLamp;Zigbee;IKEA Tradfri remote controlled lamp bulb with adjustable color temperature
+IkeaGateway;Zigbee;IKEA Tradfri remote gateway
+IkeaLamp;Zigbee;IKEA Tradfri remote controlled lamp bulb
+WemoBridge;Zigbee;Connects to Belkin Wemo remote controlled light bulbs
+ZWaveBlind;Z-Wave;Control Z-Wave window blinds
+ZWaveCentralSceneRemapButton;Z-Wave;Map Z-Wave Central Scene commands to actions on other Items
+ZWaveCommandPort;Z-Wave;Telnet command prompt for sending and receiving Z-Wave commands
+ZWaveController;Z-Wave;Connects to a Z-Wave Controller/USB Dongle
+ZWaveDimmer;Z-Wave;Controls a Z-Wave dimmer
+ZWaveLamp;Z-Wave;Controls a Z-Wave switch
+ZWaveMeter;Z-Wave;Controls a Z-Wave sensor
+ZWaveMultiLevelSensor;Z-Wave;Controls a Z-Wave sensor
+ZWaveNode;Z-Wave;Represents a general Z-Wave node. Is automatically created when a node is discovered
+ZWaveRemapButton;Z-Wave;Map Z-Wave commands to actions on other Items

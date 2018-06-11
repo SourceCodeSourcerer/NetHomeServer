@@ -289,6 +289,7 @@ public class AudioProtocolParser extends HomeItemAdapter implements HomeItem, Pr
         decoders.add(new FineOffsetDecoder());
         decoders.add(new RollerTrolDecoder());
         decoders.add(new RollerTrolGDecoder());
+        decoders.add(new PrologueDecoder());
 
         StringBuilder allDecoderNames = new StringBuilder();
         String separator = "";

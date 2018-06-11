@@ -10,10 +10,10 @@
     <url>http://www.nethome.nu</url>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <NethomeVersion>2.1-SNAPSHOT</NethomeVersion>
-        <utils.version>1.1-SNAPSHOT</utils.version>
-        <coders.version>1.2-SNAPSHOT</coders.version>
-        <zwave.version>1.0-SNAPSHOT</zwave.version>
+        <NethomeVersion>3.0</NethomeVersion>
+        <utils.version>1.1</utils.version>
+        <coders.version>1.2</coders.version>
+        <zwave.version>1.0</zwave.version>
     </properties>
     <scm>
         <connection>scm:git:git://github.com/NetHome/NetHomeServer</connection>
@@ -109,6 +109,11 @@
                 <groupId>com.luckycatlabs.sotoo</groupId>
                 <artifactId>SunriseSunsetCalculator</artifactId>
                 <version>1.0</version>
+            </dependency>
+            <dependency>
+                <groupId>de.idyl</groupId>
+                <artifactId>winzipaes</artifactId>
+                <version>1.0.1</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

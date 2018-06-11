@@ -1,0 +1,64 @@
+433MHz;The 433 MHz frequency band is free in Europe, and is widely used for simpler remote switches and remote sensors like thermometers. A majority of the remote switches and thermometers use this band. To use such devices you need some kind of RF transmitter, for example a TellstickDuo.
+868MHz;The 868MHz band is more restricted than the 433MHz band and is not so common for simpler remote control systems.
+Auto Detect;Many of the HomeItems support AutoDetect, which means that OpenNetHome can detect their presence and automatically configure the HomeItem for the detected real world device, such as a thermometer or a lamp.
+Automation;OpenNetHome supports many forms of automation, to be able to make your home react to changes and conditions that are detected. Typical automation Items are timers or value triggers.
+Belkin Wemo;Wemo is a series of home automation products produced by Belkin, which communicate via WIFI, so no radio transmission hardware is needed for the remote switches.
+Blinds;A number of different blind motor types can be controlled.
+Cloud;
+Deltronic;Deltronic is a brand of remote switches using a 433MHZ protocol.
+DIY Friendly;OpenNetHome is very open for home made devices and software, and has support for plugins and a number of open external interfaces.
+FineOffset;FineOffset is a brand of remote sensor devices
+Fire Alarms;Support for remote controlled fire alarms
+FooGadget;FooGadget makes interfaces for sensors and electric power meters
+FS20 System;FS20 is a German systems for sensors and remote controlled switches and dimmers
+Graphs;OpenNetHome can plot graphs over any measured value in the system
+GUI;OpenNetHome has a small desktop GUI, but the main interface is the WEB GUI
+Hygrometers;A number of different hygrometers are supported
+IKEA Tradfri;The IKEA Tradfri series of remote controlled lamps are supported
+Integration;A number of open interfaces are exposed to support integration with other systems
+IoT;IoT integration protocols are supported, and as OpenNetHome can run on quite small devices, it can be considered as a IoT device itself.
+IR;With proper hardware, IR transmission is supported.
+Jabber;The Jabber (XMPP) protocol is an open protocol for instant messaging, which can be used to send messages or trigger actions by receiving messages
+JeeLink;
+Linux;OpenNetHome can run on Linux, and some Items are specific for this platform
+LM-Sensors;LM-Sensors for measuring motherboard temperatures and fans is supported
+MBM;Mother Board Monitor is supported
+Messaging;Sending and receiving messages
+MQTT;The IoT protocol MQTT
+Network;Different interfaces and automation via Ip networks is supported
+Nexa;Nexa is a brand of remote controlled switches which uses a 433MHz protocol which is suppored by a number of other brands like Proove
+Oregon Scientific;Oregon Scientific produces a number of wireless weather sensors
+Organizing ;OpenNetHome allows you to organize and group your Items in your home control system for simple access and overview
+PHILIPS Hue;The PHILIPS Hue series of remote controlled bulbs is supported
+Plan Layout;You can import plan images of your home and use as layout in the WEB interface
+Power Meters;
+Prologue;Prologue is a brand of Wireless thermometers and weather stations
+Pronto;The Pronto format for sampling and replaying IR and RF signals is supported
+Rain Gauges;
+Raspberry Pi;OpenNetHome has specific installation support for RaspberryPi giving a very simple and smooth installation
+Remote Dimmers;
+Remote Sensors;
+Remote Switches;
+Resilience;Features to handle unreliable RF protocols
+REST Interface;Open REST based interface for easy integration with other systems
+RF Bulbs;
+RF Remote;
+RFBitBanger;
+RisingSun;RisingSun is a brand of remote controlled switches with a 433MHz protocol
+RollerTrol;RollerTrol blinds
+RPM Meters;
+Sunset Control;Functions can be automated based on sunrise/sunset
+TeamCity;
+Telldus;Telldus is the manufacturer of the TellstickDuo RF transmitter/receiver for 433MHz band
+Tellstick;
+Thermometers;
+Timers;
+UPM;UPM is a brand of wireless weather sensors. The same protocol is used by other brands.
+Waveman;Waveman is a brand of remote controlled switches, the same protocol is used by other brands
+WEB GUI;OpenNetHome has an easy to use WEB based GUI
+Wind Gauges;
+Windows;OpenNetHome run on windows
+XMPP;The XMPP (Jabber) protocol for instant messaging is supported
+Zhejiang;Zhejiang is a brand of remote controlled switches for the 433MHz band
+Zigbee;Zigbee is supported via brand specific transmitters
+Z-Wave;Support for the Z-Wave protocol is work in progress. Some very basic support for remote switches and dimmers is implemented so far.

@@ -17,8 +17,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package nu.nethome.home.items.web.proxy;
+package nu.nethome.home.items.ikea;
 
+import nu.nethome.home.items.hue.HueProcessingException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -46,14 +47,14 @@ public class JSONData {
         return object != null;
     }
 
-    public JSONObject getObject() throws JSONException {
+    public JSONObject getObject()  {
         if (object == null) {
             throw new JSONException("Not a JSON Object");
         }
         return object;
     }
 
-    public JSONArray getArray() throws JSONException {
+    public JSONArray getArray() {
         if (array == null) {
             throw new JSONException("Not a JSON Array");
         }

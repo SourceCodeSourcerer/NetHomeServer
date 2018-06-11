@@ -38,7 +38,8 @@ public class NexaRemapButton extends RemapButton implements HomeItem {
             + "<HomeItem Class=\"NexaRemapButton\" Category=\"Controls\" >"
             + "  <Attribute Name=\"State\" 	Type=\"String\" Get=\"getState\" Init=\"setState\" Default=\"true\" />"
             + "  <Attribute Name=\"HouseCode\" 	Type=\"StringList\" Get=\"getHouseCode\" 	Set=\"setHouseCode\" >"
-            + "     <item>A</item> <item>B</item> <item>C</item> <item>D</item> <item>E</item> <item>F</item> <item>G</item> <item>H</item> </Attribute>"
+            + "     <item>A</item> <item>B</item> <item>C</item> <item>D</item> <item>E</item> <item>F</item> <item>G</item> <item>H</item> "
+            + "     <item>I</item> <item>J</item> <item>K</item> <item>L</item> <item>M</item> <item>N</item> <item>O</item> <item>P</item> </Attribute>"
             + "  <Attribute Name=\"Button\" Type=\"StringList\" Get=\"getButton\" 	Set=\"setButton\" >"
             + "     <item>1</item> <item>2</item> <item>3</item> <item>4</item> <item>5</item> <item>6</item> <item>7</item> <item>8</item> </Attribute>"
             + "  <Attribute Name=\"OnCommand\" Type=\"Command\" Get=\"getOnCommand\" 	Set=\"setOnCommand\" />"
@@ -120,8 +121,8 @@ public class NexaRemapButton extends RemapButton implements HomeItem {
      */
     @SuppressWarnings("UnusedDeclaration")
     public String getHouseCode() {
-        if ((buttonHouseCode >= 0) && (buttonHouseCode <= 7)) {
-            return Character.toString("ABCDEFGH".charAt(buttonHouseCode));
+        if ((buttonHouseCode >= 0) && (buttonHouseCode <= 15)) {
+            return Character.toString("ABCDEFGHIJKLMNOP".charAt(buttonHouseCode));
         }
         return "A";
     }
@@ -133,7 +134,7 @@ public class NexaRemapButton extends RemapButton implements HomeItem {
     public void setHouseCode(String houseCode) {
         String hc = houseCode.toUpperCase();
         if ((hc.length() == 1) && (hc.compareTo("A") >= 0) &&
-                (hc.compareTo("H") <= 0)) {
+                (hc.compareTo("P") <= 0)) {
             buttonHouseCode = (int) hc.charAt(0) - (int) 'A';
         }
     }

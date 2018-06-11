@@ -65,7 +65,7 @@ public class HomeItemFileLoader implements HomeItemLoader {
                 out.write("\t\t<Attribute Name=\"ID\">" + rawItem.getItemId()
                         + "</Attribute>");
                 out.newLine();
-                out.write("\t\t<Attribute Name=\"Name\">" + rawItem.getName()
+                out.write("\t\t<Attribute Name=\"Name\">" + escape(rawItem.getName())
                         + "</Attribute>");
                 out.newLine();
 

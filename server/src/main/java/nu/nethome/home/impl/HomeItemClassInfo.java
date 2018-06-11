@@ -124,7 +124,7 @@ public class HomeItemClassInfo implements HomeItemInfo {
 
     private static class GenericAutoCreationInfo implements AutoCreationInfo {
         private static String ignoredAttributeNames[] = {"Type", "UPM.SequenceNumber", "Direction", "Value", "UPM.Primary",
-                "UPM.Secondary", "UPM.LowBattery", "Hue.Brightness", "Hue.Command", "Oregon.Temp", "Oregon.Moisture"};
+                "UPM.Secondary", "UPM.LowBattery", "Hue.Brightness", "Hue.Command", "Oregon.Temp", "Oregon.Moisture", "Mqtt.Message"};
         private static Set<String> ignoredAttributes = new HashSet<String>(Arrays.asList(ignoredAttributeNames));
         private String[] eventList;
 

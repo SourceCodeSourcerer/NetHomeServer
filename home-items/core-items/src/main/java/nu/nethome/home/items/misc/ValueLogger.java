@@ -31,6 +31,11 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.logging.Logger;
 
+/**
+ * This Item is used to to log the values of any attribute in a HomeItem. The log can then be viewed as
+ * a graph in the WEB GUI. The value logger is attached to an attribute in another HomeItem, and
+ * will log the values of that attribute.
+ */
 @SuppressWarnings("UnusedDeclaration")
 @Plugin
 @HomeItemType("Gauges")

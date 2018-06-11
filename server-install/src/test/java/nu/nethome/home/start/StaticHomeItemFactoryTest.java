@@ -53,7 +53,7 @@ public class StaticHomeItemFactoryTest {
             HomeItemProxy pr = null;
             try {
                 pr = new LocalHomeItemProxy(factory.createInstance(classInfo.getClassName()), null);
-            } catch (ModelException e) {
+            } catch (Throwable e) {
                 continue;
             }
             Iterator<Attribute> atts = pr.getAttributeValues().iterator();

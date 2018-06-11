@@ -1,7 +1,9 @@
 NetHome Server
 ==============
 
-Welcome to the NetHomeServer project.
+Welcome to the NetHomeServer project. NetHomeServer is the core of OpenNetHome, 
+which is an open home automation project. For more details, see the project home page:
+http://opennethome.org/
 
 Development Environment
 -----------------------

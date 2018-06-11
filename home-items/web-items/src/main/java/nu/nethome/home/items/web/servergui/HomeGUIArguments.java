@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 public class HomeGUIArguments {
     public static final String RETURN_TO_ITEM = "RETURN2ITEM";
     private static final String DEFAULT_PAGE = "rooms";
+    private static final String CLOUD_ACCOUNT = "Cloud-Account";
     protected final String action;
     protected final boolean editMode;
     protected String rawAction;
@@ -36,6 +37,7 @@ public class HomeGUIArguments {
     protected final String name;
     protected final String returnPage;
     protected final String returnSubpage;
+    protected final String cloudAccount;
 
     public HomeGUIArguments(HttpServletRequest req) {
         rawAction = req.getParameter("a");
@@ -48,6 +50,7 @@ public class HomeGUIArguments {
         isIE = isInternetExplorer(req);
         returnSubpage = req.getParameter("returnsp");
         returnPage = req.getParameter("return");
+        cloudAccount = req.getHeader(CLOUD_ACCOUNT);
     }
 
     public boolean isAction(String actionName) {
@@ -115,5 +118,13 @@ public class HomeGUIArguments {
 
     public String getEffectiveReturnSubpage() {
         return (RETURN_TO_ITEM.equals(returnSubpage) && name != null) ? name : returnSubpage;
+    }
+
+    public boolean isCloudAccess() {
+        return cloudAccount != null;
+    }
+
+    public String getCloudAccount() {
+        return cloudAccount;
     }
 }

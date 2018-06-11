@@ -79,6 +79,7 @@ public class Plan extends HomeItemAdapter implements HomeItem {
             + "<HomeItem Class=\"Plan\"  Category=\"Infrastructure\" >"
             + "  <Attribute Name=\"Items\" Type=\"Items\" Get=\"getItems\" 	Set=\"setItems\" />"
             + "  <Attribute Name=\"ImageFile\" Type=\"MediaFile\" Get=\"getImageFile\" 	Set=\"setImageFile\" />"
+            + "  <Attribute Name=\"CustomCSS\" Type=\"MediaFile\" Get=\"getCustomCSS\" 	Set=\"setCustomCSS\" />"
             + "  <Attribute Name=\"ItemLocations\" Type=\"String\" Get=\"getItemLocations\" 	Set=\"setItemLocations\" />"
             + "  <Attribute Name=\"UpdateInterval\" Type=\"String\" Get=\"getUpdateInterval\" 	Set=\"setUpdateInterval\" />"
 			+ "  <Attribute Name=\"ClickAction\" Type=\"StringList\" Get=\"getClickAction\" 	Set=\"setClickAction\">"
@@ -90,6 +91,7 @@ public class Plan extends HomeItemAdapter implements HomeItem {
     // Public attributes
     protected String items = "";
     protected String imageFile = "media/home.jpg";
+    protected String customCSS = "";
     protected String itemLocations = "";
     protected int updateInterval = 2;
     private boolean popupOnClick = false;
@@ -289,5 +291,13 @@ public class Plan extends HomeItemAdapter implements HomeItem {
 
     public boolean isPopupOnClick() {
         return popupOnClick;
+    }
+
+    public String getCustomCSS() {
+        return customCSS;
+    }
+
+    public void setCustomCSS(String customCSS) {
+        this.customCSS = customCSS;
     }
 }

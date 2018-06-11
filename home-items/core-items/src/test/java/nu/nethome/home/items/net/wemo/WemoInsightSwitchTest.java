@@ -9,6 +9,8 @@ import org.xml.sax.SAXException;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.util.Locale;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -70,7 +72,8 @@ public class WemoInsightSwitchTest {
     public void canGetOnState() throws Exception, WemoException {
         InsightState state = new InsightState("1|1424028730|713|784|762|1209600|105|105745|1322278|1322278.000000|8000");
         doReturn(state).when(swithClient).getInsightParameters();
-        assertThat(itemProxy.getAttributeValue("State"), is("On 105,7"));
+        char decimalSeparator = new DecimalFormat().getDecimalFormatSymbols().getDecimalSeparator();
+        assertThat(itemProxy.getAttributeValue("State"), is("On 105" + decimalSeparator + "7"));
     }
 
     @Test

@@ -32,7 +32,7 @@ import nu.nethome.home.item.HomeItemInfo;
 import nu.nethome.home.items.UPnPScanner;
 import nu.nethome.home.items.UsbScanner;
 import nu.nethome.home.items.net.ArpScanner;
-import nu.nethome.home.items.net.MqttClient;
+import nu.nethome.home.items.net.MqttCommandPort;
 import nu.nethome.home.items.rollertrol.RollerTrolBlindGSeries;
 import nu.nethome.home.items.tellstick.Tellstick;
 import nu.nethome.home.items.web.proxy.HomeCloudConnection;
@@ -102,7 +102,8 @@ public class StaticHomeItemFactory implements HomeItemFactory {
             new HomeItemClassInfo("TCPListener", nu.nethome.home.items.net.TCPListener.class),
             new HomeItemClassInfo("TCPCommandPort", nu.nethome.home.items.net.TCPCommandPort.class),
             new HomeItemClassInfo("UDPCommandPort", nu.nethome.home.items.net.UDPCommandPort.class),
-            new HomeItemClassInfo("MqttClient", MqttClient.class),
+            new HomeItemClassInfo("MqttClient", nu.nethome.home.items.net.MqttClient.class),
+            new HomeItemClassInfo("MqttValueLogger", nu.nethome.home.items.net.MqttValueLogger.class),
             new HomeItemClassInfo("UDPListener", nu.nethome.home.items.net.UDPListener.class),
             new HomeItemClassInfo("WeekTimer", nu.nethome.home.items.timer.WeekTimer.class),
             new HomeItemClassInfo("IntervalTimer", nu.nethome.home.items.timer.IntervalTimer.class),
@@ -116,6 +117,7 @@ public class StaticHomeItemFactory implements HomeItemFactory {
             new HomeItemClassInfo("MBMThermometer", nu.nethome.home.items.misc.MBMThermometer.class),
             new HomeItemClassInfo("ValueTrigger", nu.nethome.home.items.misc.ValueTrigger.class),
             new HomeItemClassInfo("Scene", nu.nethome.home.items.misc.Scene.class),
+            new HomeItemClassInfo("CommandSequencer", nu.nethome.home.items.misc.CommandSequencer.class),
             new HomeItemClassInfo("ArpScanner", ArpScanner.class),
             new HomeItemClassInfo("MacDevice", nu.nethome.home.items.net.MacDevice.class),
             new HomeItemClassInfo("MacDeviceGroup", nu.nethome.home.items.net.MacDeviceGroup.class),
@@ -133,8 +135,11 @@ public class StaticHomeItemFactory implements HomeItemFactory {
             new HomeItemClassInfo("UPnPScanner", UPnPScanner.class),
             new HomeItemClassInfo("H2DatabaseTCPServer", nu.nethome.home.items.net.H2DatabaseTCPServer.class),
             new HomeItemClassInfo("UsbScanner", UsbScanner.class),
+            new HomeItemClassInfo("MDNSScanner", nu.nethome.home.items.MDNSScanner.class),
 
             // rf-items
+            new HomeItemClassInfo("GenericThermometer", nu.nethome.home.items.GenericThermometer.class),
+            new HomeItemClassInfo("CustomLamp", nu.nethome.home.items.CustomLamp.class),
             new HomeItemClassInfo("UPMThermometer", nu.nethome.home.items.upm.UPMThermometer.class),
             new HomeItemClassInfo("UPMHygrometer", nu.nethome.home.items.upm.UPMHygrometer.class),
             new HomeItemClassInfo("UPMWindSpeed", nu.nethome.home.items.upm.UPMWindSpeed.class),
@@ -193,6 +198,13 @@ public class StaticHomeItemFactory implements HomeItemFactory {
             new HomeItemClassInfo("MqttThermometer", nu.nethome.home.items.mqtt.MqttThermometer.class),
             new HomeItemClassInfo("MqttHygrometer", nu.nethome.home.items.mqtt.MqttHygrometer.class),
             new HomeItemClassInfo("MqttRemapButton", nu.nethome.home.items.mqtt.MqttRemapButton.class),
+            new HomeItemClassInfo("MqttCommandPort", MqttCommandPort.class),
+            new HomeItemClassInfo("MqttCommander", nu.nethome.home.items.net.MqttCommander.class),
+            new HomeItemClassInfo("MqttLamp", nu.nethome.home.items.net.MqttLamp.class),
+            new HomeItemClassInfo("IkeaGateway", nu.nethome.home.items.ikea.IkeaGateway.class),
+            new HomeItemClassInfo("IkeaLamp", nu.nethome.home.items.ikea.IkeaLamp.class),
+            new HomeItemClassInfo("IkeaColorTemperatureLamp", nu.nethome.home.items.ikea.IkeaColorTemperatureLamp.class),
+            new HomeItemClassInfo("PrologueThermometer", nu.nethome.home.items.prologue.PrologueThermometer.class),
 
             // web-items
             new HomeItemClassInfo("Room", nu.nethome.home.items.infra.Room.class),

@@ -35,11 +35,12 @@ import java.util.logging.Logger;
  * 
  * @author Stefan
  */
+@SuppressWarnings("unused")
 @Plugin
 @HomeItemType("Controls")
 public class Scene extends HomeItemAdapter implements HomeItem {
 
-	private final String m_Model = ("<?xml version = \"1.0\"?> \n"
+	private final static String MODEL = ("<?xml version = \"1.0\"?> \n"
 			+ "<HomeItem Class=\"Scene\"  Category=\"Controls\" >"
             + "  <Attribute Name=\"State\" Type=\"String\" Get=\"getState\" Init=\"setState\" Default=\"true\" />"
 			+ "  <Attribute Name=\"Delay\" Type=\"String\" Get=\"getDelay\" 	Set=\"setDelay\" />"
@@ -55,40 +56,31 @@ public class Scene extends HomeItemAdapter implements HomeItem {
 			+ "</HomeItem> ");
 
 	private static Logger logger = Logger.getLogger(Scene.class.getName());
-    private boolean activeState = true;
-	protected CommandLineExecutor m_Executor;
+    protected boolean activeState = true;
+	private CommandLineExecutor commandExecutor;
 	
 
 	// Public attributes
-	protected long m_Delay = 0; // Delay in ms
-	protected String m_Command1 = "";
-	protected String m_Command2 = "";
-	protected String m_Command3 = "";
-	protected String m_Command4 = "";
-	protected String m_Command5 = "";
-	protected String m_Command6 = "";
+	private long commandDelay = 0; // Delay in ms
+	private String command1 = "";
+	private String command2 = "";
+	private String command3 = "";
+	private String command4 = "";
+	private String command5 = "";
+	private String command6 = "";
 
 	public Scene() {
 	}
 	
-	/* (non-Javadoc)
-	 * @see ssg.home.HomeItem#getModel()
-	 */
 	public String getModel() {
-		return m_Model;
+		return MODEL;
 	}
 
-	/* Activate the instance
-	 * @see ssg.home.HomeItem#activate()
-	 */
 	public void activate(HomeService server) {
         super.activate(server);
-        m_Executor = new CommandLineExecutor(server, true);
+        commandExecutor = new CommandLineExecutor(server, true);
 	}
 
-	/**
-	 * HomeItem method which stops all object activity for program termination
-	 */
 	public void stop() {
 	}
 
@@ -105,23 +97,25 @@ public class Scene extends HomeItemAdapter implements HomeItem {
             return;
         }
 		try {
-			performCommand(m_Command1);
-			if (m_Command2.length() != 0) Thread.sleep(m_Delay);
-			performCommand(m_Command2);
-			if (m_Command3.length() != 0) Thread.sleep(m_Delay);
-			performCommand(m_Command3);
-			if (m_Command4.length() != 0) Thread.sleep(m_Delay);
-			performCommand(m_Command4);
-			if (m_Command5.length() != 0) Thread.sleep(m_Delay);
-			performCommand(m_Command5);
-			if (m_Command6.length() != 0) Thread.sleep(m_Delay);
-			performCommand(m_Command6);
+			performCommand(command1);
+			if (command2.length() != 0) Thread.sleep(commandDelay);
+			performCommand(command2);
+			if (command3.length() != 0) Thread.sleep(commandDelay);
+			performCommand(command3);
+			if (command4.length() != 0) Thread.sleep(commandDelay);
+			performCommand(command4);
+			if (command5.length() != 0) Thread.sleep(commandDelay);
+			performCommand(command5);
+			if (command6.length() != 0) Thread.sleep(commandDelay);
+			performCommand(command6);
 		}
-		catch (InterruptedException i) {}
+		catch (InterruptedException i) {
+        	// Do Dinada
+		}
 	}
 	
 	protected void performCommand(String commandString) {
-		String result = m_Executor.executeCommandLine(commandString);
+		String result = commandExecutor.executeCommandLine(commandString);
 		if (!result.startsWith("ok")) {
 			logger.warning(result);
 		}
@@ -137,77 +131,47 @@ public class Scene extends HomeItemAdapter implements HomeItem {
         return "";
     }
 
-	/**
-	 * @return Returns the m_Delay.
-	 */
 	public String getDelay() {
-		return Double.toString(m_Delay / 1000.0);
+		return Double.toString(commandDelay / 1000.0);
 	}
-	/**
-	 * @param Delay The m_Delay to set.
-	 */
 	public void setDelay(String Delay) {
-		m_Delay = Math.round(Double.parseDouble(Delay) * 1000);
+		commandDelay = Math.round(Double.parseDouble(Delay) * 1000);
 	}
 
-	/**
-	 * @return Returns the m_Command2.
-	 */
 	public String getCommand2() {
-		return m_Command2;
+		return command2;
 	}
-	/**
-	 * @param Command2 The m_Command2 to set.
-	 */
 	public void setCommand2(String Command2) {
-		m_Command2 = Command2;
+		command2 = Command2;
 	}
-	/**
-	 * @return Returns the m_Command1.
-	 */
 	public String getCommand1() {
-		return m_Command1;
+		return command1;
 	}
-	/**
-	 * @param Command1 The m_Command1 to set.
-	 */
 	public void setCommand1(String Command1) {
-		m_Command1 = Command1;
+		command1 = Command1;
 	}	
-	/**
-	 * @return Returns the m_Command3.
-	 */
 	public String getCommand3() {
-		return m_Command3;
+		return command3;
 	}
-	/**
-	 * @param Command3 The m_Command3 to set.
-	 */
 	public void setCommand3(String Command3) {
-		m_Command3 = Command3;
+		command3 = Command3;
 	}	
-	/**
-	 * @return Returns the m_Command4.
-	 */
 	public String getCommand4() {
-		return m_Command4;
+		return command4;
 	}
-	/**
-	 * @param Command4 The m_Command4 to set.
-	 */
 	public void setCommand4(String Command4) {
-		m_Command4 = Command4;
+		command4 = Command4;
 	}	
 	public String getCommand5() {
-		return m_Command5;
+		return command5;
 	}
 	public void setCommand5(String Command5) {
-		m_Command5 = Command5;
+		command5 = Command5;
 	}
 	public String getCommand6() {
-		return m_Command6;
+		return command6;
 	}
 	public void setCommand6(String Command6) {
-		m_Command6 = Command6;
+		command6 = Command6;
 	}
 }

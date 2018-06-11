@@ -20,6 +20,7 @@
 package nu.nethome.home.impl;
 
 import nu.nethome.home.item.*;
+import nu.nethome.home.items.MDNSScanner;
 import nu.nethome.home.items.UPnPScanner;
 import nu.nethome.home.items.UsbScanner;
 import nu.nethome.home.system.*;
@@ -82,7 +83,7 @@ public class HomeServer implements HomeItem, HomeService, ServiceState, ServiceC
                 + "</HomeItem> ");
     }
 
-    private static final int MAX_QUEUE_SIZE = 20;
+    private static final int MAX_QUEUE_SIZE = 30;
     private static final String QUIT_EVENT = "BrokerQuitEvent";
     public static final int LOG_RECORD_CAPACITY = 50;
     public static final int EVENT_COUNT_PERIOD = 15;
@@ -539,12 +540,16 @@ public class HomeServer implements HomeItem, HomeService, ServiceState, ServiceC
     private void addSingletonItems(List<HomeItem> loadedItems) {
         boolean hasUpnpScanner = false;
         boolean hasUsbScanner = false;
+        boolean hasMDNSScanner = false;
         for (HomeItem loadedItem : loadedItems) {
             if (loadedItem instanceof UPnPScanner) {
                 hasUpnpScanner = true;
             }
             if (loadedItem instanceof UsbScanner) {
                 hasUsbScanner = true;
+            }
+            if (loadedItem instanceof MDNSScanner) {
+                hasMDNSScanner = true;
             }
         }
         if (!hasUpnpScanner) {
@@ -556,6 +561,11 @@ public class HomeServer implements HomeItem, HomeService, ServiceState, ServiceC
             UsbScanner usbScanner = new UsbScanner();
             usbScanner.setName("USB_Scanner");
             loadedItems.add(usbScanner);
+        }
+        if (!hasMDNSScanner) {
+            MDNSScanner mdnsScanner = new MDNSScanner();
+            mdnsScanner.setName("MDNS_Scanner");
+            loadedItems.add(mdnsScanner);
         }
     }
 

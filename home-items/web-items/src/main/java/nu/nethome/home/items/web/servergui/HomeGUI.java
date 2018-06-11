@@ -214,6 +214,11 @@ public class HomeGUI extends HttpServlet implements FinalEventListener, HomeItem
             performItemAction(req);
         }
 
+        if (arguments.isAction("logout")) {
+            performCloudLogout(arguments, p);
+            return;
+        }
+
         // Loop through all page plugins and find the appropriate one and call it
         for (HomePageInterface pagePlugin : pages) {
             if (arguments.getPage().equalsIgnoreCase(pagePlugin.getPageNameURL())) {
@@ -238,6 +243,13 @@ public class HomeGUI extends HttpServlet implements FinalEventListener, HomeItem
         }
 
         // We should never get here...
+        p.flush();
+        p.close();
+    }
+
+    private void performCloudLogout(HomeGUIArguments args, PrintWriter p) {
+        homeServer.send(homeServer.createEvent("Logout_Message", args.cloudAccount));
+        p.println("<script>location.href=\"/servers\"</script>");
         p.flush();
         p.close();
     }
@@ -549,6 +561,11 @@ public class HomeGUI extends HttpServlet implements FinalEventListener, HomeItem
         p.println("   <li class=\"pref\">");
         p.println(statusIcon + "&nbsp;<a href=\"" + localURL + "?page=settings&subpage=log\">Log</a>");
         p.println("   </li>");
+        if (arguments.isCloudAccess()) {
+            p.println("   <li class=\"pref\">");
+            p.println("     <img src=\"web/home/cloud16.png\"/>&nbsp;<a href=\"" + localURL + "?a=logout\">Logout</a>");
+            p.println("   </li>");
+        }
         p.println("   <li class=\"pref\">");
         p.println("    <img src=\"web/home/info.png\"/>&nbsp;<a href=\"http://opennethome.org\">About</a>");
         p.println("   </li>");

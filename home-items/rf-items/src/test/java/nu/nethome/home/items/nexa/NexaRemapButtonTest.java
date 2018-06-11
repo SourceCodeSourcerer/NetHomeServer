@@ -99,12 +99,12 @@ public class NexaRemapButtonTest {
 		assertEquals("A", m_testItem.getHouseCode());
 		m_testItem.setHouseCode("C");
 		assertEquals("C", m_testItem.getHouseCode());
-		m_testItem.setHouseCode("f");
-		assertEquals("F", m_testItem.getHouseCode());
-		m_testItem.setHouseCode("I");
-		assertEquals("F", m_testItem.getHouseCode());
+		m_testItem.setHouseCode("p");
+		assertEquals("P", m_testItem.getHouseCode());
+		m_testItem.setHouseCode("Q");
+		assertEquals("P", m_testItem.getHouseCode());
 		m_testItem.setHouseCode("olle");
-		assertEquals("F", m_testItem.getHouseCode());
+		assertEquals("P", m_testItem.getHouseCode());
 	}
 
 	@Test
