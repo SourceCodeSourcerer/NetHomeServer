@@ -79,12 +79,21 @@ public class TellstickTest {
     }
 
     @Test
+    public void canReceiveOregonF824() throws Exception {
+        tellstick.activate(homeService);
+        tellstick.receivedTellstickEvent("+Wclass:sensor;protocol:oregon;model:0xF824;data:8AF0281065045D;");
+        ArgumentCaptor<Event> captor = ArgumentCaptor.forClass(Event.class);
+        verify(homeService).send(captor.capture());
+        assertThat(captor.getValue().getAttributeInt("Oregon.Temp"), is(182));
+    }
+
+    @Test
     public void canReceiveOregonRainGaugeModelPCR800() throws Exception {
         tellstick.activate(homeService);
         tellstick.receivedTellstickEvent("+Wclass:sensor;protocol:oregon;model:0x2914;data:0091498896770045;");
         ArgumentCaptor<Event> captor = ArgumentCaptor.forClass(Event.class);
         verify(homeService).send(captor.capture());
-        assertThat(captor.getValue().getAttributeInt("Oregon.RainRate"), is(894));
-        assertThat(captor.getValue().getAttributeInt("Oregon.TotalRain"), is(77698));
+        assertThat(captor.getValue().getAttributeInt("Oregon.RainRate"), is(8894));
+        assertThat(captor.getValue().getAttributeInt("Oregon.TotalRain"), is(7769));
     }
 }

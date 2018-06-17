@@ -46,7 +46,7 @@ import nu.nethome.util.plugin.Plugin;
  */
 @SuppressWarnings("UnusedDeclaration")
 @Plugin
-@HomeItemType(value = "Gauges", creationInfo = OregonThermometer.OregonCreationInfo.class)
+@HomeItemType(value = "Gauges", creationInfo = OregonRainGauge.OregonCreationInfo.class)
 public class OregonRainGauge extends HomeItemAdapter implements HomeItem, ValueItem {
 
     public static class OregonCreationInfo implements AutoCreationInfo {
